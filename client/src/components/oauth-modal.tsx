@@ -43,7 +43,7 @@ const platforms: Platform[] = [
     name: "WhatsApp Business",
     icon: <MessageCircle className="h-5 w-5" />,
     color: "text-green-600",
-    description: "Automatize mensagens e gerencie conversas",
+    description: "Centralize mensagens e gerencie conversas",
   },
   {
     id: "telegram",
