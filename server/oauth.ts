@@ -36,6 +36,14 @@ const OAUTH_CONFIGS: Record<string, OAuthConfig> = {
     authUrl: "https://www.facebook.com/v18.0/dialog/oauth",
     tokenUrl: "https://graph.facebook.com/v18.0/oauth/access_token",
   },
+  telegram: {
+    clientId: process.env.TELEGRAM_BOT_TOKEN || "",
+    clientSecret: process.env.TELEGRAM_BOT_SECRET || "",
+    redirectUri: process.env.TELEGRAM_REDIRECT_URI || "",
+    scopes: ["bot"],
+    authUrl: "https://oauth.telegram.org/auth",
+    tokenUrl: "https://api.telegram.org/bot",
+  },
 };
 
 export async function initiateOAuth(req: Request, res: Response) {
