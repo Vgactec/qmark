@@ -1,0 +1,82 @@
+### Cahier des Charges - Projet QMARK
+
+---
+
+**1. Objectif :**
+Créer une plateforme SaaS automatisée et sécurisée pour la gestion du marketing digital et des ventes, incluant :
+
+- Connexion sécurisée via OAuth2 à diverses plateformes (Facebook, Instagram, Gmail, WhatsApp Business, Telegram, Google Ads, Facebook Ads).
+- Stockage sécurisé des tokens OAuth2.
+- Gestion automatique du renouvellement des tokens.
+- Utilisation de n8n pour automatiser la collecte de données, la création de contenu, et la gestion des campagnes publicitaires.
+- Développement de connecteurs personnalisés pour les plateformes non supportées.
+
+---
+
+**2. Fonctionnalités :**
+
+**A. Connexions sécurisées OAuth2 :**
+- Intégration avec Meta Graph API, API Gmail, WhatsApp Business, Telegram Bot, Google Ads, Facebook Ads.
+- Portail utilisateur pour connecter les comptes professionnels.
+- Backend pour gérer les tokens.
+
+**B. Gestion des tokens :**
+- Base de données chiffrée (PostgreSQL/Supabase) avec AES256.
+- Scripts pour vérifier et renouveler les tokens.
+- Alertes en cas d'échec d'authentification.
+
+**C. Automatisation avec n8n :**
+- Workflows pour la publication de contenu, suivi des tunnels de vente, analyse des données publicitaires.
+- Collecte des messages via WhatsApp et Telegram.
+- Optimisation des campagnes publicitaires.
+- Module d'importation de contenu utilisateur.
+
+**D. Connecteurs personnalisés :**
+- Modules JavaScript pour connecteurs API non natifs.
+- Scalabilité vers d'autres réseaux (TikTok, LinkedIn, Pinterest).
+
+---
+
+**3. Architecture technique :**
+- Backend : n8n avec Express.js.
+- Base de données : Supabase/PostgreSQL.
+- Frontend : Next.js/Vue.js.
+- Sécurité : HTTPS, chiffrement des données, authentification forte (2FA).
+
+---
+
+**4. Livrables :**
+- Workflows OAuth2 dans n8n.
+- Scripts d'intégration sécurisés.
+- API REST pour interaction frontend/backend.
+- Documentation technique et guides utilisateurs.
+
+---
+
+**5. Roadmap :**
+
+| Phase | Tâches                                      | Durée  |
+|-------|---------------------------------------------|--------|
+| 1     | Rédaction du cahier des charges + schéma    | 3 jours|
+| 2     | Installation technique initiale             | 5 jours|
+| 3     | Intégration OAuth2 Facebook, Instagram, Google | 6 jours|
+| 4     | Intégration WhatsApp Business, Telegram    | 5 jours|
+| 5     | Configuration des automatisations marketing | 6 jours|
+| 6     | Tests fonctionnels + documentation          | 4 jours|
+| 7     | Déploiement pilote                          | 6 jours|
+| 8     | Analyse des retours, corrections, déploiement | en continu |
+
+---
+
+**6. Contraintes légales :**
+- Respect des conditions d’utilisation des API tierces.
+- Conformité RGPD (Europe) et LGPD (Brésil).
+- Surveillance et logs pour disponibilité continue (24/7).
+
+---
+
+**7. Vision à long terme :**
+- Autonomie totale dans la gestion marketing.
+- Modèle économique basé sur le pourcentage des ventes.
+- Intégration de l'IA générative.
+- Moteur de recommandation intelligent.
