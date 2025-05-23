@@ -23,7 +23,7 @@ const OAUTH_CONFIGS: Record<string, OAuthConfig> = {
   google: {
     clientId: "832297164791-fb6c44thmopfjpceh42cjgk704dqmj8s.apps.googleusercontent.com",
     clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
-    redirectUri: "https://7fd2156-7f80-4d1c-8e06-bdd46513a6d4-00-3ecticcznfep0.worf.replit.dev/api/oauth/callback",
+    redirectUri: `https://${process.env.REPLIT_DOMAINS?.split(',')[0]}/api/oauth/callback`,
     scopes: ["https://www.googleapis.com/auth/gmail.readonly", "https://www.googleapis.com/auth/adwords"],
     authUrl: "https://accounts.google.com/o/oauth2/v2/auth",
     tokenUrl: "https://oauth2.googleapis.com/token",
