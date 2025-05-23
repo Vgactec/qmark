@@ -231,7 +231,7 @@ export default function Landing() {
             <span className="font-bold">QMARK</span>
           </div>
           <p className="text-sm text-neutral-400 mb-2">
-            Plataforma SaaS para automatização de marketing digital
+            Plataforma SaaS para gestão de marketing digital
           </p>
           <p className="text-xs text-neutral-500">
             Desenvolvido em conformidade com a LGPD | Dados protegidos com criptografia AES256

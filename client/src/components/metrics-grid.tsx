@@ -6,7 +6,7 @@ import { TrendingUp, Users, Zap, DollarSign } from "lucide-react";
 interface DashboardStats {
   totalLeads: number;
   totalConversions: number;
-  activeAutomations: number;
+  activeWorkflows: number;
   totalRevenue: string;
 }
 
@@ -51,10 +51,10 @@ export default function MetricsGrid() {
       bgColor: "bg-secondary/10",
     },
     {
-      title: "Automações Ativas",
-      value: stats?.activeAutomations || 0,
+      title: "Workflows Ativos",
+      value: stats?.activeWorkflows || 0,
       icon: Zap,
-      change: "5 executadas hoje",
+      change: "5 executados hoje",
       changeType: "neutral" as const,
       color: "text-yellow-600",
       bgColor: "bg-yellow-100",

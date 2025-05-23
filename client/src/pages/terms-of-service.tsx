@@ -39,7 +39,7 @@ export default function TermsOfService() {
           <CardContent className="prose prose-neutral max-w-none">
             <h2>1. Aceitação dos Termos</h2>
             <p>
-              Bem-vindo à QMARK! Ao acessar e usar nossa plataforma de automação de marketing digital, 
+              Bem-vindo à QMARK! Ao acessar e usar nossa plataforma de gestão de marketing digital, 
               você concorda em cumprir e estar vinculado a estes Termos de Uso. Se você não concordar 
               com qualquer parte destes termos, não deve usar nossos serviços.
             </p>
@@ -49,7 +49,7 @@ export default function TermsOfService() {
               A QMARK é uma plataforma SaaS (Software as a Service) que oferece:
             </p>
             <ul>
-              <li>Automação de marketing digital para micro-empreendedores</li>
+              <li>Gestão de marketing digital para micro-empreendedores</li>
               <li>Integração com plataformas sociais (Facebook, Instagram, WhatsApp, Gmail)</li>
               <li>Dashboard unificado para gestão de campanhas e leads</li>
               <li>Relatórios e analytics em tempo real</li>

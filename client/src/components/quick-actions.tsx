@@ -9,13 +9,13 @@ export default function QuickActions() {
 
   const actions = [
     {
-      id: "automation",
-      title: "Nova Automação",
-      description: "Crie um novo workflow automatizado",
+      id: "workflow",
+      title: "Novo Workflow",
+      description: "Crie um novo workflow de gestão",
       icon: PlusCircle,
       action: () => {
-        // TODO: Open automation creation modal/page
-        alert("Redirecionando para criador de automação...\n\nEm produção, isso abriria o workflow builder.");
+        // TODO: Open workflow creation modal/page
+        alert("Redirecionando para criador de workflows...\n\nEm produção, isso abriria o workflow builder.");
       },
     },
     {

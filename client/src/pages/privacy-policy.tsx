@@ -39,7 +39,7 @@ export default function PrivacyPolicy() {
           <CardContent className="prose prose-neutral max-w-none">
             <h2>1. Informações Gerais</h2>
             <p>
-              A QMARK ("nós", "nossa" ou "nosso") opera a plataforma SaaS de automação de marketing digital 
+              A QMARK ("nós", "nossa" ou "nosso") opera a plataforma SaaS de gestão de marketing digital 
               destinada a micro-empreendedores brasileiros. Esta Política de Privacidade explica como coletamos, 
               usamos, divulgamos e protegemos suas informações quando você usa nosso serviço.
             </p>
@@ -69,7 +69,7 @@ export default function PrivacyPolicy() {
             <h2>4. Finalidade do Tratamento</h2>
             <p>Utilizamos seus dados para:</p>
             <ul>
-              <li>Fornecer nossos serviços de automação de marketing</li>
+              <li>Fornecer nossos serviços de gestão de marketing</li>
               <li>Gerenciar suas integrações com plataformas terceiras</li>
               <li>Gerar relatórios e analytics personalizados</li>
               <li>Melhorar nossos serviços e experiência do usuário</li>
