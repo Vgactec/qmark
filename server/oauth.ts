@@ -13,9 +13,9 @@ interface OAuthConfig {
 
 const OAUTH_CONFIGS: Record<string, OAuthConfig> = {
   facebook: {
-    clientId: process.env.FACEBOOK_CLIENT_ID || "",
+    clientId: "586039034025653",
     clientSecret: process.env.FACEBOOK_CLIENT_SECRET || "",
-    redirectUri: process.env.FACEBOOK_REDIRECT_URI || "",
+    redirectUri: `https://${process.env.REPLIT_DOMAINS?.split(',')[0]}/api/oauth/callback`,
     scopes: ["pages_manage_posts", "pages_read_engagement", "instagram_basic", "instagram_content_publish"],
     authUrl: "https://www.facebook.com/v18.0/dialog/oauth",
     tokenUrl: "https://graph.facebook.com/v18.0/oauth/access_token",
@@ -29,9 +29,9 @@ const OAUTH_CONFIGS: Record<string, OAuthConfig> = {
     tokenUrl: "https://oauth2.googleapis.com/token",
   },
   whatsapp: {
-    clientId: process.env.WHATSAPP_CLIENT_ID || "",
-    clientSecret: process.env.WHATSAPP_CLIENT_SECRET || "",
-    redirectUri: process.env.WHATSAPP_REDIRECT_URI || "",
+    clientId: "586039034025653",
+    clientSecret: process.env.FACEBOOK_CLIENT_SECRET || "",
+    redirectUri: `https://${process.env.REPLIT_DOMAINS?.split(',')[0]}/api/oauth/callback`,
     scopes: ["whatsapp_business_messaging"],
     authUrl: "https://www.facebook.com/v18.0/dialog/oauth",
     tokenUrl: "https://graph.facebook.com/v18.0/oauth/access_token",
