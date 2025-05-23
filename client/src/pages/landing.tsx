@@ -18,8 +18,8 @@ export default function Landing() {
   const features = [
     {
       icon: <Zap className="h-6 w-6" />,
-      title: "Automação Inteligente",
-      description: "Automatize suas campanhas de marketing e vendas com workflows personalizados"
+      title: "Gestão Inteligente",
+      description: "Gerencie suas campanhas de marketing e vendas com workflows eficientes"
     },
     {
       icon: <Shield className="h-6 w-6" />,
@@ -47,7 +47,7 @@ export default function Landing() {
 
   const benefits = [
     "Conexões OAuth2 seguras com principais plataformas",
-    "Workflows automatizados para marketing digital",
+    "Workflows manuais para gerenciamento de marketing digital",
     "Dashboard unificado com métricas em tempo real",
     "Gestão inteligente de leads e conversões",
     "Conformidade com LGPD e proteção de dados",
@@ -85,11 +85,11 @@ export default function Landing() {
             🇧🇷 Feito especialmente para micro-empreendedores brasileiros
           </Badge>
           <h1 className="text-4xl md:text-6xl font-bold text-neutral-900 mb-6">
-            Automatize seu
+            Gerencie seu
             <span className="text-primary"> Marketing Digital</span>
           </h1>
           <p className="text-xl text-neutral-600 mb-8 max-w-3xl mx-auto">
-            Conecte suas redes sociais, automatize campanhas e gerencie leads 
+            Conecte suas redes sociais, planeje campanhas e gerencie leads 
             de forma inteligente. Tudo em uma plataforma segura e fácil de usar.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -206,7 +206,7 @@ export default function Landing() {
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-primary">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            Pronto para automatizar seu negócio?
+            Pronto para melhorar seu negócio?
           </h2>
           <p className="text-xl text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
             Junte-se a centenas de micro-empreendedores que já estão 
