@@ -17,7 +17,7 @@ const OAUTH_CONFIGS: Record<string, OAuthConfig> = {
   facebook: {
     clientId: "586039034025653",
     clientSecret: process.env.FACEBOOK_CLIENT_SECRET || "",
-    redirectUri: `https://${process.env.REPLIT_DOMAINS?.split(',')[0]}/api/oauth/callback`,
+    redirectUri: `https://ea57f732-d3d2-4a6c-abd7-fd762841ad5e-00-2z2xyoxnhkmwn.riker.replit.dev/api/oauth/callback`,
     scopes: ["pages_manage_posts", "pages_read_engagement", "instagram_basic", "instagram_content_publish"],
     authUrl: "https://www.facebook.com/v18.0/dialog/oauth",
     tokenUrl: "https://graph.facebook.com/v18.0/oauth/access_token",
@@ -25,7 +25,7 @@ const OAUTH_CONFIGS: Record<string, OAuthConfig> = {
   google: {
     clientId: "832297164791-fb4c444mofjgoch42cjdp704daenj48s.apps.googleusercontent.com",
     clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
-    redirectUri: `https://${process.env.REPLIT_DOMAINS?.split(',')[0]}/api/oauth/callback`,
+    redirectUri: `https://ea57f732-d3d2-4a6c-abd7-fd762841ad5e-00-2z2xyoxnhkmwn.riker.replit.dev/api/oauth/callback`,
     appName: "QMARK",
     supportEmail: "ygacofficiel@gmail.com",
     scopes: [
@@ -41,7 +41,7 @@ const OAUTH_CONFIGS: Record<string, OAuthConfig> = {
   whatsapp: {
     clientId: "586039034025653",
     clientSecret: process.env.FACEBOOK_CLIENT_SECRET || "",
-    redirectUri: `https://${process.env.REPLIT_DOMAINS?.split(',')[0]}/api/oauth/callback`,
+    redirectUri: `https://ea57f732-d3d2-4a6c-abd7-fd762841ad5e-00-2z2xyoxnhkmwn.riker.replit.dev/api/oauth/callback`,
     scopes: ["whatsapp_business_messaging"],
     authUrl: "https://www.facebook.com/v18.0/dialog/oauth",
     tokenUrl: "https://graph.facebook.com/v18.0/oauth/access_token",
