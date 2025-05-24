@@ -9,6 +9,8 @@ interface OAuthConfig {
   scopes: string[];
   authUrl: string;
   tokenUrl: string;
+  appName?: string;
+  supportEmail?: string;
 }
 
 const OAUTH_CONFIGS: Record<string, OAuthConfig> = {
@@ -21,9 +23,9 @@ const OAUTH_CONFIGS: Record<string, OAuthConfig> = {
     tokenUrl: "https://graph.facebook.com/v18.0/oauth/access_token",
   },
   google: {
-    clientId: process.env.GOOGLE_CLIENT_ID || "",
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
-    redirectUri: `https://${process.env.REPLIT_SLUG}.${process.env.REPLIT_USERNAME}.repl.co/api/oauth/callback`,
+    clientId: "832297164791-fb4c444mofjgoch42cjdp704daenj48s.apps.googleusercontent.com",
+    clientSecret: process.env.GOOGLE_CLINET_SECRET || "",
+    redirectUri: `https://${process.env.REPLIT_DOMAINS?.split(',')[0]}/api/oauth/callback`,
     appName: "QMARK",
     supportEmail: "ygacofficiel@gmail.com",
     scopes: [

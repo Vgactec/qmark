@@ -9,6 +9,7 @@ import Dashboard from "@/pages/dashboard";
 import OAuthCallback from "@/pages/oauth-callback";
 import PrivacyPolicy from "@/pages/privacy-policy";
 import TermsOfService from "@/pages/terms-of-service";
+import DataDeletion from "@/pages/data-deletion";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -19,6 +20,7 @@ function Router() {
       <Route path="/oauth/callback" component={OAuthCallback} />
       <Route path="/privacy-policy" component={PrivacyPolicy} />
       <Route path="/terms-of-service" component={TermsOfService} />
+      <Route path="/data-deletion" component={DataDeletion} />
       {isLoading || !isAuthenticated ? (
         <Route path="/" component={Landing} />
       ) : (
