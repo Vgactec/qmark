@@ -77,6 +77,12 @@ export async function initiateOAuth(req: Request, res: Response) {
     authUrl.searchParams.set("scope", config.scopes.join(" "));
     authUrl.searchParams.set("response_type", "code");
     authUrl.searchParams.set("state", state);
+    
+    // Paramètres spécifiques pour Google OAuth
+    if (platform === "google") {
+      authUrl.searchParams.set("access_type", "offline");
+      authUrl.searchParams.set("prompt", "consent");
+    }
 
     res.json({ authUrl: authUrl.toString() });
   } catch (error) {
