@@ -24,7 +24,7 @@ const OAUTH_CONFIGS: Record<string, OAuthConfig> = {
   },
   google: {
     clientId: "832297164791-fb4c444mofjgoch42cjdp704daenj48s.apps.googleusercontent.com",
-    clientSecret: process.env.GOOGLE_CLINET_SECRET || "",
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
     redirectUri: `https://${process.env.REPLIT_DOMAINS?.split(',')[0]}/api/oauth/callback`,
     appName: "QMARK",
     supportEmail: "ygacofficiel@gmail.com",
