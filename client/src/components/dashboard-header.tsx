@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Bell, Menu } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Bell, Menu, LogOut, Settings, User as UserIcon } from "lucide-react";
 import type { User } from "@shared/schema";
 
 interface DashboardHeaderProps {
@@ -39,11 +40,11 @@ export default function DashboardHeader({ user }: DashboardHeaderProps) {
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
-            <a href="#" className="text-neutral-700 hover:text-primary font-medium">Dashboard</a>
-            <a href="#" className="text-neutral-700 hover:text-primary font-medium">Automações</a>
-            <a href="#" className="text-neutral-700 hover:text-primary font-medium">Conexões</a>
-            <a href="#" className="text-neutral-700 hover:text-primary font-medium">Relatórios</a>
-            <a href="#" className="text-neutral-700 hover:text-primary font-medium">Suporte</a>
+            <a href="/dashboard" className="text-neutral-700 hover:text-primary font-medium">Dashboard</a>
+            <a href="/automations" className="text-neutral-700 hover:text-primary font-medium">Automações</a>
+            <a href="/connections" className="text-neutral-700 hover:text-primary font-medium">Conexões</a>
+            <a href="/reports" className="text-neutral-700 hover:text-primary font-medium">Relatórios</a>
+            <a href="/support" className="text-neutral-700 hover:text-primary font-medium">Suporte</a>
           </nav>
 
           {/* User Menu */}
@@ -54,30 +55,54 @@ export default function DashboardHeader({ user }: DashboardHeaderProps) {
               <span className="absolute -top-1 -right-1 w-3 h-3 bg-accent rounded-full"></span>
             </Button>
             
-            {/* User Avatar */}
-            <div className="relative flex items-center space-x-2">
-              <Avatar className="h-8 w-8">
-                <AvatarImage 
-                  src={user.profileImageUrl || undefined} 
-                  alt="Foto do perfil" 
-                  className="object-cover"
-                />
-                <AvatarFallback className="bg-primary text-white text-xs">
-                  {getInitials(user.firstName, user.lastName)}
-                </AvatarFallback>
-              </Avatar>
-              <div className="hidden md:block">
-                <div className="text-sm font-medium text-neutral-900">
-                  {user.firstName && user.lastName 
-                    ? `${user.firstName} ${user.lastName}`
-                    : user.email
-                  }
-                </div>
-                <div className="text-xs text-neutral-600">
-                  Micro-empreendedor
-                </div>
-              </div>
-            </div>
+            {/* User Avatar with Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="relative h-auto p-1 space-x-2">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage 
+                      src={user.profileImageUrl || undefined} 
+                      alt="Foto do perfil" 
+                      className="object-cover"
+                    />
+                    <AvatarFallback className="bg-primary text-white text-xs">
+                      {getInitials(user.firstName, user.lastName)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="hidden md:block text-left">
+                    <div className="text-sm font-medium text-neutral-900">
+                      {user.firstName && user.lastName 
+                        ? `${user.firstName} ${user.lastName}`
+                        : user.email
+                      }
+                    </div>
+                    <div className="text-xs text-neutral-600">
+                      Micro-empreendedor
+                    </div>
+                  </div>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuItem>
+                  <UserIcon className="mr-2 h-4 w-4" />
+                  <span>Perfil</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>Configurações</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={() => {
+                    fetch('/api/auth/logout', { method: 'POST' })
+                      .then(() => window.location.href = '/');
+                  }}
+                  className="text-red-600 focus:text-red-600"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Sair</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
             {/* Mobile Menu Button */}
             <Button variant="ghost" size="sm" className="md:hidden">
