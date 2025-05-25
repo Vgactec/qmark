@@ -5,6 +5,7 @@ import { setupAuth, isAuthenticated } from "./replitAuth";
 import { initiateOAuth, handleOAuthCallback } from "./oauth";
 import { z } from "zod";
 import { insertLeadSchema, insertAutomationSchema, insertActivitySchema } from "@shared/schema";
+import { testGoogleCloud } from "./google-test"; // Import testGoogleCloud
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Auth middleware
@@ -54,14 +55,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = req.user.claims.sub;
       const connections = await storage.getOauthConnections(userId);
-      
+
       // Remove sensitive data before sending to client
       const sanitizedConnections = connections.map(conn => ({
         ...conn,
         accessToken: undefined,
         refreshToken: undefined,
       }));
-      
+
       res.json(sanitizedConnections);
     } catch (error) {
       console.error("Error fetching OAuth connections:", error);
@@ -73,15 +74,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = req.user.claims.sub;
       const connectionId = parseInt(req.params.id);
-      
+
       // Verify connection belongs to user
       const connection = await storage.getOauthConnection(connectionId);
       if (!connection || connection.userId !== userId) {
         return res.status(404).json({ message: "Connection not found" });
       }
-      
+
       await storage.deleteOauthConnection(connectionId);
-      
+
       // Log activity
       await storage.createActivity({
         userId,
@@ -90,7 +91,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         description: `Desconectado de ${connection.platform}`,
         metadata: { platform: connection.platform },
       });
-      
+
       res.json({ message: "Connection deleted successfully" });
     } catch (error) {
       console.error("Error deleting OAuth connection:", error);
@@ -115,9 +116,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = req.user.claims.sub;
       const leadData = insertLeadSchema.parse({ ...req.body, userId });
-      
+
       const lead = await storage.createLead(leadData);
-      
+
       // Log activity
       await storage.createActivity({
         userId,
@@ -126,7 +127,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         description: `Lead ${lead.name || lead.email} foi adicionado`,
         metadata: { leadId: lead.id, source: lead.source },
       });
-      
+
       res.status(201).json(lead);
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -153,9 +154,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = req.user.claims.sub;
       const automationData = insertAutomationSchema.parse({ ...req.body, userId });
-      
+
       const automation = await storage.createAutomation(automationData);
-      
+
       // Log activity
       await storage.createActivity({
         userId,
@@ -164,7 +165,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         description: `Automação "${automation.name}" foi criada`,
         metadata: { automationId: automation.id, type: automation.type },
       });
-      
+
       res.status(201).json(automation);
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -179,17 +180,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = req.user.claims.sub;
       const automationId = parseInt(req.params.id);
-      
+
       // Verify automation belongs to user
       const automation = await storage.getAutomations(userId);
       const targetAutomation = automation.find(a => a.id === automationId);
       if (!targetAutomation) {
         return res.status(404).json({ message: "Automation not found" });
       }
-      
+
       const updates = req.body;
       const updatedAutomation = await storage.updateAutomation(automationId, updates);
-      
+
       if (updatedAutomation) {
         // Log activity
         await storage.createActivity({
@@ -200,7 +201,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           metadata: { automationId: updatedAutomation.id },
         });
       }
-      
+
       res.json(updatedAutomation);
     } catch (error) {
       console.error("Error updating automation:", error);
@@ -210,12 +211,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Metrics routes
   // Test Google API Connection
-app.get("/api/test/google", async (req, res) => {
-  const { testGoogleConnection } = await import('./google-test');
-  return testGoogleConnection(req, res);
-});
+  app.get("/api/test/google", async (req, res) => {
+    const result = await testGoogleCloud();
+    if (!result.success) {
+      return res.status(500).json(result);
+    }
+    res.json(result);
+  });
 
-app.get("/api/metrics", isAuthenticated, async (req: any, res) => {
+  app.get("/api/metrics", isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
       const fromDate = req.query.from ? new Date(req.query.from as string) : undefined;
