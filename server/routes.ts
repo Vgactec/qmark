@@ -209,7 +209,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Metrics routes
-  app.get("/api/metrics", isAuthenticated, async (req: any, res) => {
+  // Test Google API Connection
+app.get("/api/test/google", async (req, res) => {
+  const { testGoogleConnection } = await import('./google-test');
+  return testGoogleConnection(req, res);
+});
+
+app.get("/api/metrics", isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
       const fromDate = req.query.from ? new Date(req.query.from as string) : undefined;
