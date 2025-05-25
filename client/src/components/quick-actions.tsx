@@ -9,6 +9,32 @@ export default function QuickActions() {
 
   const actions = [
     {
+      id: 'test-google',
+      title: 'Tester Google Cloud',
+      description: 'Valider la connexion avec Google Cloud',
+      icon: CloudCheck,
+      action: async () => {
+        try {
+          const response = await fetch('/api/test/google');
+          const data = await response.json();
+          if (data.success) {
+            toast({
+              title: "Connexion réussie",
+              description: `Project ID: ${data.projectId}`,
+            });
+          } else {
+            throw new Error(data.error);
+          }
+        } catch (error) {
+          toast({
+            title: "Erreur de connexion",
+            description: error.message,
+            variant: "destructive"
+          });
+        }
+      }
+    },
+    {
       id: "workflow",
       title: "Novo Workflow",
       description: "Crie um novo workflow de gestão",
