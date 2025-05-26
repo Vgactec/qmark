@@ -1,8 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { PlusCircle, Link2, BarChart2, ChevronRight } from "lucide-react";
+import { PlusCircle, Link2, BarChart2, ChevronRight, CloudCheck } from "lucide-react";
 import { useState } from "react";
 import OAuthModal from "./oauth-modal";
+import { useToast } from "@/hooks/use-toast";
 
 export default function QuickActions() {
   const [oauthModalOpen, setOauthModalOpen] = useState(false);
