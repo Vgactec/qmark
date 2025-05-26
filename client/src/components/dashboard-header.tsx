@@ -5,76 +5,11 @@ import { Bell, Menu, LogOut, Settings, User as UserIcon } from "lucide-react";
 import type { User } from "@shared/schema";
 
 interface DashboardHeaderProps {
-  user?: User;
+  user: User;
   onMenuClick?: () => void;
 }
 
 export default function DashboardHeader({ user, onMenuClick }: DashboardHeaderProps) {
-  const handleLogout = () => {
-    // Clear any stored authentication data
-    localStorage.removeItem('token');
-    sessionStorage.removeItem('token');
-    
-    // Redirect to landing page
-    window.location.href = '/';
-  };
-
-  return (
-    <header className="border-b border-neutral-200 bg-white px-6 py-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onMenuClick}
-            className="lg:hidden"
-          >
-            <Menu className="h-5 w-5" />
-          </Button>
-          <h1 className="text-xl font-semibold text-neutral-900">
-            Dashboard Principal
-          </h1>
-        </div>
-
-        <div className="flex items-center space-x-4">
-          <Button variant="ghost" size="sm" className="relative">
-            <Bell className="h-5 w-5" />
-            <span className="absolute -top-1 -right-1 h-2 w-2 bg-red-500 rounded-full"></span>
-          </Button>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src={user?.avatar || ''} alt={user?.username || 'User'} />
-                  <AvatarFallback>
-                    <UserIcon className="h-4 w-4" />
-                  </AvatarFallback>
-                </Avatar>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="end" forceMount>
-              <DropdownMenuItem>
-                <Settings className="mr-2 h-4 w-4" />
-                <span>Configurações</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleLogout}>
-                <LogOut className="mr-2 h-4 w-4" />
-                <span>Sair da Conta</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </div>
-    </header>
-  );
-}
-
-interface DashboardHeaderProps {
-  user: User;
-}
-
-export default function DashboardHeader({ user }: DashboardHeaderProps) {
   const getInitials = (firstName?: string | null, lastName?: string | null) => {
     if (firstName && lastName) {
       return `${firstName[0]}${lastName[0]}`.toUpperCase();
@@ -88,12 +23,34 @@ export default function DashboardHeader({ user }: DashboardHeaderProps) {
     return "US";
   };
 
+  const handleLogout = () => {
+    fetch('/api/auth/logout', { method: 'POST', credentials: 'include' })
+      .then(() => {
+        // Effacer le cache local et forcer la redirection
+        localStorage.clear();
+        sessionStorage.clear();
+        window.location.replace('/');
+      })
+      .catch(() => {
+        // En cas d'erreur, forcer la redirection quand même
+        window.location.replace('/');
+      });
+  };
+
   return (
     <header className="bg-white border-b border-neutral-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo and Brand */}
           <div className="flex items-center space-x-4">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onMenuClick}
+              className="lg:hidden"
+            >
+              <Menu className="h-5 w-5" />
+            </Button>
             <div className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-lg">Q</span>
@@ -104,8 +61,6 @@ export default function DashboardHeader({ user }: DashboardHeaderProps) {
             <span className="hidden sm:block text-sm text-neutral-600">MicroInFortal</span>
           </div>
 
-          
-
           {/* User Menu */}
           <div className="flex items-center space-x-4">
             {/* Notifications */}
@@ -113,7 +68,7 @@ export default function DashboardHeader({ user }: DashboardHeaderProps) {
               <Bell className="h-5 w-5" />
               <span className="absolute -top-1 -right-1 w-3 h-3 bg-accent rounded-full"></span>
             </Button>
-            
+
             {/* User Avatar with Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -151,19 +106,7 @@ export default function DashboardHeader({ user }: DashboardHeaderProps) {
                   <span>Configurações</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem 
-                  onClick={() => {
-                    fetch('/api/auth/logout', { method: 'POST', credentials: 'include' })
-                      .then(() => {
-                        // Effacer le cache local et forcer la redirection
-                        localStorage.clear();
-                        sessionStorage.clear();
-                        window.location.replace('/');
-                      })
-                      .catch(() => {
-                        // En cas d'erreur, forcer la redirection quand même
-                        window.location.replace('/');
-                      });
-                  }}
+                  onClick={handleLogout}
                   className="text-red-600 focus:text-red-600"
                 >
                   <LogOut className="mr-2 h-4 w-4" />
