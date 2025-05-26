@@ -162,13 +162,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // For now, return confirmation
       
       res.json({
-        url: `https://ea57f732-d3d2-4a6c-abd7-fd762841ad5e-00-2z2xyoxnhkmwn.riker.replit.dev/data-deletion-status/${userId}`,
+        url: `${process.env.CLIENT_URL}/data-deletion-status/${userId}`,
         confirmation_code: `DEL_${Date.now()}_${userId}`
       });
     } catch (error) {
       console.error("Data deletion error:", error);
       res.status(200).json({
-        url: "https://ea57f732-d3d2-4a6c-abd7-fd762841ad5e-00-2z2xyoxnhkmwn.riker.replit.dev/data-deletion-status",
+        url: `${process.env.CLIENT_URL}/data-deletion-status`,
         confirmation_code: `DEL_${Date.now()}_UNKNOWN`
       });
     }
