@@ -1,6 +1,6 @@
 modules = ["python-3.11", "nodejs-20"]
 [nix]
-packages = ["git", "openssh"]
+packages = ["git", "openssh", "nano"]
 channel = "stable-24_05"
 
 [deployment]
