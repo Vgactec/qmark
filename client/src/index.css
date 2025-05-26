@@ -1,0 +1,186 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 20 14.3% 4.1%;
+  --muted: 60 4.8% 95.9%;
+  --muted-foreground: 25 5.3% 44.7%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 20 14.3% 4.1%;
+  --card: 0 0% 100%;
+  --card-foreground: 20 14.3% 4.1%;
+  --border: 20 5.9% 90%;
+  --input: 20 5.9% 90%;
+  --primary: 207 90% 54%;
+  --primary-foreground: 211 100% 99%;
+  --secondary: 60 4.8% 95.9%;
+  --secondary-foreground: 24 9.8% 10%;
+  --accent: 60 4.8% 95.9%;
+  --accent-foreground: 24 9.8% 10%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 60 9.1% 97.8%;
+  --ring: 20 14.3% 4.1%;
+  --radius: 0.5rem;
+  
+  /* Custom vulnerability severity colors */
+  --vulnerability-critical: 0 73% 41%; /* #dc2626 */
+  --vulnerability-high: 24 84% 49%; /* #ea580c */
+  --vulnerability-medium: 45 93% 47%; /* #f59e0b */
+  --vulnerability-low: 142 71% 45%; /* #059669 */
+  --vulnerability-info: 221 83% 53%; /* #3b82f6 */
+  
+  /* GitHub theme colors */
+  --github-blue: 213 94% 68%; /* #0969da */
+}
+
+.dark {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --primary: 207 90% 54%;
+  --primary-foreground: 211 100% 99%;
+  --secondary: 240 3.7% 15.9%;
+  --secondary-foreground: 0 0% 98%;
+  --accent: 240 3.7% 15.9%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --ring: 240 4.9% 83.9%;
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+
+  /* Custom font families */
+  .font-inter {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  }
+  
+  .font-mono {
+    font-family: 'JetBrains Mono', 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+  }
+}
+
+@layer utilities {
+  /* Vulnerability severity colors */
+  .text-vulnerability-critical {
+    color: hsl(var(--vulnerability-critical));
+  }
+  
+  .text-vulnerability-high {
+    color: hsl(var(--vulnerability-high));
+  }
+  
+  .text-vulnerability-medium {
+    color: hsl(var(--vulnerability-medium));
+  }
+  
+  .text-vulnerability-low {
+    color: hsl(var(--vulnerability-low));
+  }
+  
+  .text-vulnerability-info {
+    color: hsl(var(--vulnerability-info));
+  }
+  
+  .bg-vulnerability-critical {
+    background-color: hsl(var(--vulnerability-critical));
+  }
+  
+  .bg-vulnerability-high {
+    background-color: hsl(var(--vulnerability-high));
+  }
+  
+  .bg-vulnerability-medium {
+    background-color: hsl(var(--vulnerability-medium));
+  }
+  
+  .bg-vulnerability-low {
+    background-color: hsl(var(--vulnerability-low));
+  }
+  
+  .bg-vulnerability-info {
+    background-color: hsl(var(--vulnerability-info));
+  }
+  
+  /* GitHub colors */
+  .text-github-blue {
+    color: hsl(var(--github-blue));
+  }
+  
+  .bg-github-blue {
+    background-color: hsl(var(--github-blue));
+  }
+  
+  /* Security status indicators */
+  .security-status-safe {
+    @apply bg-green-100 text-green-800 border-green-200;
+  }
+  
+  .security-status-warning {
+    @apply bg-yellow-100 text-yellow-800 border-yellow-200;
+  }
+  
+  .security-status-danger {
+    @apply bg-red-100 text-red-800 border-red-200;
+  }
+  
+  /* Custom animations for security elements */
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  .animate-scan {
+    animation: scan 2s linear infinite;
+  }
+  
+  @keyframes scan {
+    0%, 100% { 
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    50% {
+      transform: translateX(0%);
+      opacity: 1;
+    }
+  }
+}
+
+/* Custom scrollbar for log displays */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--muted-foreground)) hsl(var(--muted));
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--muted-foreground));
+  border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background-color: hsl(var(--foreground));
+}
