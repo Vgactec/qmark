@@ -5,7 +5,7 @@ import { setupAuth, isAuthenticated } from "./replitAuth";
 import { initiateOAuth, handleOAuthCallback } from "./oauth";
 import { z } from "zod";
 import { insertLeadSchema, insertAutomationSchema, insertActivitySchema } from "@shared/schema";
-import { testGoogleCloud } from "./google-test"; // Import testGoogleCloud
+import { testGoogleCloudConnection } from "./google-test";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Auth middleware
@@ -32,6 +32,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching dashboard stats:", error);
       res.status(500).json({ message: "Failed to fetch dashboard stats" });
+    }
+  });
+
+  // Google Cloud test route
+  app.get("/api/test/google", async (req, res) => {
+    try {
+      const result = await testGoogleCloudConnection();
+      res.json(result);
+    } catch (error) {
+      console.error("Google Cloud test error:", error);
+      res.status(500).json({ 
+        success: false, 
+        error: error instanceof Error ? error.message : "Unknown error" 
+      });
     }
   });
 

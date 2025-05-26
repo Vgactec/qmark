@@ -15,25 +15,19 @@ export default function QuickActions() {
       description: 'Valider la connexion avec Google Cloud',
       icon: Cloud,
       action: async () => {
-        try {
-          const response = await fetch('/api/test/google');
-          const data = await response.json();
-          if (data.success) {
-            toast({
-              title: "Connexion réussie",
-              description: `Project ID: ${data.projectId}`,
-            });
-          } else {
-            throw new Error(data.error);
+          try {
+            const response = await fetch('/api/test/google');
+            const result = await response.json();
+
+            if (result.success) {
+              alert(`✅ Google Cloud connecté!\nProjets: ${result.projectId}\nBuckets: ${result.buckets?.length || 0} buckets trouvés`);
+            } else {
+              alert(`❌ Erreur Google Cloud:\n${result.error}`);
+            }
+          } catch (error) {
+            alert(`❌ Erreur de connexion:\n${error}`);
           }
-        } catch (error) {
-          toast({
-            title: "Erreur de connexion",
-            description: error.message,
-            variant: "destructive"
-          });
-        }
-      }
+        },
     },
     {
       id: "workflow",
@@ -76,7 +70,7 @@ export default function QuickActions() {
           <div className="space-y-3">
             {actions.map((action) => {
               const Icon = action.icon;
-              
+
               return (
                 <Button
                   key={action.id}
