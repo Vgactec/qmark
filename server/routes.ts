@@ -77,6 +77,83 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Test Facebook OAuth configuration
+  app.get("/api/test/facebook", async (req, res) => {
+    try {
+      console.log("🔍 [TEST FACEBOOK] Début test configuration Facebook OAuth...");
+      
+      const facebookClientId = process.env.FACEBOOK_CLIENT_ID;
+      const facebookClientSecret = process.env.FACEBOOK_CLIENT_SECRET;
+      const clientUrl = process.env.CLIENT_URL;
+
+      console.log(`🔍 [TEST FACEBOOK] FACEBOOK_CLIENT_ID: ${facebookClientId ? '✅ Configuré' : '❌ Manquant'}`);
+      console.log(`🔍 [TEST FACEBOOK] FACEBOOK_CLIENT_SECRET: ${facebookClientSecret ? '✅ Configuré' : '❌ Manquant'}`);
+      console.log(`🔍 [TEST FACEBOOK] CLIENT_URL: ${clientUrl || 'http://localhost:5000'}`);
+
+      const errors = [];
+      
+      if (!facebookClientId) {
+        errors.push("FACEBOOK_CLIENT_ID manquant dans les Secrets");
+      } else if (!/^\d+$/.test(facebookClientId)) {
+        errors.push(`FACEBOOK_CLIENT_ID invalide: ${facebookClientId} (doit être numérique)`);
+      }
+      
+      if (!facebookClientSecret) {
+        errors.push("FACEBOOK_CLIENT_SECRET manquant dans les Secrets");
+      }
+
+      // Test avec l'API Facebook Graph pour valider l'App ID
+      if (facebookClientId && /^\d+$/.test(facebookClientId)) {
+        console.log(`🔄 [TEST FACEBOOK] Test validation App ID via Facebook Graph API...`);
+        
+        try {
+          const graphResponse = await fetch(`https://graph.facebook.com/${facebookClientId}?fields=id,name,link`);
+          const graphData = await graphResponse.json();
+          
+          console.log(`📡 [TEST FACEBOOK] Response Facebook Graph:`, graphData);
+          
+          if (graphResponse.ok && graphData.id) {
+            console.log(`✅ [TEST FACEBOOK] App ID Facebook validé: ${graphData.name || graphData.id}`);
+          } else {
+            console.error(`❌ [TEST FACEBOOK] App ID invalide:`, graphData);
+            errors.push(`App ID Facebook invalide: ${graphData.error?.message || 'App non trouvée'}`);
+          }
+        } catch (graphError) {
+          console.error(`❌ [TEST FACEBOOK] Erreur validation Graph API:`, graphError);
+          errors.push(`Impossible de valider l'App ID: ${graphError instanceof Error ? graphError.message : 'Unknown error'}`);
+        }
+      }
+
+      const result = {
+        success: errors.length === 0,
+        configuration: {
+          facebookClientId: facebookClientId || null,
+          facebookClientIdValid: facebookClientId && /^\d+$/.test(facebookClientId),
+          facebookClientSecret: !!facebookClientSecret,
+          clientUrl: clientUrl || "http://localhost:5000",
+          redirectUri: `${clientUrl || "http://localhost:5000"}/api/oauth/callback`
+        },
+        errors: errors,
+        message: errors.length === 0 ? "Configuration Facebook OAuth validée ✅" : "Erreurs de configuration détectées ❌",
+        instructions: [
+          "1. Configurez FACEBOOK_CLIENT_ID=1020589259777647 dans les Secrets Replit",
+          "2. Configurez FACEBOOK_CLIENT_SECRET avec votre secret Facebook dans les Secrets Replit",
+          "3. Assurez-vous que l'URL de redirection est autorisée dans Facebook Developers"
+        ]
+      };
+
+      console.log(`📊 [TEST FACEBOOK] Résultat final:`, result);
+      res.json(result);
+    } catch (error) {
+      console.error("❌ [TEST FACEBOOK] Erreur test Facebook:", error);
+      res.status(500).json({ 
+        success: false, 
+        error: error instanceof Error ? error.message : "Unknown error",
+        message: "Erreur lors du test Facebook OAuth"
+      });
+    }
+  });
+
   app.get("/api/dashboard/activities", isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
