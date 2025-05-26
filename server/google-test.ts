@@ -1,25 +1,34 @@
-
 import { Storage } from '@google-cloud/storage';
 
 export async function testGoogleCloudConnection() {
   try {
-    // Check if Google Cloud credentials are properly configured in environment
-    if (!process.env.GOOGLE_SERVICE_ACCOUNT) {
+    console.log("🔍 [GOOGLE CLOUD] Test de connexion Google Cloud...");
+
+    const serviceAccountJson = process.env.GOOGLE_SERVICE_ACCOUNT;
+    if (!serviceAccountJson) {
       return {
         success: false,
-        error: 'Missing GOOGLE_SERVICE_ACCOUNT in environment variables',
-        suggestion: 'Configurez GOOGLE_SERVICE_ACCOUNT avec votre Service Account JSON complet'
+        error: "GOOGLE_SERVICE_ACCOUNT environment variable not found",
+        suggestion: 'Configure GOOGLE_SERVICE_ACCOUNT in Replit Secrets'
       };
     }
 
     let serviceAccountConfig;
     try {
-      serviceAccountConfig = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT);
-    } catch (error) {
+      serviceAccountConfig = JSON.parse(serviceAccountJson);
+    } catch (parseError) {
       return {
         success: false,
-        error: 'Invalid GOOGLE_SERVICE_ACCOUNT JSON format',
-        suggestion: 'Vérifiez le format JSON de GOOGLE_SERVICE_ACCOUNT dans les variables d\'environnement'
+        error: "Invalid JSON in GOOGLE_SERVICE_ACCOUNT",
+        suggestion: 'Check the JSON format in your service account configuration'
+      };
+    }
+
+    if (!serviceAccountConfig.project_id) {
+      return {
+        success: false,
+        error: "Missing project_id in service account configuration",
+        suggestion: 'Ensure your service account JSON contains a valid project_id'
       };
     }
 
@@ -28,7 +37,7 @@ export async function testGoogleCloudConnection() {
       projectId: serviceAccountConfig.project_id,
       credentials: serviceAccountConfig,
     });
-    
+
     try {
       const [buckets] = await storage.getBuckets();
       return {
