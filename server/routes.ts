@@ -149,10 +149,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Test 4: Facebook App ID validation
       console.log("🔍 [TEST] 4. Facebook App ID...");
+      console.log(`🔍 [TEST] FACEBOOK_CLIENT_ID configuré: ${!!process.env.FACEBOOK_CLIENT_ID}`);
+      console.log(`🔍 [TEST] FACEBOOK_CLIENT_SECRET configuré: ${!!process.env.FACEBOOK_CLIENT_SECRET}`);
+      console.log(`🔍 [TEST] App ID value: ${process.env.FACEBOOK_CLIENT_ID}`);
+      
       if (process.env.FACEBOOK_CLIENT_ID && /^\d+$/.test(process.env.FACEBOOK_CLIENT_ID)) {
         try {
           const graphResponse = await fetch(`https://graph.facebook.com/${process.env.FACEBOOK_CLIENT_ID}?fields=id,name`);
           const graphData = await graphResponse.json();
+          
+          console.log(`🔍 [TEST] Facebook Graph response:`, graphData);
           
           if (graphResponse.ok && graphData.id) {
             results.tests.facebookApp = { 
@@ -163,21 +169,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
           } else {
             results.tests.facebookApp = { 
               status: "❌ FAIL", 
-              details: { error: graphData.error?.message || "App not found" }
+              details: { 
+                error: graphData.error?.message || "App not found",
+                appId: process.env.FACEBOOK_CLIENT_ID,
+                response: graphData 
+              }
             };
             results.summary.failed++;
           }
         } catch (fbError) {
           results.tests.facebookApp = { 
             status: "❌ FAIL", 
-            details: { error: fbError instanceof Error ? fbError.message : "Unknown error" }
+            details: { 
+              error: fbError instanceof Error ? fbError.message : "Unknown error",
+              appId: process.env.FACEBOOK_CLIENT_ID
+            }
           };
           results.summary.failed++;
         }
       } else {
         results.tests.facebookApp = { 
           status: "❌ FAIL", 
-          details: { error: "Facebook Client ID manquant ou invalide" }
+          details: { 
+            error: "Facebook Client ID manquant ou invalide",
+            configured: !!process.env.FACEBOOK_CLIENT_ID,
+            isNumeric: process.env.FACEBOOK_CLIENT_ID ? /^\d+$/.test(process.env.FACEBOOK_CLIENT_ID) : false,
+            value: process.env.FACEBOOK_CLIENT_ID
+          }
         };
         results.summary.failed++;
       }
