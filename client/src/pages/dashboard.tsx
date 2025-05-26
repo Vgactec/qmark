@@ -1,248 +1,85 @@
-import { useQuery } from "@tanstack/react-query";
-import { AlertTriangle, Github, Bell, Shield, Cog, Play } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import VulnerabilityBreakdown from "@/components/vulnerability-breakdown";
-import RemediationTasks from "@/components/remediation-tasks";
-import ServerStatus from "@/components/server-status";
-import { apiRequest } from "@/lib/queryClient";
+import { useAuth } from "@/hooks/useAuth";
+import DashboardHeader from "@/components/dashboard-header";
+import DashboardSidebar from "@/components/dashboard-sidebar";
+import MetricsGrid from "@/components/metrics-grid";
+import ConnectionsCard from "@/components/connections-card";
+import ActivityFeed from "@/components/activity-feed";
+import QuickActions from "@/components/quick-actions";
+import PerformanceChart from "@/components/performance-chart";
 
-export default function SecurityDashboard() {
-  const { data: securityScan, isLoading: scanLoading, refetch: refetchScan } = useQuery({
-    queryKey: ["/api/security/scan"],
-  });
+export default function Dashboard() {
+  const { user } = useAuth();
 
-  const { data: remediationTasks, isLoading: tasksLoading, refetch: refetchTasks } = useQuery({
-    queryKey: ["/api/remediation-tasks"],
-  });
-
-  const { data: vulnerabilities, refetch: refetchVulnerabilities } = useQuery({
-    queryKey: ["/api/vulnerabilities"],
-  });
-
-  const handleRescan = async () => {
-    try {
-      await apiRequest("POST", "/api/security/scan");
-      refetchScan();
-      refetchVulnerabilities();
-      refetchTasks();
-    } catch (error) {
-      console.error("Rescan failed:", error);
-    }
-  };
-
-  const handleAutoRemediation = async () => {
-    // Auto-fix all available tasks
-    if (remediationTasks) {
-      for (const task of remediationTasks) {
-        if (task.autoFixAvailable && task.status === "pending") {
-          try {
-            await apiRequest("POST", `/api/remediation-tasks/${task.id}/auto-fix`);
-          } catch (error) {
-            console.error(`Auto-fix failed for task ${task.id}:`, error);
-          }
-        }
-      }
-      refetchTasks();
-      refetchVulnerabilities();
-      refetchScan();
-    }
-  };
-
-  if (scanLoading) {
+  if (!user) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <Shield className="h-12 w-12 text-blue-600 mx-auto mb-4 animate-spin" />
-          <p className="text-gray-600">Loading security dashboard...</p>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-neutral-600">Carregando dashboard...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen font-inter">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <Github className="text-2xl text-gray-900" />
-                <h1 className="text-xl font-semibold text-gray-900">Security Scanner</h1>
+    <div className="min-h-screen bg-neutral-50">
+      <DashboardHeader user={user} />
+      
+      <div className="flex">
+        <DashboardSidebar />
+        
+        <main className="flex-1 lg:pl-64">
+          <div className="py-6">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              {/* Page Header */}
+              <div className="mb-8">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <h1 className="text-2xl font-bold text-neutral-900">Dashboard Principal</h1>
+                    <p className="mt-1 text-sm text-neutral-600">Visão geral do seu negócio digital</p>
+                  </div>
+                  <div className="mt-4 sm:mt-0 flex space-x-3">
+                    <button className="inline-flex items-center px-4 py-2 border border-neutral-300 rounded-md shadow-sm text-sm font-medium text-neutral-700 bg-white hover:bg-neutral-50">
+                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                      Exportar Dados
+                    </button>
+                    <button className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/90">
+                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                      </svg>
+                      Nova Automação
+                    </button>
+                  </div>
+                </div>
               </div>
-              <div className="hidden md:flex items-center space-x-1 bg-gray-100 rounded-lg p-1">
-                <Button variant="ghost" size="sm" className="bg-blue-600 text-white hover:bg-blue-700">
-                  Scanner
-                </Button>
-                <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-900">
-                  Repository
-                </Button>
-                <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-900">
-                  Settings
-                </Button>
-              </div>
-            </div>
-            
-            <div className="flex items-center space-x-4">
-              <div className="relative">
-                <Button variant="ghost" size="sm" className="p-2 text-gray-400 hover:text-gray-600 relative">
-                  <Bell className="text-lg" />
-                  <Badge variant="destructive" className="absolute -top-1 -right-1 h-5 w-5 text-xs p-0 flex items-center justify-center">
-                    3
-                  </Badge>
-                </Button>
-              </div>
-              <div className="flex items-center space-x-3">
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=150&h=150" />
-                  <AvatarFallback>AD</AvatarFallback>
-                </Avatar>
-                <span className="text-sm font-medium text-gray-700">Alex Developer</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Critical Alert Banner */}
-        {securityScan && securityScan.criticalCount > 0 && (
-          <div className="mb-8 bg-red-50 border border-red-200 rounded-lg p-4">
-            <div className="flex items-center">
-              <AlertTriangle className="text-red-600 mr-3" />
-              <div className="flex-1">
-                <h3 className="text-sm font-medium text-red-800">Critical Security Issues Detected</h3>
-                <p className="text-sm text-red-700 mt-1">
-                  {securityScan.totalVulnerabilities} vulnerabilities found including exposed private keys and deprecated encryption methods. Immediate action required.
-                </p>
+              {/* Metrics Grid */}
+              <MetricsGrid />
+
+              {/* Main Content Grid */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
+                {/* Connections Card */}
+                <div className="lg:col-span-2">
+                  <ConnectionsCard />
+                </div>
+
+                {/* Side Panel */}
+                <div className="space-y-6">
+                  <ActivityFeed />
+                  <QuickActions />
+                </div>
+              </div>
+
+              {/* Performance Chart */}
+              <div className="mt-8">
+                <PerformanceChart />
               </div>
             </div>
           </div>
-        )}
-
-        {/* Repository Info */}
-        <div className="mb-8">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center space-x-4">
-                  <div className="flex items-center space-x-2">
-                    <Github className="text-2xl text-gray-600" />
-                    <div>
-                      <h2 className="text-2xl font-bold text-gray-900">
-                        {securityScan?.repository || "Vgactec/qmark"}
-                      </h2>
-                      <p className="text-gray-600">
-                        Last scanned: {securityScan?.metadata?.lastScanTime || "May 26, 2025 at 8:04 PM"}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Button variant="outline" onClick={handleRescan}>
-                    <Shield className="mr-2 h-4 w-4" />
-                    Rescan Repository
-                  </Button>
-                  <Button onClick={handleAutoRemediation}>
-                    <Cog className="mr-2 h-4 w-4" />
-                    Auto-Fix Issues
-                  </Button>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="bg-gray-50 rounded-lg p-4 text-center">
-                  <div className="text-3xl font-bold text-red-600">
-                    {securityScan?.totalVulnerabilities || 0}
-                  </div>
-                  <div className="text-sm text-gray-600">Total Vulnerabilities</div>
-                </div>
-                <div className="bg-gray-50 rounded-lg p-4 text-center">
-                  <div className="text-3xl font-bold text-red-600">
-                    {securityScan?.criticalCount || 0}
-                  </div>
-                  <div className="text-sm text-gray-600">Critical Issues</div>
-                </div>
-                <div className="bg-gray-50 rounded-lg p-4 text-center">
-                  <div className="text-3xl font-bold text-orange-600">
-                    {securityScan?.highCount || 0}
-                  </div>
-                  <div className="text-sm text-gray-600">High Priority</div>
-                </div>
-                <div className="bg-gray-50 rounded-lg p-4 text-center">
-                  <div className="text-3xl font-bold text-yellow-600">
-                    {(securityScan?.mediumCount || 0) + (securityScan?.lowCount || 0)}
-                  </div>
-                  <div className="text-sm text-gray-600">Medium/Low</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Remediation Tasks */}
-        <RemediationTasks 
-          tasks={remediationTasks || []} 
-          isLoading={tasksLoading}
-          onRefresh={refetchTasks}
-        />
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          {/* Vulnerability Breakdown */}
-          <VulnerabilityBreakdown 
-            vulnerabilities={vulnerabilities || []}
-            securityScan={securityScan}
-          />
-
-          {/* Server Status */}
-          <ServerStatus />
-        </div>
-
-        {/* Action Buttons */}
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900">Ready to Secure Your Repository?</h3>
-                <p className="text-sm text-gray-600 mt-1">
-                  Run the automated security fixes or configure manual remediation steps
-                </p>
-              </div>
-              <div className="flex items-center space-x-3">
-                <Button variant="outline">
-                  <Cog className="mr-2 h-4 w-4" />
-                  Configure Environment
-                </Button>
-                <Button className="bg-green-600 hover:bg-green-700" onClick={handleAutoRemediation}>
-                  <Play className="mr-2 h-4 w-4" />
-                  Start Auto-Remediation
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        </main>
       </div>
-
-      {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 mt-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-6">
-              <span className="text-sm text-gray-600">© 2025 Security Scanner. Built for developers.</span>
-              <a href="#" className="text-sm text-blue-600 hover:text-blue-800">Documentation</a>
-              <a href="#" className="text-sm text-blue-600 hover:text-blue-800">Support</a>
-            </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-600">Powered by:</span>
-              <Github className="text-gray-600" />
-              <Shield className="text-gray-600" />
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

@@ -1,86 +1,203 @@
-import { pgTable, text, serial, integer, boolean, timestamp, jsonb } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  text,
+  varchar,
+  timestamp,
+  jsonb,
+  index,
+  serial,
+  integer,
+  boolean,
+  decimal,
+} from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+// Session storage table (required for Replit Auth)
+export const sessions = pgTable(
+  "sessions",
+  {
+    sid: varchar("sid").primaryKey(),
+    sess: jsonb("sess").notNull(),
+    expire: timestamp("expire").notNull(),
+  },
+  (table) => [index("IDX_session_expire").on(table.expire)],
+);
+
+// User storage table (required for Replit Auth)
 export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
-  username: text("username").notNull().unique(),
-  password: text("password").notNull(),
-  email: text("email").notNull().unique(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
+  id: varchar("id").primaryKey().notNull(),
+  email: varchar("email").unique(),
+  firstName: varchar("first_name"),
+  lastName: varchar("last_name"),
+  profileImageUrl: varchar("profile_image_url"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-export const vulnerabilities = pgTable("vulnerabilities", {
+// OAuth connections table
+export const oauthConnections = pgTable("oauth_connections", {
   id: serial("id").primaryKey(),
-  type: text("type").notNull(),
-  severity: text("severity").notNull(),
-  file: text("file").notNull(),
-  line: integer("line"),
-  description: text("description").notNull(),
-  recommendation: text("recommendation").notNull(),
-  status: text("status").notNull().default("open"),
-  detectedAt: timestamp("detected_at").defaultNow().notNull(),
-  fixedAt: timestamp("fixed_at"),
+  userId: varchar("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  platform: varchar("platform").notNull(), // facebook, instagram, gmail, whatsapp, telegram
+  platformUserId: varchar("platform_user_id"),
+  displayName: varchar("display_name"),
+  email: varchar("email"),
+  accessToken: text("access_token"), // encrypted
+  refreshToken: text("refresh_token"), // encrypted
+  tokenExpiry: timestamp("token_expiry"),
+  scope: text("scope"),
+  isActive: boolean("is_active").default(true),
+  lastSync: timestamp("last_sync"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-export const securityScans = pgTable("security_scans", {
+// Leads table
+export const leads = pgTable("leads", {
   id: serial("id").primaryKey(),
-  repository: text("repository").notNull(),
-  branch: text("branch").notNull().default("main"),
-  totalVulnerabilities: integer("total_vulnerabilities").notNull().default(0),
-  criticalCount: integer("critical_count").notNull().default(0),
-  highCount: integer("high_count").notNull().default(0),
-  mediumCount: integer("medium_count").notNull().default(0),
-  lowCount: integer("low_count").notNull().default(0),
-  status: text("status").notNull().default("running"),
-  startedAt: timestamp("started_at").defaultNow().notNull(),
-  completedAt: timestamp("completed_at"),
+  userId: varchar("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  name: varchar("name"),
+  email: varchar("email"),
+  phone: varchar("phone"),
+  source: varchar("source"), // facebook, instagram, whatsapp, etc.
+  status: varchar("status").default("new"), // new, contacted, qualified, converted, lost
+  notes: text("notes"),
+  metadata: jsonb("metadata"), // additional data from source platform
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Automations table
+export const automations = pgTable("automations", {
+  id: serial("id").primaryKey(),
+  userId: varchar("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  name: varchar("name").notNull(),
+  description: text("description"),
+  type: varchar("type").notNull(), // email, social_post, lead_capture, etc.
+  config: jsonb("config"), // automation configuration
+  isActive: boolean("is_active").default(true),
+  lastRun: timestamp("last_run"),
+  runCount: integer("run_count").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Activities table for dashboard feed
+export const activities = pgTable("activities", {
+  id: serial("id").primaryKey(),
+  userId: varchar("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  type: varchar("type").notNull(), // automation_run, lead_captured, post_published, etc.
+  title: varchar("title").notNull(),
+  description: text("description"),
   metadata: jsonb("metadata"),
+  createdAt: timestamp("created_at").defaultNow(),
 });
 
-export const remediationTasks = pgTable("remediation_tasks", {
+// Metrics table for dashboard stats
+export const metrics = pgTable("metrics", {
   id: serial("id").primaryKey(),
-  vulnerabilityId: integer("vulnerability_id").references(() => vulnerabilities.id),
-  title: text("title").notNull(),
-  description: text("description").notNull(),
-  priority: text("priority").notNull(),
-  category: text("category").notNull(),
-  affectedFiles: text("affected_files").array(),
-  autoFixAvailable: boolean("auto_fix_available").notNull().default(false),
-  status: text("status").notNull().default("pending"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  completedAt: timestamp("completed_at"),
+  userId: varchar("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  date: timestamp("date").notNull(),
+  leadsCount: integer("leads_count").default(0),
+  conversionsCount: integer("conversions_count").default(0),
+  automationsCount: integer("automations_count").default(0),
+  revenue: decimal("revenue", { precision: 10, scale: 2 }).default("0.00"),
+  createdAt: timestamp("created_at").defaultNow(),
 });
 
+// Relations
+export const usersRelations = relations(users, ({ many }) => ({
+  oauthConnections: many(oauthConnections),
+  leads: many(leads),
+  automations: many(automations),
+  activities: many(activities),
+  metrics: many(metrics),
+}));
+
+export const oauthConnectionsRelations = relations(oauthConnections, ({ one }) => ({
+  user: one(users, {
+    fields: [oauthConnections.userId],
+    references: [users.id],
+  }),
+}));
+
+export const leadsRelations = relations(leads, ({ one }) => ({
+  user: one(users, {
+    fields: [leads.userId],
+    references: [users.id],
+  }),
+}));
+
+export const automationsRelations = relations(automations, ({ one }) => ({
+  user: one(users, {
+    fields: [automations.userId],
+    references: [users.id],
+  }),
+}));
+
+export const activitiesRelations = relations(activities, ({ one }) => ({
+  user: one(users, {
+    fields: [activities.userId],
+    references: [users.id],
+  }),
+}));
+
+export const metricsRelations = relations(metrics, ({ one }) => ({
+  user: one(users, {
+    fields: [metrics.userId],
+    references: [users.id],
+  }),
+}));
+
+// Insert schemas
 export const insertUserSchema = createInsertSchema(users).pick({
-  username: true,
-  password: true,
+  id: true,
   email: true,
+  firstName: true,
+  lastName: true,
+  profileImageUrl: true,
 });
 
-export const insertVulnerabilitySchema = createInsertSchema(vulnerabilities).omit({
-  id: true,
-  detectedAt: true,
-  fixedAt: true,
-});
-
-export const insertSecurityScanSchema = createInsertSchema(securityScans).omit({
-  id: true,
-  startedAt: true,
-  completedAt: true,
-});
-
-export const insertRemediationTaskSchema = createInsertSchema(remediationTasks).omit({
+export const insertOauthConnectionSchema = createInsertSchema(oauthConnections).omit({
   id: true,
   createdAt: true,
-  completedAt: true,
+  updatedAt: true,
 });
 
-export type InsertUser = z.infer<typeof insertUserSchema>;
+export const insertLeadSchema = createInsertSchema(leads).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertAutomationSchema = createInsertSchema(automations).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertActivitySchema = createInsertSchema(activities).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertMetricSchema = createInsertSchema(metrics).omit({
+  id: true,
+  createdAt: true,
+});
+
+// Types
+export type UpsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
-export type Vulnerability = typeof vulnerabilities.$inferSelect;
-export type InsertVulnerability = z.infer<typeof insertVulnerabilitySchema>;
-export type SecurityScan = typeof securityScans.$inferSelect;
-export type InsertSecurityScan = z.infer<typeof insertSecurityScanSchema>;
-export type RemediationTask = typeof remediationTasks.$inferSelect;
-export type InsertRemediationTask = z.infer<typeof insertRemediationTaskSchema>;
+export type InsertOauthConnection = z.infer<typeof insertOauthConnectionSchema>;
+export type OauthConnection = typeof oauthConnections.$inferSelect;
+export type InsertLead = z.infer<typeof insertLeadSchema>;
+export type Lead = typeof leads.$inferSelect;
+export type InsertAutomation = z.infer<typeof insertAutomationSchema>;
+export type Automation = typeof automations.$inferSelect;
+export type InsertActivity = z.infer<typeof insertActivitySchema>;
+export type Activity = typeof activities.$inferSelect;
+export type InsertMetric = z.infer<typeof insertMetricSchema>;
+export type Metric = typeof metrics.$inferSelect;

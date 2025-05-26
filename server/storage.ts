@@ -1,291 +1,271 @@
-import { 
-  users, 
-  vulnerabilities,
-  securityScans,
-  remediationTasks,
-  type User, 
-  type InsertUser,
-  type Vulnerability,
-  type InsertVulnerability,
-  type SecurityScan,
-  type InsertSecurityScan,
-  type RemediationTask,
-  type InsertRemediationTask
+import {
+  users,
+  oauthConnections,
+  leads,
+  automations,
+  activities,
+  metrics,
+  type User,
+  type UpsertUser,
+  type OauthConnection,
+  type InsertOauthConnection,
+  type Lead,
+  type InsertLead,
+  type Automation,
+  type InsertAutomation,
+  type Activity,
+  type InsertActivity,
+  type Metric,
+  type InsertMetric,
 } from "@shared/schema";
+import { db } from "./db";
+import { eq, desc, and, gte, count } from "drizzle-orm";
 
 export interface IStorage {
-  // User operations
-  getUser(id: number): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
-
-  // Vulnerability operations
-  getVulnerabilities(): Promise<Vulnerability[]>;
-  getVulnerabilityById(id: number): Promise<Vulnerability | undefined>;
-  createVulnerability(vulnerability: InsertVulnerability): Promise<Vulnerability>;
-  updateVulnerabilityStatus(id: number, status: string): Promise<Vulnerability | undefined>;
-
-  // Security scan operations
-  getLatestSecurityScan(): Promise<SecurityScan | undefined>;
-  createSecurityScan(scan: InsertSecurityScan): Promise<SecurityScan>;
-  updateSecurityScan(id: number, updates: Partial<SecurityScan>): Promise<SecurityScan | undefined>;
-
-  // Remediation task operations
-  getRemediationTasks(): Promise<RemediationTask[]>;
-  createRemediationTask(task: InsertRemediationTask): Promise<RemediationTask>;
-  updateRemediationTaskStatus(id: number, status: string): Promise<RemediationTask | undefined>;
+  // User operations (required for Replit Auth)
+  getUser(id: string): Promise<User | undefined>;
+  upsertUser(user: UpsertUser): Promise<User>;
+  
+  // OAuth connections
+  getOauthConnections(userId: string): Promise<OauthConnection[]>;
+  getOauthConnection(id: number): Promise<OauthConnection | undefined>;
+  createOauthConnection(connection: InsertOauthConnection): Promise<OauthConnection>;
+  updateOauthConnection(id: number, updates: Partial<InsertOauthConnection>): Promise<OauthConnection | undefined>;
+  deleteOauthConnection(id: number): Promise<void>;
+  
+  // Leads
+  getLeads(userId: string, limit?: number): Promise<Lead[]>;
+  createLead(lead: InsertLead): Promise<Lead>;
+  updateLead(id: number, updates: Partial<InsertLead>): Promise<Lead | undefined>;
+  
+  // Automations
+  getAutomations(userId: string): Promise<Automation[]>;
+  createAutomation(automation: InsertAutomation): Promise<Automation>;
+  updateAutomation(id: number, updates: Partial<InsertAutomation>): Promise<Automation | undefined>;
+  
+  // Activities
+  getActivities(userId: string, limit?: number): Promise<Activity[]>;
+  createActivity(activity: InsertActivity): Promise<Activity>;
+  
+  // Metrics
+  getMetrics(userId: string, fromDate?: Date): Promise<Metric[]>;
+  createOrUpdateMetric(metric: InsertMetric): Promise<Metric>;
+  getDashboardStats(userId: string): Promise<{
+    totalLeads: number;
+    totalConversions: number;
+    activeAutomations: number;
+    totalRevenue: string;
+  }>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<number, User>;
-  private vulnerabilities: Map<number, Vulnerability>;
-  private securityScans: Map<number, SecurityScan>;
-  private remediationTasks: Map<number, RemediationTask>;
-  private currentUserId: number;
-  private currentVulnerabilityId: number;
-  private currentScanId: number;
-  private currentTaskId: number;
-
-  constructor() {
-    this.users = new Map();
-    this.vulnerabilities = new Map();
-    this.securityScans = new Map();
-    this.remediationTasks = new Map();
-    this.currentUserId = 1;
-    this.currentVulnerabilityId = 1;
-    this.currentScanId = 1;
-    this.currentTaskId = 1;
-
-    // Initialize with current vulnerabilities from the report
-    this.initializeVulnerabilities();
-  }
-
-  private initializeVulnerabilities() {
-    // Hard-coded secrets vulnerabilities
-    this.createVulnerability({
-      type: "hard-coded-secrets",
-      severity: "critical",
-      file: "server/setup-api.ts",
-      line: 36,
-      description: "Google Service Account private key detected in source code",
-      recommendation: "Move private key to GOOGLE_SERVICE_ACCOUNT environment variable",
-      status: "open"
-    });
-
-    this.createVulnerability({
-      type: "hard-coded-secrets", 
-      severity: "critical",
-      file: "server/google-test.ts",
-      line: 68,
-      description: "Private key ID detected in source code",
-      recommendation: "Move private key ID to environment variables",
-      status: "open"
-    });
-
-    // Deprecated encryption functions
-    this.createVulnerability({
-      type: "deprecated-crypto",
-      severity: "high", 
-      file: "server/encryption.ts",
-      line: 56,
-      description: "Deprecated createCipher function generates same IV every time",
-      recommendation: "Replace with createCipheriv using random IV",
-      status: "open"
-    });
-
-    this.createVulnerability({
-      type: "deprecated-crypto",
-      severity: "high",
-      file: "server/encryption.ts", 
-      line: 60,
-      description: "Deprecated createDecipher function used",
-      recommendation: "Replace with createDecipheriv",
-      status: "open"
-    });
-
-    // OAuth credentials
-    this.createVulnerability({
-      type: "oauth-exposure",
-      severity: "medium",
-      file: "server/oauth.ts",
-      line: 28,
-      description: "Google OAuth client ID exposed in source code",
-      recommendation: "Move to GOOGLE_CLIENT_ID environment variable",
-      status: "open"
-    });
-
-    // Initialize remediation tasks
-    this.createRemediationTask({
-      vulnerabilityId: 1,
-      title: "Move hardcoded private keys to environment variables",
-      description: "12 private keys detected in source code across multiple files",
-      priority: "critical",
-      category: "secrets-management", 
-      affectedFiles: ["server/setup-api.ts", "server/google-test.ts", "attached_assets/"],
-      autoFixAvailable: true,
-      status: "pending"
-    });
-
-    this.createRemediationTask({
-      vulnerabilityId: 3,
-      title: "Update deprecated encryption functions",
-      description: "Replace createCipher/createDecipher with createCipheriv/createDecipheriv",
-      priority: "high",
-      category: "cryptography",
-      affectedFiles: ["server/encryption.ts"],
-      autoFixAvailable: true,
-      status: "pending"
-    });
-
-    this.createRemediationTask({
-      vulnerabilityId: 5,
-      title: "Secure OAuth credentials", 
-      description: "Google and Facebook OAuth tokens found in source code",
-      priority: "medium",
-      category: "oauth-security",
-      affectedFiles: ["server/oauth.ts"],
-      autoFixAvailable: true,
-      status: "pending"
-    });
-
-    this.createRemediationTask({
-      title: "Clean up sensitive files in assets",
-      description: "Remove log files and temporary files containing credentials",
-      priority: "low",
-      category: "file-cleanup",
-      affectedFiles: ["attached_assets/"],
-      autoFixAvailable: true,
-      status: "pending"
-    });
-
-    // Initialize latest security scan
-    this.createSecurityScan({
-      repository: "Vgactec/qmark",
-      branch: "main",
-      totalVulnerabilities: 55,
-      criticalCount: 12,
-      highCount: 18,
-      mediumCount: 21,
-      lowCount: 4,
-      status: "completed",
-      metadata: {
-        lastScanTime: "May 26, 2025 at 8:04 PM",
-        scanDuration: "2.3 minutes"
-      }
-    });
-  }
-
-  async getUser(id: number): Promise<User | undefined> {
-    return this.users.get(id);
-  }
-
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
-  }
-
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const id = this.currentUserId++;
-    const user: User = { 
-      ...insertUser, 
-      id, 
-      createdAt: new Date()
-    };
-    this.users.set(id, user);
+export class DatabaseStorage implements IStorage {
+  // User operations
+  async getUser(id: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.id, id));
     return user;
   }
 
-  async getVulnerabilities(): Promise<Vulnerability[]> {
-    return Array.from(this.vulnerabilities.values());
+  async upsertUser(userData: UpsertUser): Promise<User> {
+    const [user] = await db
+      .insert(users)
+      .values(userData)
+      .onConflictDoUpdate({
+        target: users.id,
+        set: {
+          ...userData,
+          updatedAt: new Date(),
+        },
+      })
+      .returning();
+    return user;
   }
 
-  async getVulnerabilityById(id: number): Promise<Vulnerability | undefined> {
-    return this.vulnerabilities.get(id);
+  // OAuth connections
+  async getOauthConnections(userId: string): Promise<OauthConnection[]> {
+    return await db
+      .select()
+      .from(oauthConnections)
+      .where(eq(oauthConnections.userId, userId))
+      .orderBy(desc(oauthConnections.createdAt));
   }
 
-  async createVulnerability(vulnerability: InsertVulnerability): Promise<Vulnerability> {
-    const id = this.currentVulnerabilityId++;
-    const newVuln: Vulnerability = {
-      ...vulnerability,
-      id,
-      detectedAt: new Date(),
-      fixedAt: null
-    };
-    this.vulnerabilities.set(id, newVuln);
-    return newVuln;
+  async getOauthConnection(id: number): Promise<OauthConnection | undefined> {
+    const [connection] = await db
+      .select()
+      .from(oauthConnections)
+      .where(eq(oauthConnections.id, id));
+    return connection;
   }
 
-  async updateVulnerabilityStatus(id: number, status: string): Promise<Vulnerability | undefined> {
-    const vulnerability = this.vulnerabilities.get(id);
-    if (vulnerability) {
-      const updated = {
-        ...vulnerability,
-        status,
-        fixedAt: status === "fixed" ? new Date() : vulnerability.fixedAt
-      };
-      this.vulnerabilities.set(id, updated);
-      return updated;
+  async createOauthConnection(connection: InsertOauthConnection): Promise<OauthConnection> {
+    const [newConnection] = await db
+      .insert(oauthConnections)
+      .values(connection)
+      .returning();
+    return newConnection;
+  }
+
+  async updateOauthConnection(
+    id: number,
+    updates: Partial<InsertOauthConnection>
+  ): Promise<OauthConnection | undefined> {
+    const [connection] = await db
+      .update(oauthConnections)
+      .set({ ...updates, updatedAt: new Date() })
+      .where(eq(oauthConnections.id, id))
+      .returning();
+    return connection;
+  }
+
+  async deleteOauthConnection(id: number): Promise<void> {
+    await db.delete(oauthConnections).where(eq(oauthConnections.id, id));
+  }
+
+  // Leads
+  async getLeads(userId: string, limit = 50): Promise<Lead[]> {
+    return await db
+      .select()
+      .from(leads)
+      .where(eq(leads.userId, userId))
+      .orderBy(desc(leads.createdAt))
+      .limit(limit);
+  }
+
+  async createLead(lead: InsertLead): Promise<Lead> {
+    const [newLead] = await db.insert(leads).values(lead).returning();
+    return newLead;
+  }
+
+  async updateLead(id: number, updates: Partial<InsertLead>): Promise<Lead | undefined> {
+    const [lead] = await db
+      .update(leads)
+      .set({ ...updates, updatedAt: new Date() })
+      .where(eq(leads.id, id))
+      .returning();
+    return lead;
+  }
+
+  // Automations
+  async getAutomations(userId: string): Promise<Automation[]> {
+    return await db
+      .select()
+      .from(automations)
+      .where(eq(automations.userId, userId))
+      .orderBy(desc(automations.createdAt));
+  }
+
+  async createAutomation(automation: InsertAutomation): Promise<Automation> {
+    const [newAutomation] = await db.insert(automations).values(automation).returning();
+    return newAutomation;
+  }
+
+  async updateAutomation(
+    id: number,
+    updates: Partial<InsertAutomation>
+  ): Promise<Automation | undefined> {
+    const [automation] = await db
+      .update(automations)
+      .set({ ...updates, updatedAt: new Date() })
+      .where(eq(automations.id, id))
+      .returning();
+    return automation;
+  }
+
+  // Activities
+  async getActivities(userId: string, limit = 20): Promise<Activity[]> {
+    return await db
+      .select()
+      .from(activities)
+      .where(eq(activities.userId, userId))
+      .orderBy(desc(activities.createdAt))
+      .limit(limit);
+  }
+
+  async createActivity(activity: InsertActivity): Promise<Activity> {
+    const [newActivity] = await db.insert(activities).values(activity).returning();
+    return newActivity;
+  }
+
+  // Metrics
+  async getMetrics(userId: string, fromDate?: Date): Promise<Metric[]> {
+    const whereCondition = fromDate
+      ? and(eq(metrics.userId, userId), gte(metrics.date, fromDate))
+      : eq(metrics.userId, userId);
+
+    return await db
+      .select()
+      .from(metrics)
+      .where(whereCondition)
+      .orderBy(desc(metrics.date));
+  }
+
+  async createOrUpdateMetric(metric: InsertMetric): Promise<Metric> {
+    const [existingMetric] = await db
+      .select()
+      .from(metrics)
+      .where(
+        and(
+          eq(metrics.userId, metric.userId),
+          eq(metrics.date, metric.date)
+        )
+      );
+
+    if (existingMetric) {
+      const [updatedMetric] = await db
+        .update(metrics)
+        .set(metric)
+        .where(eq(metrics.id, existingMetric.id))
+        .returning();
+      return updatedMetric;
+    } else {
+      const [newMetric] = await db.insert(metrics).values(metric).returning();
+      return newMetric;
     }
-    return undefined;
   }
 
-  async getLatestSecurityScan(): Promise<SecurityScan | undefined> {
-    const scans = Array.from(this.securityScans.values());
-    return scans.sort((a, b) => b.startedAt.getTime() - a.startedAt.getTime())[0];
-  }
+  async getDashboardStats(userId: string): Promise<{
+    totalLeads: number;
+    totalConversions: number;
+    activeAutomations: number;
+    totalRevenue: string;
+  }> {
+    // Get total leads count
+    const [leadsResult] = await db
+      .select({ count: count() })
+      .from(leads)
+      .where(eq(leads.userId, userId));
 
-  async createSecurityScan(scan: InsertSecurityScan): Promise<SecurityScan> {
-    const id = this.currentScanId++;
-    const newScan: SecurityScan = {
-      ...scan,
-      id,
-      startedAt: new Date(),
-      completedAt: null
+    // Get conversions count (leads with status 'converted')
+    const [conversionsResult] = await db
+      .select({ count: count() })
+      .from(leads)
+      .where(and(eq(leads.userId, userId), eq(leads.status, "converted")));
+
+    // Get active automations count
+    const [automationsResult] = await db
+      .select({ count: count() })
+      .from(automations)
+      .where(and(eq(automations.userId, userId), eq(automations.isActive, true)));
+
+    // Get total revenue from current month
+    const startOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+    const monthlyMetrics = await db
+      .select()
+      .from(metrics)
+      .where(and(eq(metrics.userId, userId), gte(metrics.date, startOfMonth)));
+
+    const totalRevenue = monthlyMetrics.reduce(
+      (sum, metric) => sum + parseFloat(metric.revenue || "0"),
+      0
+    );
+
+    return {
+      totalLeads: leadsResult.count || 0,
+      totalConversions: conversionsResult.count || 0,
+      activeAutomations: automationsResult.count || 0,
+      totalRevenue: totalRevenue.toFixed(2),
     };
-    this.securityScans.set(id, newScan);
-    return newScan;
-  }
-
-  async updateSecurityScan(id: number, updates: Partial<SecurityScan>): Promise<SecurityScan | undefined> {
-    const scan = this.securityScans.get(id);
-    if (scan) {
-      const updated = { ...scan, ...updates };
-      this.securityScans.set(id, updated);
-      return updated;
-    }
-    return undefined;
-  }
-
-  async getRemediationTasks(): Promise<RemediationTask[]> {
-    return Array.from(this.remediationTasks.values());
-  }
-
-  async createRemediationTask(task: InsertRemediationTask): Promise<RemediationTask> {
-    const id = this.currentTaskId++;
-    const newTask: RemediationTask = {
-      ...task,
-      id,
-      createdAt: new Date(),
-      completedAt: null
-    };
-    this.remediationTasks.set(id, newTask);
-    return newTask;
-  }
-
-  async updateRemediationTaskStatus(id: number, status: string): Promise<RemediationTask | undefined> {
-    const task = this.remediationTasks.get(id);
-    if (task) {
-      const updated = {
-        ...task,
-        status,
-        completedAt: status === "completed" ? new Date() : task.completedAt
-      };
-      this.remediationTasks.set(id, updated);
-      return updated;
-    }
-    return undefined;
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
