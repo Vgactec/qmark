@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -114,11 +115,6 @@ export default function DashboardHeader({ user, onMenuClick }: DashboardHeaderPr
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-
-            {/* Mobile Menu Button */}
-            <Button variant="ghost" size="sm" className="md:hidden">
-              <Menu className="h-5 w-5" />
-            </Button>
           </div>
         </div>
       </div>
