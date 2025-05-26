@@ -1,0 +1,441 @@
+55 potential vulnerabilities found
+Last ran on
+ 
+8:04 pm, May 26, 2025
+Detected potential vulnerability in attached_assets/key-curl-accessor.json
+Google (GCM) Service account detected
+attached_assets/key-curl-accessor.json
+  "type": "service_account",
+Detected potential vulnerability in attached_assets/key-curl-accessor.json
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+attached_assets/key-curl-accessor.json
+  "private_key_id": "3da1432c70aa81fcd784682fcb520416987e1f3b",
+Detected potential vulnerability in attached_assets/key-curl-accessor.json
+A gitleaks private-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module).
+attached_assets/key-curl-accessor.json
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCfxjzMNN5z1kJ9\nA1j7hdLXdArqgLMAKxMBL6+oU9ihvSD+cfgIwn3Ucn9djlssoJ7UiyF8xmJLQoEt\nEl67W3QXyEMZXRJYKK9fPodnE7hoGs/MLtsdQHGt8Nt1e935Q3o9vcFJYS/mxGad\nOdhikG/3clbTsAf6rFy0I8P/6xpmK2IGnsDLr6U5vvrezcx2Ec2vqdBJSxoQ9w3v\no12QVHTj3YssxP6ZO4atPMLDWNHVmI4EIvilaGaI5L7bIxLS6Z8Pys2c8UoeVqKf\nPLdr8mCSMPbblm7mVQ0LpYIglo7lk/Dk0p4rabs0Ni4SImlkRh62b9BYeyZpeIMd\nbLwR2znZAgMBAAECggEAFpQvtFYGV81gIQWPlh/vz1XNUx1z7mKn8WN5SerrctPk\n7UBS4n4FxTeXCzQaa2CZgYTV6ymn62XPFn0BmS2P5up8nQF7nazGN8oA3Y66YS/k\nzMCUY3pfdkrS4LPsBxVDmaUOwx1yZQS9UZvCmg86W3gzj//Q6Nph0W06fhiN5wEi\nNGlb81Owgppe4mqnWqb0Oc5jIyDCfEK4K5IuJCnVZ+JXhcfavHmTadwb0rdykN88\nGrDnJC7WCuvhqCUufHIW8rPHzL296+6OgC1vMDYqijL61DZIT/wsBHjLlRwuMjyM\nirvwHHsePEDbV+KW8NjJJvXBRTDrMbzhhRpvvekbBwKBgQDYDLcvEl2Ca4fpfUSN\nfuktM/BfQX1PD1K90dDrHSt77bOxyy+O1esJwlujXtFKK00RDMV5NGSaNZq5swQG\n1U7vK2f1kRxBPFpt9I7G1Met70ZqAs7XgLt382VMBd3IrbjnyquYVfPFdFxwig7n\nEvr6O0iHW3D7RSJ9OKuCgJ38QwKBgQC9UZS+8KCSm0aFDUxUsmf/erLSr9MONzgH\nsC/a4g7EQeTRSu9hhMDk+ZkHbri5QjsY9kl58D+YCOF+C5YJ/zgbdsu6lHnQWfoJ\nqggcBlgbA4IbUZGwrmhW3sMXaUx7IgMfH9xlQP4ysDBvRbYWE3CYtLudp79Kl+qE\n0qotIgrdswKBgQC+GUohl/ZBaF5ZWwizu8RuKrJJDnW019XFAdXi2nLFg5zGRvMc\nqis6FhLNyAM9UKZp5yPmhuwyKBJxbQuQ+6WNmlLJ5xnGaNVkxHfQia7843nAk6Hu\nSu4pGDe8UbkY94qoIVMlIhPxXHZt63w7ZB8DiKBDwXjDDszPA8sddBAOwwKBgFgu\nbbhaYJCpHrnOreUtjF9liXG1T/tpIQIDwOaVMQedIbWSz9l+elKtJ+hcXFJ+VQSV\ngzf2/cgVKuMJBoP1iu7P8Kkhi3PO1TY3KrvTAKrkgW+0GMZRFmyQKhL3ixY3i3it\n4HyRP1Xg106dC+lQeLvIQzN19RYLmMLxVS7ckm8dAoGASRCA/MeiRW9mXgUA1KAX\nE858YQgyuWwo5LyblLzF7Jwhty6HXVM64iI2vprZJx+rlmw7E83wijnymN/Ho5gw\nVH9w+nzXmziZlUbfubRmtcNbn3eoNGI4c+VQ2+PXReT67r4m4fZ7a+CwRrcRyV00\nmMuPhlPnjIcK/mLpGIwr9cc=\n-----END PRIVATE KEY-----\n",
+Detected potential vulnerability in server/encryption.ts
+Detected potential vulnerability in server/encryption.ts
+Detected potential vulnerability in server/google-test.ts
+Google (GCM) Service account detected
+server/google-test.ts
+      type: "service_account",
+Detected potential vulnerability in server/google-test.ts
+Detected potential vulnerability in server/google-test.ts
+Detected potential vulnerability in server/oauth.ts
+Google OAuth url detected
+server/oauth.ts
+    clientId: "832297164791-fb4c444mofjgoch42cjdp704daenj48s.apps.googleusercontent.com",
+Detected potential vulnerability in server/setup-api.ts
+Google (GCM) Service account detected
+server/setup-api.ts
+      type: "service_account",
+Detected potential vulnerability in server/setup-api.ts
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+server/setup-api.ts
+      private_key_id: "9870960230c503ea4140ffda3624561ae8f1232c",
+Detected potential vulnerability in server/setup-api.ts
+A gitleaks private-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module).
+server/setup-api.ts
+      private_key: "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDZGDuvCYhBzut4\necnKDXceoD37appDn0GEYsDrpHj+e59p7NMP5B1hY68pIaEpWCHgKnwllfSat5YH\nycryph4d2y2Icv0fnQ75bSYp++rm3FxtOYEy0bqSSivy68Tnx7gHLa2Lius8zwZ2\nwyuBF5k957Jy71IzIFivrnp6RSPsjmHkO4AkhcnFkI6fG2Zjo1J3ep7eE2rE5x20\ndpcvEI/fADiAqFild6WEE3qzDCtDy30XZAXktw7EcuqoS69nJUzmAduvsqFAa4na\nGDJQRG/lmS2XbG5AYfPQqltZ8VgIB6OtAi4l5JOyUtI3cTp/WKGYT68QHperre8T\nHz953AwZAgMBAAECggEADmrqlhfEr4tO3hYizZ6SdM3OuSJ9t2aLN3/9wx9pVIwp\nh/7xs8ALTAszLvewpeWPNvRpEyaEfJg/0YThcElta3Z4f8846APcq7n+tG2qcw7b\nKbHWsgm+2GycVSpx4EbGR0vEThNwff4SWtNgP0T28kKLHvWJCv9VX+jvOtGQ9+qe\nDxel85UlLP8jtXASg1GzXQf4I+br7sogfC2pDJD/zHmZH2gjyHdOZgTP0ZQWAwTm\nR9DnxRWaq6TM+sz8GxWJSsxSHIfHVDLV+B8sZgFvw+Rd37jdkYI/t4kKRWtUZ/6E\nNSjdc3kcTdjbJrms7fL3nCupeLDUdPdt8embIFbWNQKBgQD0uH2WcITTDoxB0MDU\nkCsvartlpywFvrWjKfC4MKftIxuulTF2BBhyGKROyCHEhPLbmuqEgtKFqEC4v6cs\nfNCvxI97js0cYdOzAI8WxnWkUnBxe4i0V62bnl+vvejxgvIkaoJ+C7FEAg7whVWc\nKqtbiNPHBGbhtSTWUCMZgUZ/iwKBgQDjGccT1jAf4yudsmlTzyNIFk5ozjrZk2+1\nX98cAg+dVBTPTJlbrNx9mEzBhMNjJJ1RBgNfkjowSgeGGbLeUGZ9Mrp1L4PZDCRY\nT2GReWHT7Ke4IRsmJ1S13SEl48fC+qX7zerxpb3sl29FvFgNkZwVMzZfDiluLwp1\nfRxWDbXXawKBgQCU5YesOAvo6qoWBXC+JHXSJOueXwee+zlC7GrFdv1FgJ4ALFBq\n0PUavrmCIazCCG5Hhct5EqwKnKO8hQevPsYum7b9Y5aS1UbcW9Oz9M5xS6OUuKgl\nqk88JzFrGW6ZO6Ye2BtLm8ugaGw0lbvQB/o4+Fh6d8gtPm0KZLnmc8y0HwKBgHTe\nSSKeMPnX8BQhQi7NA/0O7Z7lskdRpkUSZ0CElwCByou7gZg55uYDQEy+Q8Z7izGt\nBINkPummzyRliTT67yMyvd2cbB+ALhv8DdvNOVjUCqOo9c22o9NLTsmu5JgkYNKq\nb2OXxZtBexPKDw48hrQqPKrCIPQA5UL89V4bhB6tAoGAI0zOSZax5XvQdjF+yUqo\ng3AwjA4Nwx9SRmzyRl8fI1g/iiU8LDKgoiuwJoJdPaUsHt1a/HfQsxzIm2BNGBKE\nCGr647BnYoWZd2ok9bC5+XFkpBs4vS2jzjpkzHEv1t8BaSpt7Afw14S4QKpC1CLJ\nhW9jtwyV8evkAx3e3fIHKBY=\n-----END PRIVATE KEY-----\n",
+Detected potential vulnerability in attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+Google (GCM) Service account detected
+attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+  "type": "service_account",
+Detected potential vulnerability in attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+  "private_key_id": "3da1432c70aa81fcd784682fcb520416987e1f3b",
+Detected potential vulnerability in attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+A gitleaks private-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module).
+attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCfxjzMNN5z1kJ9\nA1j7hdLXdArqgLMAKxMBL6+oU9ihvSD+cfgIwn3Ucn9djlssoJ7UiyF8xmJLQoEt\nEl67W3QXyEMZXRJYKK9fPodnE7hoGs/MLtsdQHGt8Nt1e935Q3o9vcFJYS/mxGad\nOdhikG/3clbTsAf6rFy0I8P/6xpmK2IGnsDLr6U5vvrezcx2Ec2vqdBJSxoQ9w3v\no12QVHTj3YssxP6ZO4atPMLDWNHVmI4EIvilaGaI5L7bIxLS6Z8Pys2c8UoeVqKf\nPLdr8mCSMPbblm7mVQ0LpYIglo7lk/Dk0p4rabs0Ni4SImlkRh62b9BYeyZpeIMd\nbLwR2znZAgMBAAECggEAFpQvtFYGV81gIQWPlh/vz1XNUx1z7mKn8WN5SerrctPk\n7UBS4n4FxTeXCzQaa2CZgYTV6ymn62XPFn0BmS2P5up8nQF7nazGN8oA3Y66YS/k\nzMCUY3pfdkrS4LPsBxVDmaUOwx1yZQS9UZvCmg86W3gzj//Q6Nph0W06fhiN5wEi\nNGlb81Owgppe4mqnWqb0Oc5jIyDCfEK4K5IuJCnVZ+JXhcfavHmTadwb0rdykN88\nGrDnJC7WCuvhqCUufHIW8rPHzL296+6OgC1vMDYqijL61DZIT/wsBHjLlRwuMjyM\nirvwHHsePEDbV+KW8NjJJvXBRTDrMbzhhRpvvekbBwKBgQDYDLcvEl2Ca4fpfUSN\nfuktM/BfQX1PD1K90dDrHSt77bOxyy+O1esJwlujXtFKK00RDMV5NGSaNZq5swQG\n1U7vK2f1kRxBPFpt9I7G1Met70ZqAs7XgLt382VMBd3IrbjnyquYVfPFdFxwig7n\nEvr6O0iHW3D7RSJ9OKuCgJ38QwKBgQC9UZS+8KCSm0aFDUxUsmf/erLSr9MONzgH\nsC/a4g7EQeTRSu9hhMDk+ZkHbri5QjsY9kl58D+YCOF+C5YJ/zgbdsu6lHnQWfoJ\nqggcBlgbA4IbUZGwrmhW3sMXaUx7IgMfH9xlQP4ysDBvRbYWE3CYtLudp79Kl+qE\n0qotIgrdswKBgQC+GUohl/ZBaF5ZWwizu8RuKrJJDnW019XFAdXi2nLFg5zGRvMc\nqis6FhLNyAM9UKZp5yPmhuwyKBJxbQuQ+6WNmlLJ5xnGaNVkxHfQia7843nAk6Hu\nSu4pGDe8UbkY94qoIVMlIhPxXHZt63w7ZB8DiKBDwXjDDszPA8sddBAOwwKBgFgu\nbbhaYJCpHrnOreUtjF9liXG1T/tpIQIDwOaVMQedIbWSz9l+elKtJ+hcXFJ+VQSV\ngzf2/cgVKuMJBoP1iu7P8Kkhi3PO1TY3KrvTAKrkgW+0GMZRFmyQKhL3ixY3i3it\n4HyRP1Xg106dC+lQeLvIQzN19RYLmMLxVS7ckm8dAoGASRCA/MeiRW9mXgUA1KAX\nE858YQgyuWwo5LyblLzF7Jwhty6HXVM64iI2vprZJx+rlmw7E83wijnymN/Ho5gw\nVH9w+nzXmziZlUbfubRmtcNbn3eoNGI4c+VQ2+PXReT67r4m4fZ7a+CwRrcRyV00\nmMuPhlPnjIcK/mLpGIwr9cc=\n-----END PRIVATE KEY-----\n",
+Detected potential vulnerability in server/encryption.ts
+The deprecated functions 'createCipher' and 'createDecipher' generate the same initialization vector every time. For counter modes such as CTR, GCM, or CCM this leads to break of both confidentiality and integrity, if the key is used more than once. Other modes are still affected in their strength, though they're not completely broken. Use 'createCipheriv' or 'createDecipheriv' instead.
+server/encryption.ts
+    const cipher = crypto.createCipher(ALGORITHM, ENCRYPTION_KEY);
+Detected potential vulnerability in server/encryption.ts
+The deprecated functions 'createCipher' and 'createDecipher' generate the same initialization vector every time. For counter modes such as CTR, GCM, or CCM this leads to break of both confidentiality and integrity, if the key is used more than once. Other modes are still affected in their strength, though they're not completely broken. Use 'createCipheriv' or 'createDecipheriv' instead.
+server/encryption.ts
+    const decipher = crypto.createDecipher(ALGORITHM, ENCRYPTION_KEY);
+Detected potential vulnerability in server/google-test.ts
+Google (GCM) Service account detected
+server/google-test.ts
+      type: "service_account",
+Detected potential vulnerability in server/google-test.ts
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+server/google-test.ts
+      private_key_id: "9870960230c503ea4140ffda3624561ae8f1232c",
+Detected potential vulnerability in server/google-test.ts
+A gitleaks private-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module).
+server/google-test.ts
+      private_key: "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDZGDuvCYhBzut4\necnKDXceoD37appDn0GEYsDrpHj+e59p7NMP5B1hY68pIaEpWCHgKnwllfSat5YH\nycryph4d2y2Icv0fnQ75bSYp++rm3FxtOYEy0bqSSivy68Tnx7gHLa2Lius8zwZ2\nwyuBF5k957Jy71IzIFivrnp6RSPsjmHkO4AkhcnFkI6fG2Zjo1J3ep7eE2rE5x20\ndpcvEI/fADiAqFild6WEE3qzDCtDy30XZAXktw7EcuqoS69nJUzmAduvsqFAa4na\nGDJQRG/lmS2XbG5AYfPQqltZ8VgIB6OtAi4l5JOyUtI3cTp/WKGYT68QHperre8T\nHz953AwZAgMBAAECggEADmrqlhfEr4tO3hYizZ6SdM3OuSJ9t2aLN3/9wx9pVIwp\nh/7xs8ALTAszLvewpeWPNvRpEyaEfJg/0YThcElta3Z4f8846APcq7n+tG2qcw7b\nKbHWsgm+2GycVSpx4EbGR0vEThNwff4SWtNgP0T28kKLHvWJCv9VX+jvOtGQ9+qe\nDxel85UlLP8jtXASg1GzXQf4I+br7sogfC2pDJD/zHmZH2gjyHdOZgTP0ZQWAwTm\nR9DnxRWaq6TM+sz8GxWJSsxSHIfHVDLV+B8sZgFvw+Rd37jdkYI/t4kKRWtUZ/6E\nNSjdc3kcTdjbJrms7fL3nCupeLDUdPdt8embIFbWNQKBgQD0uH2WcITTDoxB0MDU\nkCsvartlpywFvrWjKfC4MKftIxuulTF2BBhyGKROyCHEhPLbmuqEgtKFqEC4v6cs\nfNCvxI97js0cYdOzAI8WxnWkUnBxe4i0V62bnl+vvejxgvIkaoJ+C7FEAg7whVWc\nKqtbiNPHBGbhtSTWUCMZgUZ/iwKBgQDjGccT1jAf4yudsmlTzyNIFk5ozjrZk2+1\nX98cAg+dVBTPTJlbrNx9mEzBhMNjJJ1RBgNfkjowSgeGGbLeUGZ9Mrp1L4PZDCRY\nT2GReWHT7Ke4IRsmJ1S13SEl48fC+qX7zerxpb3sl29FvFgNkZwVMzZfDiluLwp1\nfRxWDbXXawKBgQCU5YesOAvo6qoWBXC+JHXSJOueXwee+zlC7GrFdv1FgJ4ALFBq\n0PUavrmCIazCCG5Hhct5EqwKnKO8hQevPsYum7b9Y5aS1UbcW9Oz9M5xS6OUuKgl\nqk88JzFrGW6ZO6Ye2BtLm8ugaGw0lbvQB/o4+Fh6d8gtPm0KZLnmc8y0HwKBgHTe\nSSKeMPnX8BQhQi7NA/0O7Z7lskdRpkUSZ0CElwCByou7gZg55uYDQEy+Q8Z7izGt\nBINkPummzyRliTT67yMyvd2cbB+ALhv8DdvNOVjUCqOo9c22o9NLTsmu5JgkYNKq\nb2OXxZtBexPKDw48hrQqPKrCIPQA5UL89V4bhB6tAoGAI0zOSZax5XvQdjF+yUqo\ng3AwjA4Nwx9SRmzyRl8fI1g/iiU8LDKgoiuwJoJdPaUsHt1a/HfQsxzIm2BNGBKE\nCGr647BnYoWZd2ok9bC5+XFkpBs4vS2jzjpkzHEv1t8BaSpt7Afw14S4QKpC1CLJ\nhW9jtwyV8evkAx3e3fIHKBY=\n-----END PRIVATE KEY-----\n",
+Detected potential vulnerability in server/oauth.ts
+Google OAuth url detected
+server/oauth.ts
+    clientId: "832297164791-fb4c444mofjgoch42cjdp704daenj48s.apps.googleusercontent.com",
+Detected potential vulnerability in server/setup-api.ts
+Google (GCM) Service account detected
+server/setup-api.ts
+      type: "service_account",
+Detected potential vulnerability in server/setup-api.ts
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+server/setup-api.ts
+      private_key_id: "9870960230c503ea4140ffda3624561ae8f1232c",
+Detected potential vulnerability in server/setup-api.ts
+A gitleaks private-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module).
+server/setup-api.ts
+      private_key: "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDZGDuvCYhBzut4\necnKDXceoD37appDn0GEYsDrpHj+e59p7NMP5B1hY68pIaEpWCHgKnwllfSat5YH\nycryph4d2y2Icv0fnQ75bSYp++rm3FxtOYEy0bqSSivy68Tnx7gHLa2Lius8zwZ2\nwyuBF5k957Jy71IzIFivrnp6RSPsjmHkO4AkhcnFkI6fG2Zjo1J3ep7eE2rE5x20\ndpcvEI/fADiAqFild6WEE3qzDCtDy30XZAXktw7EcuqoS69nJUzmAduvsqFAa4na\nGDJQRG/lmS2XbG5AYfPQqltZ8VgIB6OtAi4l5JOyUtI3cTp/WKGYT68QHperre8T\nHz953AwZAgMBAAECggEADmrqlhfEr4tO3hYizZ6SdM3OuSJ9t2aLN3/9wx9pVIwp\nh/7xs8ALTAszLvewpeWPNvRpEyaEfJg/0YThcElta3Z4f8846APcq7n+tG2qcw7b\nKbHWsgm+2GycVSpx4EbGR0vEThNwff4SWtNgP0T28kKLHvWJCv9VX+jvOtGQ9+qe\nDxel85UlLP8jtXASg1GzXQf4I+br7sogfC2pDJD/zHmZH2gjyHdOZgTP0ZQWAwTm\nR9DnxRWaq6TM+sz8GxWJSsxSHIfHVDLV+B8sZgFvw+Rd37jdkYI/t4kKRWtUZ/6E\nNSjdc3kcTdjbJrms7fL3nCupeLDUdPdt8embIFbWNQKBgQD0uH2WcITTDoxB0MDU\nkCsvartlpywFvrWjKfC4MKftIxuulTF2BBhyGKROyCHEhPLbmuqEgtKFqEC4v6cs\nfNCvxI97js0cYdOzAI8WxnWkUnBxe4i0V62bnl+vvejxgvIkaoJ+C7FEAg7whVWc\nKqtbiNPHBGbhtSTWUCMZgUZ/iwKBgQDjGccT1jAf4yudsmlTzyNIFk5ozjrZk2+1\nX98cAg+dVBTPTJlbrNx9mEzBhMNjJJ1RBgNfkjowSgeGGbLeUGZ9Mrp1L4PZDCRY\nT2GReWHT7Ke4IRsmJ1S13SEl48fC+qX7zerxpb3sl29FvFgNkZwVMzZfDiluLwp1\nfRxWDbXXawKBgQCU5YesOAvo6qoWBXC+JHXSJOueXwee+zlC7GrFdv1FgJ4ALFBq\n0PUavrmCIazCCG5Hhct5EqwKnKO8hQevPsYum7b9Y5aS1UbcW9Oz9M5xS6OUuKgl\nqk88JzFrGW6ZO6Ye2BtLm8ugaGw0lbvQB/o4+Fh6d8gtPm0KZLnmc8y0HwKBgHTe\nSSKeMPnX8BQhQi7NA/0O7Z7lskdRpkUSZ0CElwCByou7gZg55uYDQEy+Q8Z7izGt\nBINkPummzyRliTT67yMyvd2cbB+ALhv8DdvNOVjUCqOo9c22o9NLTsmu5JgkYNKq\nb2OXxZtBexPKDw48hrQqPKrCIPQA5UL89V4bhB6tAoGAI0zOSZax5XvQdjF+yUqo\ng3AwjA4Nwx9SRmzyRl8fI1g/iiU8LDKgoiuwJoJdPaUsHt1a/HfQsxzIm2BNGBKE\nCGr647BnYoWZd2ok9bC5+XFkpBs4vS2jzjpkzHEv1t8BaSpt7Afw14S4QKpC1CLJ\nhW9jtwyV8evkAx3e3fIHKBY=\n-----END PRIVATE KEY-----\n",
+Detected potential vulnerability in attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+Google (GCM) Service account detected
+attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+      type: "service_account",
+Detected potential vulnerability in attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+      private_key_id: "9870960230c503ea4140ffda3624561ae8f1232c",
+Detected potential vulnerability in attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+Google OAuth url detected
+attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+    clientId: "832297164791-fb4c444mofjgoch42cjdp704daenj48s.apps.googleusercontent.com",
+Detected potential vulnerability in attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+Google (GCM) Service account detected
+attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+      type: "service_account",
+Detected potential vulnerability in attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+      private_key_id: "9870960230c503ea4140ffda3624561ae8f1232c",
+Detected potential vulnerability in attached_assets/Pasted-12-potential-vulnerabilities-found-Last-ran-on-7-13-pm-May-26-2025-Detected-potential-vulnerabil-1748282213117.txt
+Google (GCM) Service account detected
+attached_assets/Pasted-12-potential-vulnerabilities-found-Last-ran-on-7-13-pm-May-26-2025-Detected-potential-vulnerabil-1748282213117.txt
+  "type": "service_account",
+Detected potential vulnerability in attached_assets/Pasted-12-potential-vulnerabilities-found-Last-ran-on-7-13-pm-May-26-2025-Detected-potential-vulnerabil-1748282213117.txt
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+attached_assets/Pasted-12-potential-vulnerabilities-found-Last-ran-on-7-13-pm-May-26-2025-Detected-potential-vulnerabil-1748282213117.txt
+  "private_key_id": "3da1432c70aa81fcd784682fcb520416987e1f3b",
+Detected potential vulnerability in attached_assets/Pasted-12-potential-vulnerabilities-found-Last-ran-on-7-13-pm-May-26-2025-Detected-potential-vulnerabil-1748282213117.txt
+A gitleaks private-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module).
+attached_assets/Pasted-12-potential-vulnerabilities-found-Last-ran-on-7-13-pm-May-26-2025-Detected-potential-vulnerabil-1748282213117.txt
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCfxjzMNN5z1kJ9\nA1j7hdLXdArqgLMAKxMBL6+oU9ihvSD+cfgIwn3Ucn9djlssoJ7UiyF8xmJLQoEt\nEl67W3QXyEMZXRJYKK9fPodnE7hoGs/MLtsdQHGt8Nt1e935Q3o9vcFJYS/mxGad\nOdhikG/3clbTsAf6rFy0I8P/6xpmK2IGnsDLr6U5vvrezcx2Ec2vqdBJSxoQ9w3v\no12QVHTj3YssxP6ZO4atPMLDWNHVmI4EIvilaGaI5L7bIxLS6Z8Pys2c8UoeVqKf\nPLdr8mCSMPbblm7mVQ0LpYIglo7lk/Dk0p4rabs0Ni4SImlkRh62b9BYeyZpeIMd\nbLwR2znZAgMBAAECggEAFpQvtFYGV81gIQWPlh/vz1XNUx1z7mKn8WN5SerrctPk\n7UBS4n4FxTeXCzQaa2CZgYTV6ymn62XPFn0BmS2P5up8nQF7nazGN8oA3Y66YS/k\nzMCUY3pfdkrS4LPsBxVDmaUOwx1yZQS9UZvCmg86W3gzj//Q6Nph0W06fhiN5wEi\nNGlb81Owgppe4mqnWqb0Oc5jIyDCfEK4K5IuJCnVZ+JXhcfavHmTadwb0rdykN88\nGrDnJC7WCuvhqCUufHIW8rPHzL296+6OgC1vMDYqijL61DZIT/wsBHjLlRwuMjyM\nirvwHHsePEDbV+KW8NjJJvXBRTDrMbzhhRpvvekbBwKBgQDYDLcvEl2Ca4fpfUSN\nfuktM/BfQX1PD1K90dDrHSt77bOxyy+O1esJwlujXtFKK00RDMV5NGSaNZq5swQG\n1U7vK2f1kRxBPFpt9I7G1Met70ZqAs7XgLt382VMBd3IrbjnyquYVfPFdFxwig7n\nEvr6O0iHW3D7RSJ9OKuCgJ38QwKBgQC9UZS+8KCSm0aFDUxUsmf/erLSr9MONzgH\nsC/a4g7EQeTRSu9hhMDk+ZkHbri5QjsY9kl58D+YCOF+C5YJ/zgbdsu6lHnQWfoJ\nqggcBlgbA4IbUZGwrmhW3sMXaUx7IgMfH9xlQP4ysDBvRbYWE3CYtLudp79Kl+qE\n0qotIgrdswKBgQC+GUohl/ZBaF5ZWwizu8RuKrJJDnW019XFAdXi2nLFg5zGRvMc\nqis6FhLNyAM9UKZp5yPmhuwyKBJxbQuQ+6WNmlLJ5xnGaNVkxHfQia7843nAk6Hu\nSu4pGDe8UbkY94qoIVMlIhPxXHZt63w7ZB8DiKBDwXjDDszPA8sddBAOwwKBgFgu\nbbhaYJCpHrnOreUtjF9liXG1T/tpIQIDwOaVMQedIbWSz9l+elKtJ+hcXFJ+VQSV\ngzf2/cgVKuMJBoP1iu7P8Kkhi3PO1TY3KrvTAKrkgW+0GMZRFmyQKhL3ixY3i3it\n4HyRP1Xg106dC+lQeLvIQzN19RYLmMLxVS7ckm8dAoGASRCA/MeiRW9mXgUA1KAX\nE858YQgyuWwo5LyblLzF7Jwhty6HXVM64iI2vprZJx+rlmw7E83wijnymN/Ho5gw\nVH9w+nzXmziZlUbfubRmtcNbn3eoNGI4c+VQ2+PXReT67r4m4fZ7a+CwRrcRyV00\nmMuPhlPnjIcK/mLpGIwr9cc=\n-----END PRIVATE KEY-----\n",
+Detected potential vulnerability in server/encryption.ts
+The deprecated functions 'createCipher' and 'createDecipher' generate the same initialization vector every time. For counter modes such as CTR, GCM, or CCM this leads to break of both confidentiality and integrity, if the key is used more than once. Other modes are still affected in their strength, though they're not completely broken. Use 'createCipheriv' or 'createDecipheriv' instead.
+server/encryption.ts
+    const cipher = crypto.createCipher(ALGORITHM, ENCRYPTION_KEY);
+Detected potential vulnerability in server/encryption.ts
+The deprecated functions 'createCipher' and 'createDecipher' generate the same initialization vector every time. For counter modes such as CTR, GCM, or CCM this leads to break of both confidentiality and integrity, if the key is used more than once. Other modes are still affected in their strength, though they're not completely broken. Use 'createCipheriv' or 'createDecipheriv' instead.
+server/encryption.ts
+    const decipher = crypto.createDecipher(ALGORITHM, ENCRYPTION_KEY);
+Detected potential vulnerability in server/google-test.ts
+Google (GCM) Service account detected
+server/google-test.ts
+      type: "service_account",
+Detected potential vulnerability in server/google-test.ts
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+server/google-test.ts
+      private_key_id: "9870960230c503ea4140ffda3624561ae8f1232c",
+Detected potential vulnerability in server/google-test.ts
+A gitleaks private-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module).
+server/google-test.ts
+      private_key: "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDZGDuvCYhBzut4\necnKDXceoD37appDn0GEYsDrpHj+e59p7NMP5B1hY68pIaEpWCHgKnwllfSat5YH\nycryph4d2y2Icv0fnQ75bSYp++rm3FxtOYEy0bqSSivy68Tnx7gHLa2Lius8zwZ2\nwyuBF5k957Jy71IzIFivrnp6RSPsjmHkO4AkhcnFkI6fG2Zjo1J3ep7eE2rE5x20\ndpcvEI/fADiAqFild6WEE3qzDCtDy30XZAXktw7EcuqoS69nJUzmAduvsqFAa4na\nGDJQRG/lmS2XbG5AYfPQqltZ8VgIB6OtAi4l5JOyUtI3cTp/WKGYT68QHperre8T\nHz953AwZAgMBAAECggEADmrqlhfEr4tO3hYizZ6SdM3OuSJ9t2aLN3/9wx9pVIwp\nh/7xs8ALTAszLvewpeWPNvRpEyaEfJg/0YThcElta3Z4f8846APcq7n+tG2qcw7b\nKbHWsgm+2GycVSpx4EbGR0vEThNwff4SWtNgP0T28kKLHvWJCv9VX+jvOtGQ9+qe\nDxel85UlLP8jtXASg1GzXQf4I+br7sogfC2pDJD/zHmZH2gjyHdOZgTP0ZQWAwTm\nR9DnxRWaq6TM+sz8GxWJSsxSHIfHVDLV+B8sZgFvw+Rd37jdkYI/t4kKRWtUZ/6E\nNSjdc3kcTdjbJrms7fL3nCupeLDUdPdt8embIFbWNQKBgQD0uH2WcITTDoxB0MDU\nkCsvartlpywFvrWjKfC4MKftIxuulTF2BBhyGKROyCHEhPLbmuqEgtKFqEC4v6cs\nfNCvxI97js0cYdOzAI8WxnWkUnBxe4i0V62bnl+vvejxgvIkaoJ+C7FEAg7whVWc\nKqtbiNPHBGbhtSTWUCMZgUZ/iwKBgQDjGccT1jAf4yudsmlTzyNIFk5ozjrZk2+1\nX98cAg+dVBTPTJlbrNx9mEzBhMNjJJ1RBgNfkjowSgeGGbLeUGZ9Mrp1L4PZDCRY\nT2GReWHT7Ke4IRsmJ1S13SEl48fC+qX7zerxpb3sl29FvFgNkZwVMzZfDiluLwp1\nfRxWDbXXawKBgQCU5YesOAvo6qoWBXC+JHXSJOueXwee+zlC7GrFdv1FgJ4ALFBq\n0PUavrmCIazCCG5Hhct5EqwKnKO8hQevPsYum7b9Y5aS1UbcW9Oz9M5xS6OUuKgl\nqk88JzFrGW6ZO6Ye2BtLm8ugaGw0lbvQB/o4+Fh6d8gtPm0KZLnmc8y0HwKBgHTe\nSSKeMPnX8BQhQi7NA/0O7Z7lskdRpkUSZ0CElwCByou7gZg55uYDQEy+Q8Z7izGt\nBINkPummzyRliTT67yMyvd2cbB+ALhv8DdvNOVjUCqOo9c22o9NLTsmu5JgkYNKq\nb2OXxZtBexPKDw48hrQqPKrCIPQA5UL89V4bhB6tAoGAI0zOSZax5XvQdjF+yUqo\ng3AwjA4Nwx9SRmzyRl8fI1g/iiU8LDKgoiuwJoJdPaUsHt1a/HfQsxzIm2BNGBKE\nCGr647BnYoWZd2ok9bC5+XFkpBs4vS2jzjpkzHEv1t8BaSpt7Afw14S4QKpC1CLJ\nhW9jtwyV8evkAx3e3fIHKBY=\n-----END PRIVATE KEY-----\n",
+Detected potential vulnerability in server/oauth.ts
+Google OAuth url detected
+server/oauth.ts
+    clientId: "832297164791-fb4c444mofjgoch42cjdp704daenj48s.apps.googleusercontent.com",
+Detected potential vulnerability in server/setup-api.ts
+Google (GCM) Service account detected
+server/setup-api.ts
+      type: "service_account",
+Detected potential vulnerability in server/setup-api.ts
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+server/setup-api.ts
+      private_key_id: "9870960230c503ea4140ffda3624561ae8f1232c",
+Detected potential vulnerability in server/setup-api.ts
+A gitleaks private-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module).
+server/setup-api.ts
+      private_key: "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDZGDuvCYhBzut4\necnKDXceoD37appDn0GEYsDrpHj+e59p7NMP5B1hY68pIaEpWCHgKnwllfSat5YH\nycryph4d2y2Icv0fnQ75bSYp++rm3FxtOYEy0bqSSivy68Tnx7gHLa2Lius8zwZ2\nwyuBF5k957Jy71IzIFivrnp6RSPsjmHkO4AkhcnFkI6fG2Zjo1J3ep7eE2rE5x20\ndpcvEI/fADiAqFild6WEE3qzDCtDy30XZAXktw7EcuqoS69nJUzmAduvsqFAa4na\nGDJQRG/lmS2XbG5AYfPQqltZ8VgIB6OtAi4l5JOyUtI3cTp/WKGYT68QHperre8T\nHz953AwZAgMBAAECggEADmrqlhfEr4tO3hYizZ6SdM3OuSJ9t2aLN3/9wx9pVIwp\nh/7xs8ALTAszLvewpeWPNvRpEyaEfJg/0YThcElta3Z4f8846APcq7n+tG2qcw7b\nKbHWsgm+2GycVSpx4EbGR0vEThNwff4SWtNgP0T28kKLHvWJCv9VX+jvOtGQ9+qe\nDxel85UlLP8jtXASg1GzXQf4I+br7sogfC2pDJD/zHmZH2gjyHdOZgTP0ZQWAwTm\nR9DnxRWaq6TM+sz8GxWJSsxSHIfHVDLV+B8sZgFvw+Rd37jdkYI/t4kKRWtUZ/6E\nNSjdc3kcTdjbJrms7fL3nCupeLDUdPdt8embIFbWNQKBgQD0uH2WcITTDoxB0MDU\nkCsvartlpywFvrWjKfC4MKftIxuulTF2BBhyGKROyCHEhPLbmuqEgtKFqEC4v6cs\nfNCvxI97js0cYdOzAI8WxnWkUnBxe4i0V62bnl+vvejxgvIkaoJ+C7FEAg7whVWc\nKqtbiNPHBGbhtSTWUCMZgUZ/iwKBgQDjGccT1jAf4yudsmlTzyNIFk5ozjrZk2+1\nX98cAg+dVBTPTJlbrNx9mEzBhMNjJJ1RBgNfkjowSgeGGbLeUGZ9Mrp1L4PZDCRY\nT2GReWHT7Ke4IRsmJ1S13SEl48fC+qX7zerxpb3sl29FvFgNkZwVMzZfDiluLwp1\nfRxWDbXXawKBgQCU5YesOAvo6qoWBXC+JHXSJOueXwee+zlC7GrFdv1FgJ4ALFBq\n0PUavrmCIazCCG5Hhct5EqwKnKO8hQevPsYum7b9Y5aS1UbcW9Oz9M5xS6OUuKgl\nqk88JzFrGW6ZO6Ye2BtLm8ugaGw0lbvQB/o4+Fh6d8gtPm0KZLnmc8y0HwKBgHTe\nSSKeMPnX8BQhQi7NA/0O7Z7lskdRpkUSZ0CElwCByou7gZg55uYDQEy+Q8Z7izGt\nBINkPummzyRliTT67yMyvd2cbB+ALhv8DdvNOVjUCqOo9c22o9NLTsmu5JgkYNKq\nb2OXxZtBexPKDw48hrQqPKrCIPQA5UL89V4bhB6tAoGAI0zOSZax5XvQdjF+yUqo\ng3AwjA4Nwx9SRmzyRl8fI1g/iiU8LDKgoiuwJoJdPaUsHt1a/HfQsxzIm2BNGBKE\nCGr647BnYoWZd2ok9bC5+XFkpBs4vS2jzjpkzHEv1t8BaSpt7Afw14S4QKpC1CLJ\nhW9jtwyV8evkAx3e3fIHKBY=\n-----END PRIVATE KEY-----\n",
+Detected potential vulnerability in attached_assets/Pasted-12-potential-vulnerabilities-found-Last-ran-on-7-13-pm-May-26-2025-Detected-potential-vulnerabil-1748282213117.txt
+Google (GCM) Service account detected
+attached_assets/Pasted-12-potential-vulnerabilities-found-Last-ran-on-7-13-pm-May-26-2025-Detected-potential-vulnerabil-1748282213117.txt
+      type: "service_account",
+Detected potential vulnerability in attached_assets/Pasted-12-potential-vulnerabilities-found-Last-ran-on-7-13-pm-May-26-2025-Detected-potential-vulnerabil-1748282213117.txt
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+attached_assets/Pasted-12-potential-vulnerabilities-found-Last-ran-on-7-13-pm-May-26-2025-Detected-potential-vulnerabil-1748282213117.txt
+      private_key_id: "9870960230c503ea4140ffda3624561ae8f1232c",
+Detected potential vulnerability in attached_assets/Pasted-12-potential-vulnerabilities-found-Last-ran-on-7-13-pm-May-26-2025-Detected-potential-vulnerabil-1748282213117.txt
+Google OAuth url detected
+attached_assets/Pasted-12-potential-vulnerabilities-found-Last-ran-on-7-13-pm-May-26-2025-Detected-potential-vulnerabil-1748282213117.txt
+    clientId: "832297164791-fb4c444mofjgoch42cjdp704daenj48s.apps.googleusercontent.com",
+Detected potential vulnerability in attached_assets/Pasted-12-potential-vulnerabilities-found-Last-ran-on-7-13-pm-May-26-2025-Detected-potential-vulnerabil-1748282213117.txt
+Google (GCM) Service account detected
+attached_assets/Pasted-12-potential-vulnerabilities-found-Last-ran-on-7-13-pm-May-26-2025-Detected-potential-vulnerabil-1748282213117.txt
+      type: "service_account",
+Detected potential vulnerability in attached_assets/Pasted-12-potential-vulnerabilities-found-Last-ran-on-7-13-pm-May-26-2025-Detected-potential-vulnerabil-1748282213117.txt
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+attached_assets/Pasted-12-potential-vulnerabilities-found-Last-ran-on-7-13-pm-May-26-2025-Detected-potential-vulnerabil-1748282213117.txt
+      private_key_id: "9870960230c503ea4140ffda3624561ae8f1232c",
+Detected potential vulnerability in attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+Google (GCM) Service account detected
+attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+  "type": "service_account",
+Detected potential vulnerability in attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+  "private_key_id": "3da1432c70aa81fcd784682fcb520416987e1f3b",
+Detected potential vulnerability in attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+A gitleaks private-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module).
+attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCfxjzMNN5z1kJ9\nA1j7hdLXdArqgLMAKxMBL6+oU9ihvSD+cfgIwn3Ucn9djlssoJ7UiyF8xmJLQoEt\nEl67W3QXyEMZXRJYKK9fPodnE7hoGs/MLtsdQHGt8Nt1e935Q3o9vcFJYS/mxGad\nOdhikG/3clbTsAf6rFy0I8P/6xpmK2IGnsDLr6U5vvrezcx2Ec2vqdBJSxoQ9w3v\no12QVHTj3YssxP6ZO4atPMLDWNHVmI4EIvilaGaI5L7bIxLS6Z8Pys2c8UoeVqKf\nPLdr8mCSMPbblm7mVQ0LpYIglo7lk/Dk0p4rabs0Ni4SImlkRh62b9BYeyZpeIMd\nbLwR2znZAgMBAAECggEAFpQvtFYGV81gIQWPlh/vz1XNUx1z7mKn8WN5SerrctPk\n7UBS4n4FxTeXCzQaa2CZgYTV6ymn62XPFn0BmS2P5up8nQF7nazGN8oA3Y66YS/k\nzMCUY3pfdkrS4LPsBxVDmaUOwx1yZQS9UZvCmg86W3gzj//Q6Nph0W06fhiN5wEi\nNGlb81Owgppe4mqnWqb0Oc5jIyDCfEK4K5IuJCnVZ+JXhcfavHmTadwb0rdykN88\nGrDnJC7WCuvhqCUufHIW8rPHzL296+6OgC1vMDYqijL61DZIT/wsBHjLlRwuMjyM\nirvwHHsePEDbV+KW8NjJJvXBRTDrMbzhhRpvvekbBwKBgQDYDLcvEl2Ca4fpfUSN\nfuktM/BfQX1PD1K90dDrHSt77bOxyy+O1esJwlujXtFKK00RDMV5NGSaNZq5swQG\n1U7vK2f1kRxBPFpt9I7G1Met70ZqAs7XgLt382VMBd3IrbjnyquYVfPFdFxwig7n\nEvr6O0iHW3D7RSJ9OKuCgJ38QwKBgQC9UZS+8KCSm0aFDUxUsmf/erLSr9MONzgH\nsC/a4g7EQeTRSu9hhMDk+ZkHbri5QjsY9kl58D+YCOF+C5YJ/zgbdsu6lHnQWfoJ\nqggcBlgbA4IbUZGwrmhW3sMXaUx7IgMfH9xlQP4ysDBvRbYWE3CYtLudp79Kl+qE\n0qotIgrdswKBgQC+GUohl/ZBaF5ZWwizu8RuKrJJDnW019XFAdXi2nLFg5zGRvMc\nqis6FhLNyAM9UKZp5yPmhuwyKBJxbQuQ+6WNmlLJ5xnGaNVkxHfQia7843nAk6Hu\nSu4pGDe8UbkY94qoIVMlIhPxXHZt63w7ZB8DiKBDwXjDDszPA8sddBAOwwKBgFgu\nbbhaYJCpHrnOreUtjF9liXG1T/tpIQIDwOaVMQedIbWSz9l+elKtJ+hcXFJ+VQSV\ngzf2/cgVKuMJBoP1iu7P8Kkhi3PO1TY3KrvTAKrkgW+0GMZRFmyQKhL3ixY3i3it\n4HyRP1Xg106dC+lQeLvIQzN19RYLmMLxVS7ckm8dAoGASRCA/MeiRW9mXgUA1KAX\nE858YQgyuWwo5LyblLzF7Jwhty6HXVM64iI2vprZJx+rlmw7E83wijnymN/Ho5gw\nVH9w+nzXmziZlUbfubRmtcNbn3eoNGI4c+VQ2+PXReT67r4m4fZ7a+CwRrcRyV00\nmMuPhlPnjIcK/mLpGIwr9cc=\n-----END PRIVATE KEY-----\n",
+Detected potential vulnerability in server/encryption.ts
+Detected potential vulnerability in server/encryption.ts
+Detected potential vulnerability in server/google-test.ts
+Google (GCM) Service account detected
+server/google-test.ts
+      type: "service_account",
+Detected potential vulnerability in server/google-test.ts
+Detected potential vulnerability in server/google-test.ts
+Detected potential vulnerability in server/oauth.ts
+Google OAuth url detected
+server/oauth.ts
+    clientId: "832297164791-fb4c444mofjgoch42cjdp704daenj48s.apps.googleusercontent.com",
+Detected potential vulnerability in server/setup-api.ts
+Google (GCM) Service account detected
+server/setup-api.ts
+      type: "service_account",
+Detected potential vulnerability in server/setup-api.ts
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+server/setup-api.ts
+      private_key_id: "9870960230c503ea4140ffda3624561ae8f1232c",
+Detected potential vulnerability in server/setup-api.ts
+A gitleaks private-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module).
+server/setup-api.ts
+      private_key: "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDZGDuvCYhBzut4\necnKDXceoD37appDn0GEYsDrpHj+e59p7NMP5B1hY68pIaEpWCHgKnwllfSat5YH\nycryph4d2y2Icv0fnQ75bSYp++rm3FxtOYEy0bqSSivy68Tnx7gHLa2Lius8zwZ2\nwyuBF5k957Jy71IzIFivrnp6RSPsjmHkO4AkhcnFkI6fG2Zjo1J3ep7eE2rE5x20\ndpcvEI/fADiAqFild6WEE3qzDCtDy30XZAXktw7EcuqoS69nJUzmAduvsqFAa4na\nGDJQRG/lmS2XbG5AYfPQqltZ8VgIB6OtAi4l5JOyUtI3cTp/WKGYT68QHperre8T\nHz953AwZAgMBAAECggEADmrqlhfEr4tO3hYizZ6SdM3OuSJ9t2aLN3/9wx9pVIwp\nh/7xs8ALTAszLvewpeWPNvRpEyaEfJg/0YThcElta3Z4f8846APcq7n+tG2qcw7b\nKbHWsgm+2GycVSpx4EbGR0vEThNwff4SWtNgP0T28kKLHvWJCv9VX+jvOtGQ9+qe\nDxel85UlLP8jtXASg1GzXQf4I+br7sogfC2pDJD/zHmZH2gjyHdOZgTP0ZQWAwTm\nR9DnxRWaq6TM+sz8GxWJSsxSHIfHVDLV+B8sZgFvw+Rd37jdkYI/t4kKRWtUZ/6E\nNSjdc3kcTdjbJrms7fL3nCupeLDUdPdt8embIFbWNQKBgQD0uH2WcITTDoxB0MDU\nkCsvartlpywFvrWjKfC4MKftIxuulTF2BBhyGKROyCHEhPLbmuqEgtKFqEC4v6cs\nfNCvxI97js0cYdOzAI8WxnWkUnBxe4i0V62bnl+vvejxgvIkaoJ+C7FEAg7whVWc\nKqtbiNPHBGbhtSTWUCMZgUZ/iwKBgQDjGccT1jAf4yudsmlTzyNIFk5ozjrZk2+1\nX98cAg+dVBTPTJlbrNx9mEzBhMNjJJ1RBgNfkjowSgeGGbLeUGZ9Mrp1L4PZDCRY\nT2GReWHT7Ke4IRsmJ1S13SEl48fC+qX7zerxpb3sl29FvFgNkZwVMzZfDiluLwp1\nfRxWDbXXawKBgQCU5YesOAvo6qoWBXC+JHXSJOueXwee+zlC7GrFdv1FgJ4ALFBq\n0PUavrmCIazCCG5Hhct5EqwKnKO8hQevPsYum7b9Y5aS1UbcW9Oz9M5xS6OUuKgl\nqk88JzFrGW6ZO6Ye2BtLm8ugaGw0lbvQB/o4+Fh6d8gtPm0KZLnmc8y0HwKBgHTe\nSSKeMPnX8BQhQi7NA/0O7Z7lskdRpkUSZ0CElwCByou7gZg55uYDQEy+Q8Z7izGt\nBINkPummzyRliTT67yMyvd2cbB+ALhv8DdvNOVjUCqOo9c22o9NLTsmu5JgkYNKq\nb2OXxZtBexPKDw48hrQqPKrCIPQA5UL89V4bhB6tAoGAI0zOSZax5XvQdjF+yUqo\ng3AwjA4Nwx9SRmzyRl8fI1g/iiU8LDKgoiuwJoJdPaUsHt1a/HfQsxzIm2BNGBKE\nCGr647BnYoWZd2ok9bC5+XFkpBs4vS2jzjpkzHEv1t8BaSpt7Afw14S4QKpC1CLJ\nhW9jtwyV8evkAx3e3fIHKBY=\n-----END PRIVATE KEY-----\n",
+Detected potential vulnerability in attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+Google (GCM) Service account detected
+attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+  "type": "service_account",
+Detected potential vulnerability in attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+  "private_key_id": "3da1432c70aa81fcd784682fcb520416987e1f3b",
+Detected potential vulnerability in attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+A gitleaks private-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module).
+attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCfxjzMNN5z1kJ9\nA1j7hdLXdArqgLMAKxMBL6+oU9ihvSD+cfgIwn3Ucn9djlssoJ7UiyF8xmJLQoEt\nEl67W3QXyEMZXRJYKK9fPodnE7hoGs/MLtsdQHGt8Nt1e935Q3o9vcFJYS/mxGad\nOdhikG/3clbTsAf6rFy0I8P/6xpmK2IGnsDLr6U5vvrezcx2Ec2vqdBJSxoQ9w3v\no12QVHTj3YssxP6ZO4atPMLDWNHVmI4EIvilaGaI5L7bIxLS6Z8Pys2c8UoeVqKf\nPLdr8mCSMPbblm7mVQ0LpYIglo7lk/Dk0p4rabs0Ni4SImlkRh62b9BYeyZpeIMd\nbLwR2znZAgMBAAECggEAFpQvtFYGV81gIQWPlh/vz1XNUx1z7mKn8WN5SerrctPk\n7UBS4n4FxTeXCzQaa2CZgYTV6ymn62XPFn0BmS2P5up8nQF7nazGN8oA3Y66YS/k\nzMCUY3pfdkrS4LPsBxVDmaUOwx1yZQS9UZvCmg86W3gzj//Q6Nph0W06fhiN5wEi\nNGlb81Owgppe4mqnWqb0Oc5jIyDCfEK4K5IuJCnVZ+JXhcfavHmTadwb0rdykN88\nGrDnJC7WCuvhqCUufHIW8rPHzL296+6OgC1vMDYqijL61DZIT/wsBHjLlRwuMjyM\nirvwHHsePEDbV+KW8NjJJvXBRTDrMbzhhRpvvekbBwKBgQDYDLcvEl2Ca4fpfUSN\nfuktM/BfQX1PD1K90dDrHSt77bOxyy+O1esJwlujXtFKK00RDMV5NGSaNZq5swQG\n1U7vK2f1kRxBPFpt9I7G1Met70ZqAs7XgLt382VMBd3IrbjnyquYVfPFdFxwig7n\nEvr6O0iHW3D7RSJ9OKuCgJ38QwKBgQC9UZS+8KCSm0aFDUxUsmf/erLSr9MONzgH\nsC/a4g7EQeTRSu9hhMDk+ZkHbri5QjsY9kl58D+YCOF+C5YJ/zgbdsu6lHnQWfoJ\nqggcBlgbA4IbUZGwrmhW3sMXaUx7IgMfH9xlQP4ysDBvRbYWE3CYtLudp79Kl+qE\n0qotIgrdswKBgQC+GUohl/ZBaF5ZWwizu8RuKrJJDnW019XFAdXi2nLFg5zGRvMc\nqis6FhLNyAM9UKZp5yPmhuwyKBJxbQuQ+6WNmlLJ5xnGaNVkxHfQia7843nAk6Hu\nSu4pGDe8UbkY94qoIVMlIhPxXHZt63w7ZB8DiKBDwXjDDszPA8sddBAOwwKBgFgu\nbbhaYJCpHrnOreUtjF9liXG1T/tpIQIDwOaVMQedIbWSz9l+elKtJ+hcXFJ+VQSV\ngzf2/cgVKuMJBoP1iu7P8Kkhi3PO1TY3KrvTAKrkgW+0GMZRFmyQKhL3ixY3i3it\n4HyRP1Xg106dC+lQeLvIQzN19RYLmMLxVS7ckm8dAoGASRCA/MeiRW9mXgUA1KAX\nE858YQgyuWwo5LyblLzF7Jwhty6HXVM64iI2vprZJx+rlmw7E83wijnymN/Ho5gw\nVH9w+nzXmziZlUbfubRmtcNbn3eoNGI4c+VQ2+PXReT67r4m4fZ7a+CwRrcRyV00\nmMuPhlPnjIcK/mLpGIwr9cc=\n-----END PRIVATE KEY-----\n",
+Detected potential vulnerability in server/encryption.ts
+The deprecated functions 'createCipher' and 'createDecipher' generate the same initialization vector every time. For counter modes such as CTR, GCM, or CCM this leads to break of both confidentiality and integrity, if the key is used more than once. Other modes are still affected in their strength, though they're not completely broken. Use 'createCipheriv' or 'createDecipheriv' instead.
+server/encryption.ts
+    const cipher = crypto.createCipher(ALGORITHM, ENCRYPTION_KEY);
+Detected potential vulnerability in server/encryption.ts
+The deprecated functions 'createCipher' and 'createDecipher' generate the same initialization vector every time. For counter modes such as CTR, GCM, or CCM this leads to break of both confidentiality and integrity, if the key is used more than once. Other modes are still affected in their strength, though they're not completely broken. Use 'createCipheriv' or 'createDecipheriv' instead.
+server/encryption.ts
+    const decipher = crypto.createDecipher(ALGORITHM, ENCRYPTION_KEY);
+Detected potential vulnerability in server/google-test.ts
+Google (GCM) Service account detected
+server/google-test.ts
+      type: "service_account",
+Detected potential vulnerability in server/google-test.ts
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+server/google-test.ts
+      private_key_id: "9870960230c503ea4140ffda3624561ae8f1232c",
+Detected potential vulnerability in server/google-test.ts
+A gitleaks private-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module).
+server/google-test.ts
+      private_key: "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDZGDuvCYhBzut4\necnKDXceoD37appDn0GEYsDrpHj+e59p7NMP5B1hY68pIaEpWCHgKnwllfSat5YH\nycryph4d2y2Icv0fnQ75bSYp++rm3FxtOYEy0bqSSivy68Tnx7gHLa2Lius8zwZ2\nwyuBF5k957Jy71IzIFivrnp6RSPsjmHkO4AkhcnFkI6fG2Zjo1J3ep7eE2rE5x20\ndpcvEI/fADiAqFild6WEE3qzDCtDy30XZAXktw7EcuqoS69nJUzmAduvsqFAa4na\nGDJQRG/lmS2XbG5AYfPQqltZ8VgIB6OtAi4l5JOyUtI3cTp/WKGYT68QHperre8T\nHz953AwZAgMBAAECggEADmrqlhfEr4tO3hYizZ6SdM3OuSJ9t2aLN3/9wx9pVIwp\nh/7xs8ALTAszLvewpeWPNvRpEyaEfJg/0YThcElta3Z4f8846APcq7n+tG2qcw7b\nKbHWsgm+2GycVSpx4EbGR0vEThNwff4SWtNgP0T28kKLHvWJCv9VX+jvOtGQ9+qe\nDxel85UlLP8jtXASg1GzXQf4I+br7sogfC2pDJD/zHmZH2gjyHdOZgTP0ZQWAwTm\nR9DnxRWaq6TM+sz8GxWJSsxSHIfHVDLV+B8sZgFvw+Rd37jdkYI/t4kKRWtUZ/6E\nNSjdc3kcTdjbJrms7fL3nCupeLDUdPdt8embIFbWNQKBgQD0uH2WcITTDoxB0MDU\nkCsvartlpywFvrWjKfC4MKftIxuulTF2BBhyGKROyCHEhPLbmuqEgtKFqEC4v6cs\nfNCvxI97js0cYdOzAI8WxnWkUnBxe4i0V62bnl+vvejxgvIkaoJ+C7FEAg7whVWc\nKqtbiNPHBGbhtSTWUCMZgUZ/iwKBgQDjGccT1jAf4yudsmlTzyNIFk5ozjrZk2+1\nX98cAg+dVBTPTJlbrNx9mEzBhMNjJJ1RBgNfkjowSgeGGbLeUGZ9Mrp1L4PZDCRY\nT2GReWHT7Ke4IRsmJ1S13SEl48fC+qX7zerxpb3sl29FvFgNkZwVMzZfDiluLwp1\nfRxWDbXXawKBgQCU5YesOAvo6qoWBXC+JHXSJOueXwee+zlC7GrFdv1FgJ4ALFBq\n0PUavrmCIazCCG5Hhct5EqwKnKO8hQevPsYum7b9Y5aS1UbcW9Oz9M5xS6OUuKgl\nqk88JzFrGW6ZO6Ye2BtLm8ugaGw0lbvQB/o4+Fh6d8gtPm0KZLnmc8y0HwKBgHTe\nSSKeMPnX8BQhQi7NA/0O7Z7lskdRpkUSZ0CElwCByou7gZg55uYDQEy+Q8Z7izGt\nBINkPummzyRliTT67yMyvd2cbB+ALhv8DdvNOVjUCqOo9c22o9NLTsmu5JgkYNKq\nb2OXxZtBexPKDw48hrQqPKrCIPQA5UL89V4bhB6tAoGAI0zOSZax5XvQdjF+yUqo\ng3AwjA4Nwx9SRmzyRl8fI1g/iiU8LDKgoiuwJoJdPaUsHt1a/HfQsxzIm2BNGBKE\nCGr647BnYoWZd2ok9bC5+XFkpBs4vS2jzjpkzHEv1t8BaSpt7Afw14S4QKpC1CLJ\nhW9jtwyV8evkAx3e3fIHKBY=\n-----END PRIVATE KEY-----\n",
+Detected potential vulnerability in server/oauth.ts
+Google OAuth url detected
+server/oauth.ts
+    clientId: "832297164791-fb4c444mofjgoch42cjdp704daenj48s.apps.googleusercontent.com",
+Detected potential vulnerability in server/setup-api.ts
+Google (GCM) Service account detected
+server/setup-api.ts
+      type: "service_account",
+Detected potential vulnerability in server/setup-api.ts
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+server/setup-api.ts
+      private_key_id: "9870960230c503ea4140ffda3624561ae8f1232c",
+Detected potential vulnerability in server/setup-api.ts
+A gitleaks private-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module).
+server/setup-api.ts
+      private_key: "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDZGDuvCYhBzut4\necnKDXceoD37appDn0GEYsDrpHj+e59p7NMP5B1hY68pIaEpWCHgKnwllfSat5YH\nycryph4d2y2Icv0fnQ75bSYp++rm3FxtOYEy0bqSSivy68Tnx7gHLa2Lius8zwZ2\nwyuBF5k957Jy71IzIFivrnp6RSPsjmHkO4AkhcnFkI6fG2Zjo1J3ep7eE2rE5x20\ndpcvEI/fADiAqFild6WEE3qzDCtDy30XZAXktw7EcuqoS69nJUzmAduvsqFAa4na\nGDJQRG/lmS2XbG5AYfPQqltZ8VgIB6OtAi4l5JOyUtI3cTp/WKGYT68QHperre8T\nHz953AwZAgMBAAECggEADmrqlhfEr4tO3hYizZ6SdM3OuSJ9t2aLN3/9wx9pVIwp\nh/7xs8ALTAszLvewpeWPNvRpEyaEfJg/0YThcElta3Z4f8846APcq7n+tG2qcw7b\nKbHWsgm+2GycVSpx4EbGR0vEThNwff4SWtNgP0T28kKLHvWJCv9VX+jvOtGQ9+qe\nDxel85UlLP8jtXASg1GzXQf4I+br7sogfC2pDJD/zHmZH2gjyHdOZgTP0ZQWAwTm\nR9DnxRWaq6TM+sz8GxWJSsxSHIfHVDLV+B8sZgFvw+Rd37jdkYI/t4kKRWtUZ/6E\nNSjdc3kcTdjbJrms7fL3nCupeLDUdPdt8embIFbWNQKBgQD0uH2WcITTDoxB0MDU\nkCsvartlpywFvrWjKfC4MKftIxuulTF2BBhyGKROyCHEhPLbmuqEgtKFqEC4v6cs\nfNCvxI97js0cYdOzAI8WxnWkUnBxe4i0V62bnl+vvejxgvIkaoJ+C7FEAg7whVWc\nKqtbiNPHBGbhtSTWUCMZgUZ/iwKBgQDjGccT1jAf4yudsmlTzyNIFk5ozjrZk2+1\nX98cAg+dVBTPTJlbrNx9mEzBhMNjJJ1RBgNfkjowSgeGGbLeUGZ9Mrp1L4PZDCRY\nT2GReWHT7Ke4IRsmJ1S13SEl48fC+qX7zerxpb3sl29FvFgNkZwVMzZfDiluLwp1\nfRxWDbXXawKBgQCU5YesOAvo6qoWBXC+JHXSJOueXwee+zlC7GrFdv1FgJ4ALFBq\n0PUavrmCIazCCG5Hhct5EqwKnKO8hQevPsYum7b9Y5aS1UbcW9Oz9M5xS6OUuKgl\nqk88JzFrGW6ZO6Ye2BtLm8ugaGw0lbvQB/o4+Fh6d8gtPm0KZLnmc8y0HwKBgHTe\nSSKeMPnX8BQhQi7NA/0O7Z7lskdRpkUSZ0CElwCByou7gZg55uYDQEy+Q8Z7izGt\nBINkPummzyRliTT67yMyvd2cbB+ALhv8DdvNOVjUCqOo9c22o9NLTsmu5JgkYNKq\nb2OXxZtBexPKDw48hrQqPKrCIPQA5UL89V4bhB6tAoGAI0zOSZax5XvQdjF+yUqo\ng3AwjA4Nwx9SRmzyRl8fI1g/iiU8LDKgoiuwJoJdPaUsHt1a/HfQsxzIm2BNGBKE\nCGr647BnYoWZd2ok9bC5+XFkpBs4vS2jzjpkzHEv1t8BaSpt7Afw14S4QKpC1CLJ\nhW9jtwyV8evkAx3e3fIHKBY=\n-----END PRIVATE KEY-----\n",
+Detected potential vulnerability in attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+Google (GCM) Service account detected
+attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+      type: "service_account",
+Detected potential vulnerability in attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+      private_key_id: "9870960230c503ea4140ffda3624561ae8f1232c",
+Detected potential vulnerability in attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+Google OAuth url detected
+attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+    clientId: "832297164791-fb4c444mofjgoch42cjdp704daenj48s.apps.googleusercontent.com",
+Detected potential vulnerability in attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+Google (GCM) Service account detected
+attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+      type: "service_account",
+Detected potential vulnerability in attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+attached_assets/Pasted--Chats-Archived-projet-assimilation-mise-a-jour-racine-1-hour-ago-metoi-a-jour-en-assimilon-la-to-1748279767515.txt
+      private_key_id: "9870960230c503ea4140ffda3624561ae8f1232c",
+Detected potential vulnerability in attached_assets/Pasted-12-potential-vulnerabilities-found-Last-ran-on-7-13-pm-May-26-2025-Detected-potential-vulnerabil-1748282213117.txt
+Google (GCM) Service account detected
+attached_assets/Pasted-12-potential-vulnerabilities-found-Last-ran-on-7-13-pm-May-26-2025-Detected-potential-vulnerabil-1748282213117.txt
+  "type": "service_account",
+Detected potential vulnerability in attached_assets/Pasted-12-potential-vulnerabilities-found-Last-ran-on-7-13-pm-May-26-2025-Detected-potential-vulnerabil-1748282213117.txt
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+attached_assets/Pasted-12-potential-vulnerabilities-found-Last-ran-on-7-13-pm-May-26-2025-Detected-potential-vulnerabil-1748282213117.txt
+  "private_key_id": "3da1432c70aa81fcd784682fcb520416987e1f3b",
+Detected potential vulnerability in attached_assets/Pasted-12-potential-vulnerabilities-found-Last-ran-on-7-13-pm-May-26-2025-Detected-potential-vulnerabil-1748282213117.txt
+A gitleaks private-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module).
+attached_assets/Pasted-12-potential-vulnerabilities-found-Last-ran-on-7-13-pm-May-26-2025-Detected-potential-vulnerabil-1748282213117.txt
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCfxjzMNN5z1kJ9\nA1j7hdLXdArqgLMAKxMBL6+oU9ihvSD+cfgIwn3Ucn9djlssoJ7UiyF8xmJLQoEt\nEl67W3QXyEMZXRJYKK9fPodnE7hoGs/MLtsdQHGt8Nt1e935Q3o9vcFJYS/mxGad\nOdhikG/3clbTsAf6rFy0I8P/6xpmK2IGnsDLr6U5vvrezcx2Ec2vqdBJSxoQ9w3v\no12QVHTj3YssxP6ZO4atPMLDWNHVmI4EIvilaGaI5L7bIxLS6Z8Pys2c8UoeVqKf\nPLdr8mCSMPbblm7mVQ0LpYIglo7lk/Dk0p4rabs0Ni4SImlkRh62b9BYeyZpeIMd\nbLwR2znZAgMBAAECggEAFpQvtFYGV81gIQWPlh/vz1XNUx1z7mKn8WN5SerrctPk\n7UBS4n4FxTeXCzQaa2CZgYTV6ymn62XPFn0BmS2P5up8nQF7nazGN8oA3Y66YS/k\nzMCUY3pfdkrS4LPsBxVDmaUOwx1yZQS9UZvCmg86W3gzj//Q6Nph0W06fhiN5wEi\nNGlb81Owgppe4mqnWqb0Oc5jIyDCfEK4K5IuJCnVZ+JXhcfavHmTadwb0rdykN88\nGrDnJC7WCuvhqCUufHIW8rPHzL296+6OgC1vMDYqijL61DZIT/wsBHjLlRwuMjyM\nirvwHHsePEDbV+KW8NjJJvXBRTDrMbzhhRpvvekbBwKBgQDYDLcvEl2Ca4fpfUSN\nfuktM/BfQX1PD1K90dDrHSt77bOxyy+O1esJwlujXtFKK00RDMV5NGSaNZq5swQG\n1U7vK2f1kRxBPFpt9I7G1Met70ZqAs7XgLt382VMBd3IrbjnyquYVfPFdFxwig7n\nEvr6O0iHW3D7RSJ9OKuCgJ38QwKBgQC9UZS+8KCSm0aFDUxUsmf/erLSr9MONzgH\nsC/a4g7EQeTRSu9hhMDk+ZkHbri5QjsY9kl58D+YCOF+C5YJ/zgbdsu6lHnQWfoJ\nqggcBlgbA4IbUZGwrmhW3sMXaUx7IgMfH9xlQP4ysDBvRbYWE3CYtLudp79Kl+qE\n0qotIgrdswKBgQC+GUohl/ZBaF5ZWwizu8RuKrJJDnW019XFAdXi2nLFg5zGRvMc\nqis6FhLNyAM9UKZp5yPmhuwyKBJxbQuQ+6WNmlLJ5xnGaNVkxHfQia7843nAk6Hu\nSu4pGDe8UbkY94qoIVMlIhPxXHZt63w7ZB8DiKBDwXjDDszPA8sddBAOwwKBgFgu\nbbhaYJCpHrnOreUtjF9liXG1T/tpIQIDwOaVMQedIbWSz9l+elKtJ+hcXFJ+VQSV\ngzf2/cgVKuMJBoP1iu7P8Kkhi3PO1TY3KrvTAKrkgW+0GMZRFmyQKhL3ixY3i3it\n4HyRP1Xg106dC+lQeLvIQzN19RYLmMLxVS7ckm8dAoGASRCA/MeiRW9mXgUA1KAX\nE858YQgyuWwo5LyblLzF7Jwhty6HXVM64iI2vprZJx+rlmw7E83wijnymN/Ho5gw\nVH9w+nzXmziZlUbfubRmtcNbn3eoNGI4c+VQ2+PXReT67r4m4fZ7a+CwRrcRyV00\nmMuPhlPnjIcK/mLpGIwr9cc=\n-----END PRIVATE KEY-----\n",
+Detected potential vulnerability in server/encryption.ts
+The deprecated functions 'createCipher' and 'createDecipher' generate the same initialization vector every time. For counter modes such as CTR, GCM, or CCM this leads to break of both confidentiality and integrity, if the key is used more than once. Other modes are still affected in their strength, though they're not completely broken. Use 'createCipheriv' or 'createDecipheriv' instead.
+server/encryption.ts
+    const cipher = crypto.createCipher(ALGORITHM, ENCRYPTION_KEY);
+Detected potential vulnerability in server/encryption.ts
+The deprecated functions 'createCipher' and 'createDecipher' generate the same initialization vector every time. For counter modes such as CTR, GCM, or CCM this leads to break of both confidentiality and integrity, if the key is used more than once. Other modes are still affected in their strength, though they're not completely broken. Use 'createCipheriv' or 'createDecipheriv' instead.
+server/encryption.ts
+    const decipher = crypto.createDecipher(ALGORITHM, ENCRYPTION_KEY);
+Detected potential vulnerability in server/google-test.ts
+Google (GCM) Service account detected
+server/google-test.ts
+      type: "service_account",
+Detected potential vulnerability in server/google-test.ts
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+server/google-test.ts
+      private_key_id: "9870960230c503ea4140ffda3624561ae8f1232c",
+Detected potential vulnerability in server/google-test.ts
+A gitleaks private-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module).
+server/google-test.ts
+      private_key: "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDZGDuvCYhBzut4\necnKDXceoD37appDn0GEYsDrpHj+e59p7NMP5B1hY68pIaEpWCHgKnwllfSat5YH\nycryph4d2y2Icv0fnQ75bSYp++rm3FxtOYEy0bqSSivy68Tnx7gHLa2Lius8zwZ2\nwyuBF5k957Jy71IzIFivrnp6RSPsjmHkO4AkhcnFkI6fG2Zjo1J3ep7eE2rE5x20\ndpcvEI/fADiAqFild6WEE3qzDCtDy30XZAXktw7EcuqoS69nJUzmAduvsqFAa4na\nGDJQRG/lmS2XbG5AYfPQqltZ8VgIB6OtAi4l5JOyUtI3cTp/WKGYT68QHperre8T\nHz953AwZAgMBAAECggEADmrqlhfEr4tO3hYizZ6SdM3OuSJ9t2aLN3/9wx9pVIwp\nh/7xs8ALTAszLvewpeWPNvRpEyaEfJg/0YThcElta3Z4f8846APcq7n+tG2qcw7b\nKbHWsgm+2GycVSpx4EbGR0vEThNwff4SWtNgP0T28kKLHvWJCv9VX+jvOtGQ9+qe\nDxel85UlLP8jtXASg1GzXQf4I+br7sogfC2pDJD/zHmZH2gjyHdOZgTP0ZQWAwTm\nR9DnxRWaq6TM+sz8GxWJSsxSHIfHVDLV+B8sZgFvw+Rd37jdkYI/t4kKRWtUZ/6E\nNSjdc3kcTdjbJrms7fL3nCupeLDUdPdt8embIFbWNQKBgQD0uH2WcITTDoxB0MDU\nkCsvartlpywFvrWjKfC4MKftIxuulTF2BBhyGKROyCHEhPLbmuqEgtKFqEC4v6cs\nfNCvxI97js0cYdOzAI8WxnWkUnBxe4i0V62bnl+vvejxgvIkaoJ+C7FEAg7whVWc\nKqtbiNPHBGbhtSTWUCMZgUZ/iwKBgQDjGccT1jAf4yudsmlTzyNIFk5ozjrZk2+1\nX98cAg+dVBTPTJlbrNx9mEzBhMNjJJ1RBgNfkjowSgeGGbLeUGZ9Mrp1L4PZDCRY\nT2GReWHT7Ke4IRsmJ1S13SEl48fC+qX7zerxpb3sl29FvFgNkZwVMzZfDiluLwp1\nfRxWDbXXawKBgQCU5YesOAvo6qoWBXC+JHXSJOueXwee+zlC7GrFdv1FgJ4ALFBq\n0PUavrmCIazCCG5Hhct5EqwKnKO8hQevPsYum7b9Y5aS1UbcW9Oz9M5xS6OUuKgl\nqk88JzFrGW6ZO6Ye2BtLm8ugaGw0lbvQB/o4+Fh6d8gtPm0KZLnmc8y0HwKBgHTe\nSSKeMPnX8BQhQi7NA/0O7Z7lskdRpkUSZ0CElwCByou7gZg55uYDQEy+Q8Z7izGt\nBINkPummzyRliTT67yMyvd2cbB+ALhv8DdvNOVjUCqOo9c22o9NLTsmu5JgkYNKq\nb2OXxZtBexPKDw48hrQqPKrCIPQA5UL89V4bhB6tAoGAI0zOSZax5XvQdjF+yUqo\ng3AwjA4Nwx9SRmzyRl8fI1g/iiU8LDKgoiuwJoJdPaUsHt1a/HfQsxzIm2BNGBKE\nCGr647BnYoWZd2ok9bC5+XFkpBs4vS2jzjpkzHEv1t8BaSpt7Afw14S4QKpC1CLJ\nhW9jtwyV8evkAx3e3fIHKBY=\n-----END PRIVATE KEY-----\n",
+Detected potential vulnerability in server/oauth.ts
+Google OAuth url detected
+server/oauth.ts
+    clientId: "832297164791-fb4c444mofjgoch42cjdp704daenj48s.apps.googleusercontent.com",
+Detected potential vulnerability in server/setup-api.ts
+Google (GCM) Service account detected
+server/setup-api.ts
+      type: "service_account",
+Detected potential vulnerability in server/setup-api.ts
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+server/setup-api.ts
+      private_key_id: "9870960230c503ea4140ffda3624561ae8f1232c",
+Detected potential vulnerability in server/setup-api.ts
+A gitleaks private-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module).
+server/setup-api.ts
+      private_key: "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDZGDuvCYhBzut4\necnKDXceoD37appDn0GEYsDrpHj+e59p7NMP5B1hY68pIaEpWCHgKnwllfSat5YH\nycryph4d2y2Icv0fnQ75bSYp++rm3FxtOYEy0bqSSivy68Tnx7gHLa2Lius8zwZ2\nwyuBF5k957Jy71IzIFivrnp6RSPsjmHkO4AkhcnFkI6fG2Zjo1J3ep7eE2rE5x20\ndpcvEI/fADiAqFild6WEE3qzDCtDy30XZAXktw7EcuqoS69nJUzmAduvsqFAa4na\nGDJQRG/lmS2XbG5AYfPQqltZ8VgIB6OtAi4l5JOyUtI3cTp/WKGYT68QHperre8T\nHz953AwZAgMBAAECggEADmrqlhfEr4tO3hYizZ6SdM3OuSJ9t2aLN3/9wx9pVIwp\nh/7xs8ALTAszLvewpeWPNvRpEyaEfJg/0YThcElta3Z4f8846APcq7n+tG2qcw7b\nKbHWsgm+2GycVSpx4EbGR0vEThNwff4SWtNgP0T28kKLHvWJCv9VX+jvOtGQ9+qe\nDxel85UlLP8jtXASg1GzXQf4I+br7sogfC2pDJD/zHmZH2gjyHdOZgTP0ZQWAwTm\nR9DnxRWaq6TM+sz8GxWJSsxSHIfHVDLV+B8sZgFvw+Rd37jdkYI/t4kKRWtUZ/6E\nNSjdc3kcTdjbJrms7fL3nCupeLDUdPdt8embIFbWNQKBgQD0uH2WcITTDoxB0MDU\nkCsvartlpywFvrWjKfC4MKftIxuulTF2BBhyGKROyCHEhPLbmuqEgtKFqEC4v6cs\nfNCvxI97js0cYdOzAI8WxnWkUnBxe4i0V62bnl+vvejxgvIkaoJ+C7FEAg7whVWc\nKqtbiNPHBGbhtSTWUCMZgUZ/iwKBgQDjGccT1jAf4yudsmlTzyNIFk5ozjrZk2+1\nX98cAg+dVBTPTJlbrNx9mEzBhMNjJJ1RBgNfkjowSgeGGbLeUGZ9Mrp1L4PZDCRY\nT2GReWHT7Ke4IRsmJ1S13SEl48fC+qX7zerxpb3sl29FvFgNkZwVMzZfDiluLwp1\nfRxWDbXXawKBgQCU5YesOAvo6qoWBXC+JHXSJOueXwee+zlC7GrFdv1FgJ4ALFBq\n0PUavrmCIazCCG5Hhct5EqwKnKO8hQevPsYum7b9Y5aS1UbcW9Oz9M5xS6OUuKgl\nqk88JzFrGW6ZO6Ye2BtLm8ugaGw0lbvQB/o4+Fh6d8gtPm0KZLnmc8y0HwKBgHTe\nSSKeMPnX8BQhQi7NA/0O7Z7lskdRpkUSZ0CElwCByou7gZg55uYDQEy+Q8Z7izGt\nBINkPummzyRliTT67yMyvd2cbB+ALhv8DdvNOVjUCqOo9c22o9NLTsmu5JgkYNKq\nb2OXxZtBexPKDw48hrQqPKrCIPQA5UL89V4bhB6tAoGAI0zOSZax5XvQdjF+yUqo\ng3AwjA4Nwx9SRmzyRl8fI1g/iiU8LDKgoiuwJoJdPaUsHt1a/HfQsxzIm2BNGBKE\nCGr647BnYoWZd2ok9bC5+XFkpBs4vS2jzjpkzHEv1t8BaSpt7Afw14S4QKpC1CLJ\nhW9jtwyV8evkAx3e3fIHKBY=\n-----END PRIVATE KEY-----\n",
+Detected potential vulnerability in attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+Google (GCM) Service account detected
+attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+      type: "service_account",
+Detected potential vulnerability in attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+Google OAuth url detected
+attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+    clientId: "832297164791-fb4c444mofjgoch42cjdp704daenj48s.apps.googleusercontent.com",
+Detected potential vulnerability in attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+Google (GCM) Service account detected
+attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+      type: "service_account",
+Detected potential vulnerability in attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+      private_key_id: "9870960230c503ea4140ffda3624561ae8f1232c",
+Detected potential vulnerability in attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+Google (GCM) Service account detected
+attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+  "type": "service_account",
+Detected potential vulnerability in attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+  "private_key_id": "3da1432c70aa81fcd784682fcb520416987e1f3b",
+Detected potential vulnerability in attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+Google (GCM) Service account detected
+attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+      type: "service_account",
+Detected potential vulnerability in attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+      private_key_id: "9870960230c503ea4140ffda3624561ae8f1232c",
+Detected potential vulnerability in attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+Google OAuth url detected
+attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+    clientId: "832297164791-fb4c444mofjgoch42cjdp704daenj48s.apps.googleusercontent.com",
+Detected potential vulnerability in attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+Google (GCM) Service account detected
+attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+      type: "service_account",
+Detected potential vulnerability in attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+      private_key_id: "9870960230c503ea4140ffda3624561ae8f1232c",
+Detected potential vulnerability in attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+Google (GCM) Service account detected
+attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+      type: "service_account",
+Detected potential vulnerability in attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+      private_key_id: "9870960230c503ea4140ffda3624561ae8f1232c",
+Detected potential vulnerability in attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+Google OAuth url detected
+attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+    clientId: "832297164791-fb4c444mofjgoch42cjdp704daenj48s.apps.googleusercontent.com",
+Detected potential vulnerability in attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+Google (GCM) Service account detected
+attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+      type: "service_account",
+Detected potential vulnerability in attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+      private_key_id: "9870960230c503ea4140ffda3624561ae8f1232c",
+Detected potential vulnerability in attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+Google (GCM) Service account detected
+attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+  "type": "service_account",
+Detected potential vulnerability in attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+  "private_key_id": "3da1432c70aa81fcd784682fcb520416987e1f3b",
+Detected potential vulnerability in attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+Google (GCM) Service account detected
+attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+      type: "service_account",
+Detected potential vulnerability in attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+      private_key_id: "9870960230c503ea4140ffda3624561ae8f1232c",
+Detected potential vulnerability in attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+Google OAuth url detected
+attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+    clientId: "832297164791-fb4c444mofjgoch42cjdp704daenj48s.apps.googleusercontent.com",
+Detected potential vulnerability in attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+Google (GCM) Service account detected
+attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+      type: "service_account",
+Detected potential vulnerability in attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+      private_key_id: "9870960230c503ea4140ffda3624561ae8f1232c",
+Detected potential vulnerability in attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+Google (GCM) Service account detected
+attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+      type: "service_account",
+Detected potential vulnerability in attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+      private_key_id: "9870960230c503ea4140ffda3624561ae8f1232c",
+Detected potential vulnerability in attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+Google OAuth url detected
+attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+    clientId: "832297164791-fb4c444mofjgoch42cjdp704daenj48s.apps.googleusercontent.com",
+Detected potential vulnerability in attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+Google (GCM) Service account detected
+attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+      type: "service_account",
+Detected potential vulnerability in attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+A gitleaks generic-api-key was detected which attempts to identify hard-coded credentials. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). This rule can introduce a lot of false positives, it is not recommended to be used in PR comments.
+attached_assets/Pasted-24-potential-vulnerabilities-found-Last-ran-on-8-00-pm-May-26-2025-Detected-potential-vulnerabil-1748282442738.txt
+      private_key_id: "9870960230c503ea4140ffda3624561ae8f1232c",
+This security scan is powered by Semgrep Community Edition.
