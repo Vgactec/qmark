@@ -77,6 +77,180 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Test complet du système QMARK
+  app.get("/api/test/system-complete", async (req, res) => {
+    try {
+      console.log("🧪 [TEST SYSTÈME] Début test complet QMARK...");
+      
+      const results = {
+        system: "QMARK SaaS",
+        timestamp: new Date().toISOString(),
+        tests: {},
+        summary: { passed: 0, failed: 0, total: 0 }
+      };
+
+      // Test 1: Variables d'environnement
+      console.log("🔍 [TEST] 1. Variables d'environnement...");
+      const envTest = {
+        FACEBOOK_CLIENT_ID: !!process.env.FACEBOOK_CLIENT_ID,
+        FACEBOOK_CLIENT_SECRET: !!process.env.FACEBOOK_CLIENT_SECRET,
+        GOOGLE_CLIENT_ID: !!process.env.GOOGLE_CLIENT_ID,
+        GOOGLE_CLIENT_SECRET: !!process.env.GOOGLE_CLIENT_SECRET,
+        DATABASE_URL: !!process.env.DATABASE_URL,
+        ENCRYPTION_KEY: !!process.env.ENCRYPTION_KEY,
+        SESSION_SECRET: !!process.env.SESSION_SECRET,
+        CLIENT_URL: !!process.env.CLIENT_URL,
+        GOOGLE_SERVICE_ACCOUNT: !!process.env.GOOGLE_SERVICE_ACCOUNT
+      };
+      
+      const envPassed = Object.values(envTest).every(Boolean);
+      results.tests.environment = { status: envPassed ? "✅ PASS" : "❌ FAIL", details: envTest };
+      if (envPassed) results.summary.passed++; else results.summary.failed++;
+      results.summary.total++;
+
+      // Test 2: Base de données
+      console.log("🔍 [TEST] 2. Base de données...");
+      try {
+        const { pool } = await import('./db');
+        const dbResult = await pool.query('SELECT NOW()');
+        results.tests.database = { 
+          status: "✅ PASS", 
+          details: { connected: true, timestamp: dbResult.rows[0].now }
+        };
+        results.summary.passed++;
+      } catch (dbError) {
+        results.tests.database = { 
+          status: "❌ FAIL", 
+          details: { error: dbError instanceof Error ? dbError.message : "Unknown error" }
+        };
+        results.summary.failed++;
+      }
+      results.summary.total++;
+
+      // Test 3: Google Cloud
+      console.log("🔍 [TEST] 3. Google Cloud Storage...");
+      try {
+        const { Storage } = await import('@google-cloud/storage');
+        const storage = new Storage();
+        const projectId = await storage.getProjectId();
+        results.tests.googleCloud = { 
+          status: "✅ PASS", 
+          details: { connected: true, projectId }
+        };
+        results.summary.passed++;
+      } catch (gcError) {
+        results.tests.googleCloud = { 
+          status: "❌ FAIL", 
+          details: { error: gcError instanceof Error ? gcError.message : "Unknown error" }
+        };
+        results.summary.failed++;
+      }
+      results.summary.total++;
+
+      // Test 4: Facebook App ID validation
+      console.log("🔍 [TEST] 4. Facebook App ID...");
+      if (process.env.FACEBOOK_CLIENT_ID && /^\d+$/.test(process.env.FACEBOOK_CLIENT_ID)) {
+        try {
+          const graphResponse = await fetch(`https://graph.facebook.com/${process.env.FACEBOOK_CLIENT_ID}?fields=id,name`);
+          const graphData = await graphResponse.json();
+          
+          if (graphResponse.ok && graphData.id) {
+            results.tests.facebookApp = { 
+              status: "✅ PASS", 
+              details: { valid: true, appId: graphData.id, name: graphData.name }
+            };
+            results.summary.passed++;
+          } else {
+            results.tests.facebookApp = { 
+              status: "❌ FAIL", 
+              details: { error: graphData.error?.message || "App not found" }
+            };
+            results.summary.failed++;
+          }
+        } catch (fbError) {
+          results.tests.facebookApp = { 
+            status: "❌ FAIL", 
+            details: { error: fbError instanceof Error ? fbError.message : "Unknown error" }
+          };
+          results.summary.failed++;
+        }
+      } else {
+        results.tests.facebookApp = { 
+          status: "❌ FAIL", 
+          details: { error: "Facebook Client ID manquant ou invalide" }
+        };
+        results.summary.failed++;
+      }
+      results.summary.total++;
+
+      // Test 5: OAuth URLs génération
+      console.log("🔍 [TEST] 5. Génération URLs OAuth...");
+      try {
+        const { OAUTH_CONFIGS } = await import('./oauth');
+        const facebookConfig = OAUTH_CONFIGS?.facebook;
+        const googleConfig = OAUTH_CONFIGS?.google;
+        
+        const oauthTest = {
+          facebook: !!facebookConfig?.clientId && !!facebookConfig?.clientSecret,
+          google: !!googleConfig?.clientId && !!googleConfig?.clientSecret,
+          redirectUri: process.env.CLIENT_URL + "/api/oauth/callback"
+        };
+        
+        const oauthPassed = oauthTest.facebook && oauthTest.google;
+        results.tests.oauth = { 
+          status: oauthPassed ? "✅ PASS" : "❌ FAIL", 
+          details: oauthTest 
+        };
+        if (oauthPassed) results.summary.passed++; else results.summary.failed++;
+      } catch (oauthError) {
+        results.tests.oauth = { 
+          status: "❌ FAIL", 
+          details: { error: oauthError instanceof Error ? oauthError.message : "Unknown error" }
+        };
+        results.summary.failed++;
+      }
+      results.summary.total++;
+
+      // Test 6: Chiffrement
+      console.log("🔍 [TEST] 6. Système de chiffrement...");
+      try {
+        const { encrypt, decrypt } = await import('./encryption');
+        const testString = "test-qmark-encryption-2024";
+        const encrypted = encrypt(testString);
+        const decrypted = decrypt(encrypted);
+        
+        const encryptionPassed = decrypted === testString;
+        results.tests.encryption = { 
+          status: encryptionPassed ? "✅ PASS" : "❌ FAIL", 
+          details: { working: encryptionPassed }
+        };
+        if (encryptionPassed) results.summary.passed++; else results.summary.failed++;
+      } catch (encError) {
+        results.tests.encryption = { 
+          status: "❌ FAIL", 
+          details: { error: encError instanceof Error ? encError.message : "Unknown error" }
+        };
+        results.summary.failed++;
+      }
+      results.summary.total++;
+
+      // Résultat final
+      const successRate = Math.round((results.summary.passed / results.summary.total) * 100);
+      results.status = successRate >= 80 ? "🎉 SYSTÈME OPÉRATIONNEL" : "⚠️ ATTENTION REQUISE";
+      results.successRate = `${successRate}%`;
+
+      console.log(`📊 [TEST SYSTÈME] Résultat: ${results.summary.passed}/${results.summary.total} tests réussis (${successRate}%)`);
+      
+      res.json(results);
+    } catch (error) {
+      console.error("❌ [TEST SYSTÈME] Erreur:", error);
+      res.status(500).json({ 
+        status: "❌ ERREUR SYSTÈME",
+        error: error instanceof Error ? error.message : "Unknown error" 
+      });
+    }
+  });
+
   // Test Facebook OAuth configuration
   app.get("/api/test/facebook", async (req, res) => {
     try {
