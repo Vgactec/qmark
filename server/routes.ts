@@ -29,7 +29,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.clearCookie('replauth');
       res.clearCookie('replauth.sig');
       res.clearCookie('connect.sid');
-      
+
       // Détruire la session
       if (req.session) {
         req.session.destroy((err) => {
@@ -38,7 +38,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
         });
       }
-      
+
       res.json({ success: true, message: "Logged out successfully" });
     } catch (error) {
       console.error("Logout error:", error);
@@ -249,11 +249,148 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Metrics routes
   // Test Google API Connection
   app.get("/api/test/google", async (req, res) => {
-    const result = await testGoogleCloud();
-    if (!result.success) {
-      return res.status(500).json(result);
+    try {
+      const { Storage } = await import('@google-cloud/storage');
+      const storage = new Storage();
+
+      const [buckets] = await storage.getBuckets();
+      const projectId = await storage.getProjectId();
+
+      res.json({
+        success: true,
+        projectId,
+        buckets: buckets.map(bucket => bucket.name),
+        authenticated: true,
+        message: 'Google Cloud Storage connecté avec succès!'
+      });
+    } catch (error) {
+      console.error('Google Cloud Test Error:', error);
+      res.status(500).json({
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        authenticated: false
+      });
     }
-    res.json(result);
+  });
+
+  // Create Google Cloud Storage bucket
+  app.post('/api/google/create-bucket', async (req, res) => {
+    try {
+      const { bucketName } = req.body;
+
+      if (!bucketName) {
+        return res.status(400).json({
+          success: false,
+          error: 'Nom du bucket requis'
+        });
+      }
+
+      const { Storage } = await import('@google-cloud/storage');
+      const storage = new Storage();
+
+      // Create bucket with recommended settings for a SaaS application
+      const [bucket] = await storage.createBucket(bucketName, {
+        location: 'US',
+        storageClass: 'STANDARD',
+        versioning: { enabled: true },
+        lifecycle: {
+          rule: [
+            {
+              action: { type: 'Delete' },
+              condition: { age: 365 } // Delete files older than 1 year
+            }
+          ]
+        }
+      });
+
+      res.json({
+        success: true,
+        message: `Bucket '${bucketName}' créé avec succès!`,
+        bucket: {
+          name: bucket.name,
+          location: bucket.metadata.location,
+          storageClass: bucket.metadata.storageClass
+        }
+      });
+    } catch (error) {
+      console.error('Create Bucket Error:', error);
+      res.status(500).json({
+        success: false,
+        error: error instanceof Error ? error.message : 'Erreur lors de la création du bucket'
+      });
+    }
+  });
+
+  // Setup initial Google Cloud resources for QMARK
+  app.post('/api/google/setup', async (req, res) => {
+    try {
+      const { Storage } = await import('@google-cloud/storage');
+      const storage = new Storage();
+      const projectId = await storage.getProjectId();
+
+      // Create main buckets for QMARK application
+      const bucketsToCreate = [
+        {
+          name: `qmark-storage-${projectId}`,
+          description: 'Main storage for QMARK files'
+        },
+        {
+          name: `qmark-backups-${projectId}`,
+          description: 'Backup storage for QMARK'
+        },
+        {
+          name: `qmark-media-${projectId}`,
+          description: 'Media files for QMARK campaigns'
+        }
+      ];
+
+      const results = [];
+
+      for (const bucketInfo of bucketsToCreate) {
+        try {
+          const [bucket] = await storage.createBucket(bucketInfo.name, {
+            location: 'US',
+            storageClass: 'STANDARD',
+            versioning: { enabled: true }
+          });
+
+          results.push({
+            success: true,
+            name: bucket.name,
+            description: bucketInfo.description
+          });
+        } catch (error) {
+          // If bucket already exists, that's okay
+          if (error instanceof Error && error.message.includes('already exists')) {
+            results.push({
+              success: true,
+              name: bucketInfo.name,
+              description: bucketInfo.description,
+              note: 'Bucket déjà existant'
+            });
+          } else {
+            results.push({
+              success: false,
+              name: bucketInfo.name,
+              error: error instanceof Error ? error.message : 'Unknown error'
+            });
+          }
+        }
+      }
+
+      res.json({
+        success: true,
+        message: 'Configuration Google Cloud terminée!',
+        projectId,
+        buckets: results
+      });
+    } catch (error) {
+      console.error('Google Cloud Setup Error:', error);
+      res.status(500).json({
+        success: false,
+        error: error instanceof Error ? error.message : 'Erreur lors de la configuration'
+      });
+    }
   });
 
   app.get("/api/metrics", isAuthenticated, async (req: any, res) => {

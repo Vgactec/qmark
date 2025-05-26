@@ -8,7 +8,8 @@ import {
   Cloud, 
   TrendingUp,
   BarChart2,
-  Settings 
+  Settings,
+  PlusCircle
 } from "lucide-react";
 import { useState } from "react";
 import OAuthModal from "./oauth-modal";
@@ -29,9 +30,34 @@ export default function QuickActions() {
             const result = await response.json();
 
             if (result.success) {
-              alert(`✅ Google Cloud connecté!\nProjets: ${result.projectId}\nBuckets: ${result.buckets?.length || 0} buckets trouvés`);
+              alert(`✅ Google Cloud connecté!\nProjet: ${result.projectId}\nBuckets: ${result.buckets?.length || 0} buckets trouvés\n\n${result.message}`);
             } else {
               alert(`❌ Erreur Google Cloud:\n${result.error}`);
+            }
+          } catch (error) {
+            alert(`❌ Erreur de connexion:\n${error}`);
+          }
+        },
+    },
+    {
+      id: 'setup-google',
+      title: 'Configurer Google Cloud',
+      description: 'Créer les buckets et ressources nécessaires',
+      icon: Settings,
+      action: async () => {
+          try {
+            const response = await fetch('/api/google/setup', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            });
+            const result = await response.json();
+
+            if (result.success) {
+              alert(`✅ Configuration réussie!\nProjet: ${result.projectId}\n\nBuckets créés:\n${result.buckets.map(b => `• ${b.name} ${b.note ? '('+b.note+')' : ''}`).join('\n')}`);
+            } else {
+              alert(`❌ Erreur de configuration:\n${result.error}`);
             }
           } catch (error) {
             alert(`❌ Erreur de connexion:\n${error}`);

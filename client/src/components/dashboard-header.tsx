@@ -5,6 +5,72 @@ import { Bell, Menu, LogOut, Settings, User as UserIcon } from "lucide-react";
 import type { User } from "@shared/schema";
 
 interface DashboardHeaderProps {
+  user?: User;
+  onMenuClick?: () => void;
+}
+
+export default function DashboardHeader({ user, onMenuClick }: DashboardHeaderProps) {
+  const handleLogout = () => {
+    // Clear any stored authentication data
+    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
+    
+    // Redirect to landing page
+    window.location.href = '/';
+  };
+
+  return (
+    <header className="border-b border-neutral-200 bg-white px-6 py-4">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onMenuClick}
+            className="lg:hidden"
+          >
+            <Menu className="h-5 w-5" />
+          </Button>
+          <h1 className="text-xl font-semibold text-neutral-900">
+            Dashboard Principal
+          </h1>
+        </div>
+
+        <div className="flex items-center space-x-4">
+          <Button variant="ghost" size="sm" className="relative">
+            <Bell className="h-5 w-5" />
+            <span className="absolute -top-1 -right-1 h-2 w-2 bg-red-500 rounded-full"></span>
+          </Button>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage src={user?.avatar || ''} alt={user?.username || 'User'} />
+                  <AvatarFallback>
+                    <UserIcon className="h-4 w-4" />
+                  </AvatarFallback>
+                </Avatar>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56" align="end" forceMount>
+              <DropdownMenuItem>
+                <Settings className="mr-2 h-4 w-4" />
+                <span>Configurações</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleLogout}>
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>Sair da Conta</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+interface DashboardHeaderProps {
   user: User;
 }
 
