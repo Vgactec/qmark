@@ -3,20 +3,8 @@ import { Storage } from '@google-cloud/storage';
 
 export async function testGoogleCloudConnection() {
   try {
-    // Use GOOGLE_SERVICE_ACCOUNT from environment variables
-    let credentials;
-    
-    if (process.env.GOOGLE_SERVICE_ACCOUNT) {
-      try {
-        credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT);
-      } catch (error) {
-        return {
-          success: false,
-          error: 'Invalid GOOGLE_SERVICE_ACCOUNT JSON format',
-          suggestion: 'Vérifiez le format JSON de GOOGLE_SERVICE_ACCOUNT dans les variables d\'environnement'
-        };
-      }
-    } else {
+    // Check if Google Cloud credentials are properly configured in environment
+    if (!process.env.GOOGLE_SERVICE_ACCOUNT) {
       return {
         success: false,
         error: 'Missing GOOGLE_SERVICE_ACCOUNT in environment variables',
@@ -24,30 +12,41 @@ export async function testGoogleCloudConnection() {
       };
     }
 
-    // Initialize Google Cloud Storage with service account credentials
+    let serviceAccountConfig;
+    try {
+      serviceAccountConfig = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT);
+    } catch (error) {
+      return {
+        success: false,
+        error: 'Invalid GOOGLE_SERVICE_ACCOUNT JSON format',
+        suggestion: 'Vérifiez le format JSON de GOOGLE_SERVICE_ACCOUNT dans les variables d\'environnement'
+      };
+    }
+
+    // Initialize Google Cloud Storage using environment credentials only
     const storage = new Storage({
-      projectId: credentials.project_id,
-      credentials: credentials,
+      projectId: serviceAccountConfig.project_id,
+      credentials: serviceAccountConfig,
     });
     
     try {
       const [buckets] = await storage.getBuckets();
       return {
         success: true,
-        projectId: credentials.project_id,
+        projectId: serviceAccountConfig.project_id,
         buckets: buckets.map(b => b.name),
         authMethod: 'Service Account (Environment Variables)',
-        serviceAccount: credentials.client_email,
+        serviceAccount: serviceAccountConfig.client_email,
         message: '✅ Google Cloud Storage configuré avec variables d\'environnement!'
       };
     } catch (error: any) {
       if (error.code === 403 || error.message.includes('billing')) {
         return {
           success: true,
-          projectId: credentials.project_id,
+          projectId: serviceAccountConfig.project_id,
           buckets: [],
           authMethod: 'Service Account (Environment Variables)',
-          serviceAccount: credentials.client_email,
+          serviceAccount: serviceAccountConfig.client_email,
           message: '✅ Google Cloud connecté! (Facturation requise pour créer des buckets)',
           note: 'Configuration réussie - Service Account opérationnel'
         };
