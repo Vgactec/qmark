@@ -23,6 +23,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.post("/api/auth/logout", async (req, res) => {
+    try {
+      // Effacer les cookies de session
+      res.clearCookie('replauth');
+      res.clearCookie('replauth.sig');
+      res.clearCookie('connect.sid');
+      
+      // Détruire la session
+      if (req.session) {
+        req.session.destroy((err) => {
+          if (err) {
+            console.error("Session destruction error:", err);
+          }
+        });
+      }
+      
+      res.json({ success: true, message: "Logged out successfully" });
+    } catch (error) {
+      console.error("Logout error:", error);
+      res.status(500).json({ message: "Logout failed" });
+    }
+  });
+
   // Dashboard routes
   app.get("/api/dashboard/stats", isAuthenticated, async (req: any, res) => {
     try {

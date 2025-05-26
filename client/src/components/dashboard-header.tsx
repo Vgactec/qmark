@@ -38,14 +38,7 @@ export default function DashboardHeader({ user }: DashboardHeaderProps) {
             <span className="hidden sm:block text-sm text-neutral-600">MicroInFortal</span>
           </div>
 
-          {/* Navigation */}
-          <nav className="hidden md:flex items-center space-x-6">
-            <a href="/dashboard" className="text-neutral-700 hover:text-primary font-medium">Dashboard</a>
-            <a href="/automations" className="text-neutral-700 hover:text-primary font-medium">Automações</a>
-            <a href="/connections" className="text-neutral-700 hover:text-primary font-medium">Conexões</a>
-            <a href="/reports" className="text-neutral-700 hover:text-primary font-medium">Relatórios</a>
-            <a href="/support" className="text-neutral-700 hover:text-primary font-medium">Suporte</a>
-          </nav>
+          
 
           {/* User Menu */}
           <div className="flex items-center space-x-4">
@@ -93,8 +86,17 @@ export default function DashboardHeader({ user }: DashboardHeaderProps) {
                 </DropdownMenuItem>
                 <DropdownMenuItem 
                   onClick={() => {
-                    fetch('/api/auth/logout', { method: 'POST' })
-                      .then(() => window.location.href = '/');
+                    fetch('/api/auth/logout', { method: 'POST', credentials: 'include' })
+                      .then(() => {
+                        // Effacer le cache local et forcer la redirection
+                        localStorage.clear();
+                        sessionStorage.clear();
+                        window.location.replace('/');
+                      })
+                      .catch(() => {
+                        // En cas d'erreur, forcer la redirection quand même
+                        window.location.replace('/');
+                      });
                   }}
                   className="text-red-600 focus:text-red-600"
                 >

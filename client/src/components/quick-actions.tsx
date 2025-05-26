@@ -1,6 +1,15 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { PlusCircle, Link2, BarChart2, ChevronRight, Cloud } from "lucide-react";
+import { 
+  Zap, 
+  Link2, 
+  Users, 
+  ChevronRight, 
+  Cloud, 
+  TrendingUp,
+  BarChart2,
+  Settings 
+} from "lucide-react";
 import { useState } from "react";
 import OAuthModal from "./oauth-modal";
 import { useToast } from "@/hooks/use-toast";
