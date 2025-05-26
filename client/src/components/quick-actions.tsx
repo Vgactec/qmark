@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { PlusCircle, Link2, BarChart2, ChevronRight, CloudCheck } from "lucide-react";
+import { PlusCircle, Link2, BarChart2, ChevronRight, Cloud } from "lucide-react";
 import { useState } from "react";
 import OAuthModal from "./oauth-modal";
 import { useToast } from "@/hooks/use-toast";
@@ -13,7 +13,7 @@ export default function QuickActions() {
       id: 'test-google',
       title: 'Tester Google Cloud',
       description: 'Valider la connexion avec Google Cloud',
-      icon: CloudCheck,
+      icon: Cloud,
       action: async () => {
         try {
           const response = await fetch('/api/test/google');
