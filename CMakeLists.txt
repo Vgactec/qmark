@@ -14,10 +14,24 @@ endif()
 # Find required packages
 find_package(PkgConfig REQUIRED)
 
-# Find httplib
-find_path(HTTPLIB_INCLUDE_DIR httplib.h)
+# Find httplib (local or system)
+find_path(HTTPLIB_INCLUDE_DIR httplib.h 
+    PATHS 
+    ${CMAKE_SOURCE_DIR}/third_party
+    /usr/include
+    /usr/local/include
+)
+
 if(NOT HTTPLIB_INCLUDE_DIR)
-    message(FATAL_ERROR "httplib.h not found. Please install cpp-httplib")
+    message(STATUS "httplib.h not found, checking for local copy...")
+    if(EXISTS "${CMAKE_SOURCE_DIR}/third_party/httplib.h")
+        set(HTTPLIB_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/third_party")
+        message(STATUS "Using local httplib.h from third_party/")
+    else()
+        message(FATAL_ERROR "httplib.h not found. Please install cpp-httplib or place httplib.h in third_party/")
+    endif()
+else()
+    message(STATUS "Found httplib.h in: ${HTTPLIB_INCLUDE_DIR}")
 endif()
 
 # Find nlohmann/json
