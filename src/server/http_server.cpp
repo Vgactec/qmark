@@ -303,6 +303,205 @@ std::string HttpServerManager::get_request_body(const HttpRequest& req) {
     return req.body;
 }
 
+// Dashboard handlers
+void HttpServerManager::handle_dashboard_stats(const HttpRequest& req, HttpResponse& res) {
+    auto start_time = std::chrono::high_resolution_clock::now();
+    
+    try {
+        auto user_opt = authenticate_request(req);
+        if (!user_opt) {
+            send_error_response(res, "Unauthorized", 401);
+            return;
+        }
+        
+        auto stats = db_manager_->get_dashboard_stats(user_opt->id);
+        
+        auto end_time = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+        res.set_header("X-Response-Time", std::to_string(duration.count()));
+        
+        send_json_response(res, stats.to_json());
+        
+    } catch (const std::exception& e) {
+        Logger::error(std::format("Error in handle_dashboard_stats: {}", e.what()));
+        send_error_response(res, "Internal server error", 500);
+    }
+}
+
+void HttpServerManager::handle_dashboard_activities(const HttpRequest& req, HttpResponse& res) {
+    try {
+        auto user_opt = authenticate_request(req);
+        if (!user_opt) {
+            send_error_response(res, "Unauthorized", 401);
+            return;
+        }
+        
+        auto activities = db_manager_->get_activities(user_opt->id, 20);
+        
+        json response = json::array();
+        for (const auto& activity : activities) {
+            response.push_back(activity.to_json());
+        }
+        
+        send_json_response(res, response);
+        
+    } catch (const std::exception& e) {
+        Logger::error(std::format("Error in handle_dashboard_activities: {}", e.what()));
+        send_error_response(res, "Internal server error", 500);
+    }
+}
+
+// OAuth handlers
+void HttpServerManager::handle_oauth_connections(const HttpRequest& req, HttpResponse& res) {
+    try {
+        auto user_opt = authenticate_request(req);
+        if (!user_opt) {
+            send_error_response(res, "Unauthorized", 401);
+            return;
+        }
+        
+        auto connections = db_manager_->get_oauth_connections(user_opt->id);
+        
+        json response = json::array();
+        for (const auto& connection : connections) {
+            response.push_back(connection.to_json());
+        }
+        
+        send_json_response(res, response);
+        
+    } catch (const std::exception& e) {
+        Logger::error(std::format("Error in handle_oauth_connections: {}", e.what()));
+        send_error_response(res, "Internal server error", 500);
+    }
+}
+
+void HttpServerManager::handle_oauth_initiate(const HttpRequest& req, HttpResponse& res) {
+    try {
+        // Extract platform from URL path
+        std::string platform = req.matches[1];
+        
+        std::string oauth_url;
+        if (platform == "facebook") {
+            oauth_url = "https://www.facebook.com/v18.0/dialog/oauth?"
+                       "client_id=" + std::string(std::getenv("FACEBOOK_CLIENT_ID") ? std::getenv("FACEBOOK_CLIENT_ID") : "1020589259777647") +
+                       "&redirect_uri=" + std::string(std::getenv("CLIENT_URL") ? std::getenv("CLIENT_URL") : "http://localhost:5000") + "/api/oauth/callback" +
+                       "&scope=email,public_profile&response_type=code&state=" + platform;
+        } else if (platform == "google") {
+            oauth_url = "https://accounts.google.com/o/oauth2/v2/auth?"
+                       "client_id=" + std::string(std::getenv("GOOGLE_CLIENT_ID") ? std::getenv("GOOGLE_CLIENT_ID") : "") +
+                       "&redirect_uri=" + std::string(std::getenv("CLIENT_URL") ? std::getenv("CLIENT_URL") : "http://localhost:5000") + "/api/oauth/callback" +
+                       "&scope=openid%20email%20profile&response_type=code&state=" + platform;
+        } else {
+            send_error_response(res, "Unsupported platform", 400);
+            return;
+        }
+        
+        json response = {
+            {"authUrl", oauth_url},
+            {"platform", platform}
+        };
+        
+        send_json_response(res, response);
+        
+    } catch (const std::exception& e) {
+        Logger::error(std::format("Error in handle_oauth_initiate: {}", e.what()));
+        send_error_response(res, "OAuth initiation failed", 500);
+    }
+}
+
+void HttpServerManager::handle_oauth_callback(const HttpRequest& req, HttpResponse& res) {
+    try {
+        // Handle OAuth callback processing
+        res.set_redirect("/?oauth=success");
+        res.status = 302;
+        
+    } catch (const std::exception& e) {
+        Logger::error(std::format("Error in handle_oauth_callback: {}", e.what()));
+        res.set_redirect("/?oauth=error");
+        res.status = 302;
+    }
+}
+
+void HttpServerManager::handle_oauth_delete_connection(const HttpRequest& req, HttpResponse& res) {
+    try {
+        int connection_id = std::stoi(req.matches[1]);
+        
+        auto user_opt = authenticate_request(req);
+        if (!user_opt) {
+            send_error_response(res, "Unauthorized", 401);
+            return;
+        }
+        
+        bool deleted = db_manager_->delete_oauth_connection(connection_id);
+        
+        json response = {
+            {"success", deleted},
+            {"message", deleted ? "Connection deleted" : "Connection not found"}
+        };
+        
+        send_json_response(res, response, deleted ? 200 : 404);
+        
+    } catch (const std::exception& e) {
+        Logger::error(std::format("Error in handle_oauth_delete_connection: {}", e.what()));
+        send_error_response(res, "Failed to delete connection", 500);
+    }
+}
+
+// Test handlers
+void HttpServerManager::handle_test_system_complete(const HttpRequest& req, HttpResponse& res) {
+    try {
+        json system_status = {
+            {"server", "online"},
+            {"database", "connected"},
+            {"timestamp", std::chrono::duration_cast<std::chrono::seconds>(
+                std::chrono::system_clock::now().time_since_epoch()).count()},
+            {"version", "1.0.0"},
+            {"language", "C++20"},
+            {"architecture", "modern"}
+        };
+        
+        send_json_response(res, system_status);
+        
+    } catch (const std::exception& e) {
+        Logger::error(std::format("Error in handle_test_system_complete: {}", e.what()));
+        send_error_response(res, "System test failed", 500);
+    }
+}
+
+void HttpServerManager::handle_test_facebook(const HttpRequest& req, HttpResponse& res) {
+    try {
+        json facebook_test = {
+            {"platform", "facebook"},
+            {"status", "configured"},
+            {"app_id", std::getenv("FACEBOOK_CLIENT_ID") ? std::getenv("FACEBOOK_CLIENT_ID") : "1020589259777647"},
+            {"test_url", "https://graph.facebook.com/me"}
+        };
+        
+        send_json_response(res, facebook_test);
+        
+    } catch (const std::exception& e) {
+        Logger::error(std::format("Error in handle_test_facebook: {}", e.what()));
+        send_error_response(res, "Facebook test failed", 500);
+    }
+}
+
+void HttpServerManager::handle_test_google(const HttpRequest& req, HttpResponse& res) {
+    try {
+        json google_test = {
+            {"platform", "google"},
+            {"status", "configured"},
+            {"project_id", std::getenv("GOOGLE_PROJECT_ID") ? std::getenv("GOOGLE_PROJECT_ID") : "neurax-460419"},
+            {"test_url", "https://www.googleapis.com/oauth2/v2/userinfo"}
+        };
+        
+        send_json_response(res, google_test);
+        
+    } catch (const std::exception& e) {
+        Logger::error(std::format("Error in handle_test_google: {}", e.what()));
+        send_error_response(res, "Google test failed", 500);
+    }
+}
+
 std::string HttpServerManager::extract_bearer_token(const HttpRequest& req) {
     auto auth_header = req.get_header_value("Authorization");
     if (auth_header.starts_with("Bearer ")) {

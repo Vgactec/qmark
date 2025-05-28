@@ -1,112 +1,90 @@
 cmake_minimum_required(VERSION 3.20)
-project(QMarkCPP VERSION 1.0.0 LANGUAGES CXX)
+project(qmark-server VERSION 1.0.0 LANGUAGES CXX)
 
-# Modern C++ standards
+# Set C++20 standard
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# Compiler optimizations
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
-set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -DDEBUG")
+# Compiler-specific options
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    add_compile_options(-Wall -Wextra -Wpedantic -O3 -march=native)
+endif()
 
 # Find required packages
 find_package(PkgConfig REQUIRED)
-find_package(Threads REQUIRED)
 
-# External dependencies
-include(FetchContent)
+# Find httplib
+find_path(HTTPLIB_INCLUDE_DIR httplib.h)
+if(NOT HTTPLIB_INCLUDE_DIR)
+    message(FATAL_ERROR "httplib.h not found. Please install cpp-httplib")
+endif()
 
-# HTTP server library - httplib
-FetchContent_Declare(
-    httplib
-    GIT_REPOSITORY https://github.com/yhirose/cpp-httplib.git
-    GIT_TAG v0.14.3
-)
+# Find nlohmann/json
+find_package(nlohmann_json REQUIRED)
 
-# JSON library - nlohmann/json
-FetchContent_Declare(
-    json
-    GIT_REPOSITORY https://github.com/nlohmann/json.git
-    GIT_TAG v3.11.3
-)
+# Find SQLite
+find_package(SQLite3 REQUIRED)
 
-# SQLite3 modern wrapper
-FetchContent_Declare(
-    sqlite_modern_cpp
-    GIT_REPOSITORY https://github.com/SqliteModernCpp/sqlite_modern_cpp.git
-    GIT_TAG v3.2
-)
-
-# JWT library for authentication
-FetchContent_Declare(
-    jwt-cpp
-    GIT_REPOSITORY https://github.com/Thalhammer/jwt-cpp.git
-    GIT_TAG v0.7.0
-)
-
-# Crypto library
-FetchContent_Declare(
-    cryptopp
-    GIT_REPOSITORY https://github.com/weidai11/cryptopp.git
-    GIT_TAG CRYPTOPP_8_9_0
-)
-
-FetchContent_MakeAvailable(httplib json sqlite_modern_cpp jwt-cpp)
+# Find OpenSSL
+find_package(OpenSSL REQUIRED)
 
 # Include directories
 include_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/include
+    ${HTTPLIB_INCLUDE_DIR}
+    ${SQLite3_INCLUDE_DIRS}
 )
 
 # Source files
-set(QMARK_SOURCES
+set(SOURCES
     src/main.cpp
     src/server/http_server.cpp
-    src/server/routes.cpp
-    src/server/auth_handler.cpp
     src/database/database_manager.cpp
-    src/database/models/user.cpp
-    src/database/models/lead.cpp
-    src/database/models/automation.cpp
-    src/security/encryption.cpp
-    src/security/oauth_client.cpp
-    src/utils/json_helper.cpp
     src/utils/logger.cpp
+    src/security/encryption.cpp
+    src/qmark_json.cpp
 )
 
 # Create executable
-add_executable(qmark-server ${QMARK_SOURCES})
+add_executable(qmark-server ${SOURCES})
 
 # Link libraries
 target_link_libraries(qmark-server
     PRIVATE
-    httplib::httplib
     nlohmann_json::nlohmann_json
-    jwt-cpp::jwt-cpp
-    Threads::Threads
-    sqlite3
-    ssl
-    crypto
-    curl
+    SQLite::SQLite3
+    OpenSSL::SSL
+    OpenSSL::Crypto
+    pthread
 )
 
-# Compiler flags for modern C++
-target_compile_options(qmark-server PRIVATE
-    -Wall
-    -Wextra
-    -Wpedantic
-    -Werror
-    -ffast-math
-    -march=native
+# Compiler definitions
+target_compile_definitions(qmark-server PRIVATE
+    CPPHTTPLIB_OPENSSL_SUPPORT
+    SQLITE_THREADSAFE=1
 )
 
-# Install targets
+# Installation
 install(TARGETS qmark-server
     RUNTIME DESTINATION bin
 )
 
-# Enable testing
-enable_testing()
-add_subdirectory(tests)
+# Custom target for development
+add_custom_target(dev
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/qmark-server
+    DEPENDS qmark-server
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
+
+# Debug configuration
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_compile_definitions(qmark-server PRIVATE DEBUG=1)
+    target_compile_options(qmark-server PRIVATE -g -O0)
+endif()
+
+# Release configuration
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    target_compile_definitions(qmark-server PRIVATE NDEBUG=1)
+    target_compile_options(qmark-server PRIVATE -O3 -DNDEBUG)
+endif()

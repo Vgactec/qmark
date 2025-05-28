@@ -265,6 +265,83 @@ DashboardStats DatabaseManager::get_dashboard_stats(const std::string& user_id) 
     }
 }
 
+// OAuth connections
+std::vector<OAuthConnection> DatabaseManager::get_oauth_connections(const std::string& user_id) {
+    try {
+        std::vector<OAuthConnection> connections;
+        
+        *db_ << R"(
+            SELECT id, user_id, platform, platform_user_id, display_name, email,
+                   access_token, refresh_token, token_expiry, scope, is_active,
+                   last_sync, created_at, updated_at
+            FROM oauth_connections WHERE user_id = ? AND is_active = 1
+        )" << user_id
+             >> [&](int id, std::string user_id, std::string platform, std::string platform_user_id,
+                    std::string display_name, std::string email, std::string access_token,
+                    std::string refresh_token, std::string token_expiry, std::string scope,
+                    bool is_active, std::string last_sync, std::string created_at, std::string updated_at) {
+                OAuthConnection conn;
+                conn.id = id;
+                conn.userId = user_id;
+                conn.platform = platform;
+                conn.platformUserId = platform_user_id.empty() ? std::nullopt : std::make_optional(platform_user_id);
+                conn.displayName = display_name.empty() ? std::nullopt : std::make_optional(display_name);
+                conn.email = email.empty() ? std::nullopt : std::make_optional(email);
+                conn.accessToken = access_token;
+                conn.refreshToken = refresh_token.empty() ? std::nullopt : std::make_optional(refresh_token);
+                conn.tokenExpiry = token_expiry.empty() ? std::nullopt : std::make_optional(string_to_timestamp(token_expiry));
+                conn.scope = scope.empty() ? std::nullopt : std::make_optional(scope);
+                conn.isActive = is_active;
+                conn.lastSync = last_sync.empty() ? std::nullopt : std::make_optional(string_to_timestamp(last_sync));
+                conn.createdAt = string_to_timestamp(created_at);
+                conn.updatedAt = string_to_timestamp(updated_at);
+                connections.push_back(conn);
+             };
+        
+        return connections;
+        
+    } catch (const sqlite::sqlite_exception& e) {
+        Logger::error(std::format("Failed to get OAuth connections for user {}: {}", user_id, e.what()));
+        return {};
+    }
+}
+
+std::vector<Activity> DatabaseManager::get_activities(const std::string& user_id, int limit) {
+    try {
+        std::vector<Activity> activities;
+        
+        *db_ << R"(
+            SELECT id, user_id, type, title, description, metadata, created_at
+            FROM activities WHERE user_id = ?
+            ORDER BY created_at DESC LIMIT ?
+        )" << user_id << limit
+             >> [&](int id, std::string user_id, std::string type, std::string title,
+                    std::string description, std::string metadata, std::string created_at) {
+                Activity activity;
+                activity.id = id;
+                activity.userId = user_id;
+                activity.type = type;
+                activity.title = title;
+                activity.description = description.empty() ? std::nullopt : std::make_optional(description);
+                if (!metadata.empty()) {
+                    try {
+                        activity.metadata = json::parse(metadata);
+                    } catch (...) {
+                        activity.metadata = std::nullopt;
+                    }
+                }
+                activity.createdAt = string_to_timestamp(created_at);
+                activities.push_back(activity);
+             };
+        
+        return activities;
+        
+    } catch (const sqlite::sqlite_exception& e) {
+        Logger::error(std::format("Failed to get activities for user {}: {}", user_id, e.what()));
+        return {};
+    }
+}
+
 // Helper methods
 std::string DatabaseManager::timestamp_to_string(const Timestamp& ts) {
     auto time_t = std::chrono::system_clock::to_time_t(ts);
