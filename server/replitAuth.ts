@@ -102,17 +102,27 @@ export async function setupAuth(app: Express) {
   passport.deserializeUser((user: Express.User, cb) => cb(null, user));
 
   app.get("/api/login", (req, res, next) => {
-    passport.authenticate(`replitauth:${req.hostname}`, {
-      prompt: "login consent",
-      scope: ["openid", "email", "profile", "offline_access"],
-    })(req, res, next);
+    try {
+      passport.authenticate(`replitauth:${req.hostname}`, {
+        prompt: "login consent",
+        scope: ["openid", "email", "profile", "offline_access"],
+      })(req, res, next);
+    } catch (error) {
+      console.error("Login error:", error);
+      res.status(500).json({ message: "Authentication error" });
+    }
   });
 
   app.get("/api/callback", (req, res, next) => {
-    passport.authenticate(`replitauth:${req.hostname}`, {
-      successReturnToOrRedirect: "/",
-      failureRedirect: "/api/login",
-    })(req, res, next);
+    try {
+      passport.authenticate(`replitauth:${req.hostname}`, {
+        successReturnToOrRedirect: "/",
+        failureRedirect: "/api/login",
+      })(req, res, next);
+    } catch (error) {
+      console.error("Callback error:", error);
+      res.redirect("/api/login");
+    }
   });
 
   app.get("/api/logout", (req, res) => {
@@ -120,7 +130,7 @@ export async function setupAuth(app: Express) {
       res.redirect(
         client.buildEndSessionUrl(config, {
           client_id: process.env.REPL_ID!,
-          post_logout_redirect_uri: `${req.protocol}://${req.hostname}`,
+          post_logout_redirect_uri: `${req.protocol}://${req.get('host')}`,
         }).href
       );
     });
@@ -128,6 +138,22 @@ export async function setupAuth(app: Express) {
 }
 
 export const isAuthenticated: RequestHandler = async (req, res, next) => {
+  // Mode développement local - bypass auth pour tester les composants
+  if (process.env.NODE_ENV === "development" && !process.env.FORCE_AUTH) {
+    // Créer un utilisateur de test pour le développement
+    req.user = {
+      claims: {
+        sub: "dev-user-123",
+        email: "dev@qmark.test",
+        first_name: "Dev",
+        last_name: "User",
+        profile_image_url: "https://via.placeholder.com/150"
+      },
+      expires_at: Math.floor(Date.now() / 1000) + 3600 // 1 heure
+    };
+    return next();
+  }
+
   const user = req.user as any;
 
   if (!req.isAuthenticated() || !user.expires_at) {
