@@ -1,394 +1,219 @@
 #include "database/database_manager.hpp"
 #include "utils/logger.hpp"
-#include <format>
-#include <chrono>
-#include <sstream>
+#include <filesystem>
 
-namespace qmark {
+namespace QMark {
 
-DatabaseManager::DatabaseManager(const std::string& db_path) 
-    : db_path_(db_path) {
+DatabaseManager& DatabaseManager::getInstance() {
+    static DatabaseManager instance;
+    return instance;
 }
 
-bool DatabaseManager::initialize() {
-    try {
-        db_ = std::make_unique<sqlite::database>(db_path_);
-        
-        // Enable foreign keys and WAL mode for better performance
-        *db_ << "PRAGMA foreign_keys = ON;";
-        *db_ << "PRAGMA journal_mode = WAL;";
-        *db_ << "PRAGMA synchronous = NORMAL;";
-        *db_ << "PRAGMA cache_size = 10000;";
-        
-        Logger::info(std::format("Database connection established: {}", db_path_));
-        
-        return create_tables();
-        
-    } catch (const sqlite::sqlite_exception& e) {
-        Logger::error(std::format("Database initialization failed: {}", e.what()));
-        return false;
-    }
+DatabaseManager::DatabaseManager() : db_(nullptr) {}
+
+DatabaseManager::~DatabaseManager() {
+    close();
 }
 
-bool DatabaseManager::create_tables() {
+bool DatabaseManager::init(const std::string& db_path) {
+    std::lock_guard<std::mutex> lock(mutex_);
+
     try {
-        auto transaction = begin_transaction();
-        
-        // Users table
-        execute_sql(R"(
-            CREATE TABLE IF NOT EXISTS users (
-                id TEXT PRIMARY KEY NOT NULL,
-                email TEXT UNIQUE,
-                first_name TEXT,
-                last_name TEXT,
-                profile_image_url TEXT,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-            )
-        )");
-        
-        // Sessions table (for authentication)
-        execute_sql(R"(
-            CREATE TABLE IF NOT EXISTS sessions (
-                sid TEXT PRIMARY KEY,
-                sess TEXT NOT NULL,
-                expire DATETIME NOT NULL
-            )
-        )");
-        
-        // OAuth connections table
-        execute_sql(R"(
-            CREATE TABLE IF NOT EXISTS oauth_connections (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                user_id TEXT NOT NULL,
-                platform TEXT NOT NULL,
-                platform_user_id TEXT,
-                display_name TEXT,
-                email TEXT,
-                access_token TEXT,
-                refresh_token TEXT,
-                token_expiry DATETIME,
-                scope TEXT,
-                is_active BOOLEAN DEFAULT 1,
-                last_sync DATETIME,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-            )
-        )");
-        
-        // Leads table
-        execute_sql(R"(
-            CREATE TABLE IF NOT EXISTS leads (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                user_id TEXT NOT NULL,
-                name TEXT,
-                email TEXT,
-                phone TEXT,
-                source TEXT,
-                status TEXT DEFAULT 'new',
-                notes TEXT,
-                metadata TEXT,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-            )
-        )");
-        
-        // Automations table
-        execute_sql(R"(
-            CREATE TABLE IF NOT EXISTS automations (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                user_id TEXT NOT NULL,
-                name TEXT NOT NULL,
-                description TEXT,
-                type TEXT NOT NULL,
-                config TEXT,
-                is_active BOOLEAN DEFAULT 1,
-                last_run DATETIME,
-                run_count INTEGER DEFAULT 0,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-            )
-        )");
-        
-        // Activities table
-        execute_sql(R"(
-            CREATE TABLE IF NOT EXISTS activities (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                user_id TEXT NOT NULL,
-                type TEXT NOT NULL,
-                title TEXT NOT NULL,
-                description TEXT,
-                metadata TEXT,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-            )
-        )");
-        
-        // Metrics table
-        execute_sql(R"(
-            CREATE TABLE IF NOT EXISTS metrics (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                user_id TEXT NOT NULL,
-                date DATETIME NOT NULL,
-                leads_count INTEGER DEFAULT 0,
-                conversions_count INTEGER DEFAULT 0,
-                automations_count INTEGER DEFAULT 0,
-                revenue DECIMAL(10,2) DEFAULT 0.00,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-            )
-        )");
-        
-        // Create indexes for performance
-        execute_sql("CREATE INDEX IF NOT EXISTS idx_sessions_expire ON sessions(expire)");
-        execute_sql("CREATE INDEX IF NOT EXISTS idx_oauth_user_platform ON oauth_connections(user_id, platform)");
-        execute_sql("CREATE INDEX IF NOT EXISTS idx_leads_user_created ON leads(user_id, created_at DESC)");
-        execute_sql("CREATE INDEX IF NOT EXISTS idx_leads_status ON leads(status)");
-        execute_sql("CREATE INDEX IF NOT EXISTS idx_automations_user_active ON automations(user_id, is_active)");
-        execute_sql("CREATE INDEX IF NOT EXISTS idx_activities_user_created ON activities(user_id, created_at DESC)");
-        execute_sql("CREATE INDEX IF NOT EXISTS idx_metrics_user_date ON metrics(user_id, date)");
-        
-        transaction->commit();
-        Logger::info("Database tables created successfully");
+        // Create database directory if it doesn't exist
+        std::filesystem::path path(db_path);
+        std::filesystem::create_directories(path.parent_path());
+
+        // Open database
+        int result = sqlite3_open(db_path.c_str(), &db_);
+        if (result != SQLITE_OK) {
+            Logger::error("Failed to open database: " + std::string(sqlite3_errmsg(db_)));
+            return false;
+        }
+
+        db_path_ = db_path;
+
+        // Enable foreign keys
+        execute("PRAGMA foreign_keys = ON;");
+
+        // Create tables
+        if (!createTables()) {
+            Logger::error("Failed to create database tables");
+            return false;
+        }
+
+        Logger::info("Database initialized successfully: " + db_path);
         return true;
-        
-    } catch (const sqlite::sqlite_exception& e) {
-        Logger::error(std::format("Failed to create tables: {}", e.what()));
+
+    } catch (const std::exception& e) {
+        Logger::error("Database initialization error: " + std::string(e.what()));
         return false;
     }
 }
 
-// User operations
-std::optional<User> DatabaseManager::get_user(const std::string& id) {
-    try {
-        User user;
-        bool found = false;
-        
-        *db_ << "SELECT id, email, first_name, last_name, profile_image_url, created_at, updated_at FROM users WHERE id = ?"
-             << id
-             >> [&](std::string id, std::string email, std::string first_name, 
-                    std::string last_name, std::string profile_image_url, 
-                    std::string created_at, std::string updated_at) {
-                user.id = id;
-                user.email = email.empty() ? std::nullopt : std::make_optional(email);
-                user.firstName = first_name.empty() ? std::nullopt : std::make_optional(first_name);
-                user.lastName = last_name.empty() ? std::nullopt : std::make_optional(last_name);
-                user.profileImageUrl = profile_image_url.empty() ? std::nullopt : std::make_optional(profile_image_url);
-                user.createdAt = string_to_timestamp(created_at);
-                user.updatedAt = string_to_timestamp(updated_at);
-                found = true;
-             };
-        
-        return found ? std::make_optional(user) : std::nullopt;
-        
-    } catch (const sqlite::sqlite_exception& e) {
-        Logger::error(std::format("Failed to get user {}: {}", id, e.what()));
+void DatabaseManager::close() {
+    std::lock_guard<std::mutex> lock(mutex_);
+
+    if (db_) {
+        sqlite3_close(db_);
+        db_ = nullptr;
+        Logger::info("Database connection closed");
+    }
+}
+
+bool DatabaseManager::execute(const std::string& sql) {
+    if (!db_) {
+        Logger::error("Database not initialized");
+        return false;
+    }
+
+    char* error_msg = nullptr;
+    int result = sqlite3_exec(db_, sql.c_str(), nullptr, nullptr, &error_msg);
+
+    if (result != SQLITE_OK) {
+        std::string error = error_msg ? error_msg : "Unknown error";
+        Logger::error("SQL execution failed: " + error);
+        if (error_msg) {
+            sqlite3_free(error_msg);
+        }
+        return false;
+    }
+
+    return true;
+}
+
+std::vector<std::map<std::string, std::string>> DatabaseManager::query(const std::string& sql) {
+    std::vector<std::map<std::string, std::string>> results;
+
+    if (!db_) {
+        Logger::error("Database not initialized");
+        return results;
+    }
+
+    sqlite3_stmt* stmt;
+    int result = sqlite3_prepare_v2(db_, sql.c_str(), -1, &stmt, nullptr);
+
+    if (result != SQLITE_OK) {
+        Logger::error("SQL prepare failed: " + std::string(sqlite3_errmsg(db_)));
+        return results;
+    }
+
+    int column_count = sqlite3_column_count(stmt);
+
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        std::map<std::string, std::string> row;
+
+        for (int i = 0; i < column_count; i++) {
+            const char* column_name = sqlite3_column_name(stmt, i);
+            const char* column_value = reinterpret_cast<const char*>(sqlite3_column_text(stmt, i));
+
+            row[column_name] = column_value ? column_value : "";
+        }
+
+        results.push_back(row);
+    }
+
+    sqlite3_finalize(stmt);
+    return results;
+}
+
+bool DatabaseManager::createTables() {
+    // Users table
+    std::string users_sql = R"(
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT UNIQUE NOT NULL,
+            email TEXT UNIQUE NOT NULL,
+            password_hash TEXT NOT NULL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        );
+    )";
+
+    // Sessions table
+    std::string sessions_sql = R"(
+        CREATE TABLE IF NOT EXISTS sessions (
+            id TEXT PRIMARY KEY,
+            user_id INTEGER NOT NULL,
+            data TEXT NOT NULL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            expires_at DATETIME NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        );
+    )";
+
+    // Data table
+    std::string data_sql = R"(
+        CREATE TABLE IF NOT EXISTS data (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            value INTEGER NOT NULL,
+            user_id INTEGER,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+        );
+    )";
+
+    return execute(users_sql) && execute(sessions_sql) && execute(data_sql);
+}
+
+bool DatabaseManager::insertUser(const std::string& username, const std::string& email, const std::string& password_hash) {
+    std::string sql = "INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?);";
+
+    sqlite3_stmt* stmt;
+    int result = sqlite3_prepare_v2(db_, sql.c_str(), -1, &stmt, nullptr);
+
+    if (result != SQLITE_OK) {
+        Logger::error("Failed to prepare insert user statement: " + std::string(sqlite3_errmsg(db_)));
+        return false;
+    }
+
+    sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, email.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 3, password_hash.c_str(), -1, SQLITE_STATIC);
+
+    result = sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+
+    if (result != SQLITE_DONE) {
+        Logger::error("Failed to insert user: " + std::string(sqlite3_errmsg(db_)));
+        return false;
+    }
+
+    Logger::info("User created successfully: " + username);
+    return true;
+}
+
+std::optional<std::map<std::string, std::string>> DatabaseManager::getUserByUsername(const std::string& username) {
+    std::string sql = "SELECT * FROM users WHERE username = ? LIMIT 1;";
+
+    sqlite3_stmt* stmt;
+    int result = sqlite3_prepare_v2(db_, sql.c_str(), -1, &stmt, nullptr);
+
+    if (result != SQLITE_OK) {
+        Logger::error("Failed to prepare get user statement: " + std::string(sqlite3_errmsg(db_)));
         return std::nullopt;
     }
-}
 
-User DatabaseManager::upsert_user(const User& user) {
-    try {
-        auto transaction = begin_transaction();
-        
-        std::string now = timestamp_to_string(std::chrono::system_clock::now());
-        
-        *db_ << R"(
-            INSERT INTO users (id, email, first_name, last_name, profile_image_url, created_at, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-            ON CONFLICT(id) DO UPDATE SET
-                email = excluded.email,
-                first_name = excluded.first_name,
-                last_name = excluded.last_name,
-                profile_image_url = excluded.profile_image_url,
-                updated_at = excluded.updated_at
-        )" << user.id
-           << (user.email ? *user.email : "")
-           << (user.firstName ? *user.firstName : "")
-           << (user.lastName ? *user.lastName : "")
-           << (user.profileImageUrl ? *user.profileImageUrl : "")
-           << timestamp_to_string(user.createdAt)
-           << now;
-        
-        transaction->commit();
-        
-        // Return the updated user
-        auto updated_user = get_user(user.id);
-        return updated_user ? *updated_user : user;
-        
-    } catch (const sqlite::sqlite_exception& e) {
-        Logger::error(std::format("Failed to upsert user {}: {}", user.id, e.what()));
-        throw;
-    }
-}
+    sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_STATIC);
 
-// Dashboard stats
-DashboardStats DatabaseManager::get_dashboard_stats(const std::string& user_id) {
-    try {
-        DashboardStats stats = {};
-        
-        // Get total leads
-        *db_ << "SELECT COUNT(*) FROM leads WHERE user_id = ?" << user_id >> stats.totalLeads;
-        
-        // Get conversions
-        *db_ << "SELECT COUNT(*) FROM leads WHERE user_id = ? AND status = 'converted'" 
-             << user_id >> stats.totalConversions;
-        
-        // Get active automations
-        *db_ << "SELECT COUNT(*) FROM automations WHERE user_id = ? AND is_active = 1" 
-             << user_id >> stats.activeAutomations;
-        
-        // Get total revenue for current month
-        auto now = std::chrono::system_clock::now();
-        auto time_t = std::chrono::system_clock::to_time_t(now);
-        auto tm = *std::localtime(&time_t);
-        tm.tm_mday = 1;
-        tm.tm_hour = 0;
-        tm.tm_min = 0;
-        tm.tm_sec = 0;
-        auto month_start = std::chrono::system_clock::from_time_t(std::mktime(&tm));
-        
-        double revenue = 0.0;
-        *db_ << "SELECT COALESCE(SUM(revenue), 0.0) FROM metrics WHERE user_id = ? AND date >= ?" 
-             << user_id << timestamp_to_string(month_start) >> revenue;
-        
-        stats.totalRevenue = revenue;
-        
-        return stats;
-        
-    } catch (const sqlite::sqlite_exception& e) {
-        Logger::error(std::format("Failed to get dashboard stats for user {}: {}", user_id, e.what()));
-        return {};
-    }
-}
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+        std::map<std::string, std::string> user;
+        int column_count = sqlite3_column_count(stmt);
 
-// OAuth connections
-std::vector<OAuthConnection> DatabaseManager::get_oauth_connections(const std::string& user_id) {
-    try {
-        std::vector<OAuthConnection> connections;
-        
-        *db_ << R"(
-            SELECT id, user_id, platform, platform_user_id, display_name, email,
-                   access_token, refresh_token, token_expiry, scope, is_active,
-                   last_sync, created_at, updated_at
-            FROM oauth_connections WHERE user_id = ? AND is_active = 1
-        )" << user_id
-             >> [&](int id, std::string user_id, std::string platform, std::string platform_user_id,
-                    std::string display_name, std::string email, std::string access_token,
-                    std::string refresh_token, std::string token_expiry, std::string scope,
-                    bool is_active, std::string last_sync, std::string created_at, std::string updated_at) {
-                OAuthConnection conn;
-                conn.id = id;
-                conn.userId = user_id;
-                conn.platform = platform;
-                conn.platformUserId = platform_user_id.empty() ? std::nullopt : std::make_optional(platform_user_id);
-                conn.displayName = display_name.empty() ? std::nullopt : std::make_optional(display_name);
-                conn.email = email.empty() ? std::nullopt : std::make_optional(email);
-                conn.accessToken = access_token;
-                conn.refreshToken = refresh_token.empty() ? std::nullopt : std::make_optional(refresh_token);
-                conn.tokenExpiry = token_expiry.empty() ? std::nullopt : std::make_optional(string_to_timestamp(token_expiry));
-                conn.scope = scope.empty() ? std::nullopt : std::make_optional(scope);
-                conn.isActive = is_active;
-                conn.lastSync = last_sync.empty() ? std::nullopt : std::make_optional(string_to_timestamp(last_sync));
-                conn.createdAt = string_to_timestamp(created_at);
-                conn.updatedAt = string_to_timestamp(updated_at);
-                connections.push_back(conn);
-             };
-        
-        return connections;
-        
-    } catch (const sqlite::sqlite_exception& e) {
-        Logger::error(std::format("Failed to get OAuth connections for user {}: {}", user_id, e.what()));
-        return {};
-    }
-}
+        for (int i = 0; i < column_count; i++) {
+            const char* column_name = sqlite3_column_name(stmt, i);
+            const char* column_value = reinterpret_cast<const char*>(sqlite3_column_text(stmt, i));
 
-std::vector<Activity> DatabaseManager::get_activities(const std::string& user_id, int limit) {
-    try {
-        std::vector<Activity> activities;
-        
-        *db_ << R"(
-            SELECT id, user_id, type, title, description, metadata, created_at
-            FROM activities WHERE user_id = ?
-            ORDER BY created_at DESC LIMIT ?
-        )" << user_id << limit
-             >> [&](int id, std::string user_id, std::string type, std::string title,
-                    std::string description, std::string metadata, std::string created_at) {
-                Activity activity;
-                activity.id = id;
-                activity.userId = user_id;
-                activity.type = type;
-                activity.title = title;
-                activity.description = description.empty() ? std::nullopt : std::make_optional(description);
-                if (!metadata.empty()) {
-                    try {
-                        activity.metadata = json::parse(metadata);
-                    } catch (...) {
-                        activity.metadata = std::nullopt;
-                    }
-                }
-                activity.createdAt = string_to_timestamp(created_at);
-                activities.push_back(activity);
-             };
-        
-        return activities;
-        
-    } catch (const sqlite::sqlite_exception& e) {
-        Logger::error(std::format("Failed to get activities for user {}: {}", user_id, e.what()));
-        return {};
-    }
-}
-
-// Helper methods
-std::string DatabaseManager::timestamp_to_string(const Timestamp& ts) {
-    auto time_t = std::chrono::system_clock::to_time_t(ts);
-    std::stringstream ss;
-    ss << std::put_time(std::gmtime(&time_t), "%Y-%m-%d %H:%M:%S");
-    return ss.str();
-}
-
-DatabaseManager::Timestamp DatabaseManager::string_to_timestamp(const std::string& str) {
-    std::tm tm = {};
-    std::istringstream ss(str);
-    ss >> std::get_time(&tm, "%Y-%m-%d %H:%M:%S");
-    return std::chrono::system_clock::from_time_t(std::mktime(&tm));
-}
-
-void DatabaseManager::execute_sql(const std::string& sql) {
-    *db_ << sql;
-}
-
-// Transaction implementation
-DatabaseManager::Transaction::Transaction(sqlite::database& db) 
-    : db_(db), committed_(false) {
-    db_ << "BEGIN TRANSACTION";
-}
-
-DatabaseManager::Transaction::~Transaction() {
-    if (!committed_) {
-        try {
-            db_ << "ROLLBACK";
-        } catch (...) {
-            // Ignore rollback errors in destructor
+            user[column_name] = column_value ? column_value : "";
         }
+
+        sqlite3_finalize(stmt);
+        return user;
     }
+
+    sqlite3_finalize(stmt);
+    return std::nullopt;
 }
 
-void DatabaseManager::Transaction::commit() {
-    db_ << "COMMIT";
-    committed_ = true;
-}
-
-void DatabaseManager::Transaction::rollback() {
-    db_ << "ROLLBACK";
-    committed_ = true;
-}
-
-std::unique_ptr<DatabaseManager::Transaction> DatabaseManager::begin_transaction() {
-    return std::make_unique<Transaction>(*db_);
-}
-
-} // namespace qmark
+} // namespace QMark

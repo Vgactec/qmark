@@ -5,7 +5,7 @@ channel = "stable-24_05"
 packages = ["python312Packages.cmake", "wget"]
 
 [workflows]
-runButton = "Project"
+runButton = "Run C++ Server"
 
 [[workflows.workflow]]
 name = "Project"
@@ -24,6 +24,24 @@ author = "agent"
 task = "shell.exec"
 args = "npm run dev"
 waitForPort = 5000
+
+[[workflows.workflow]]
+name = "Build C++"
+author = 43198353
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd build && cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=20 && make -j$(nproc)"
+
+[[workflows.workflow]]
+name = "Run C++ Server"
+author = 43198353
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd build && cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=20 && make -j$(nproc) && ./qmark-server"
 
 [deployment]
 run = ["sh", "-c", "python clone_qmark.py"]
