@@ -77,6 +77,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Validation complète de toutes les APIs
+  app.get("/api/validate/all", async (req, res) => {
+    try {
+      const { APIValidator } = await import('./api-validator');
+      const validator = new APIValidator();
+      const report = await validator.validateAll();
+      
+      res.json(report);
+    } catch (error) {
+      console.error("❌ [API VALIDATOR] Erreur:", error);
+      res.status(500).json({
+        overall: "FAIL",
+        error: error instanceof Error ? error.message : "Unknown error",
+        timestamp: new Date().toISOString()
+      });
+    }
+  });
+
   // Test complet du système QMARK
   app.get("/api/test/system-complete", async (req, res) => {
     try {
